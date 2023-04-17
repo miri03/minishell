@@ -145,11 +145,18 @@ void	parse_cmd(t_token **token, t_cmd **cmd)
 		ft_lstlast_cmd(*cmd)->pipe = p--;
 	i = 0;
 	tmp = *token;
-	printf("token type => %d\n", tmp->type);
+
+	// printf("here\n");
 	while (tmp && tmp->type != PIPE)
 	{
 		tmp1 = tmp;
 		fill_cmd(ft_lstlast_cmd(*cmd), tmp, &i);
+		// check_tokens(*token);
+		// printf("\n\n---------TOKEN-----------\n");
+		// printf("token type => %d\n", tmp->type);
+		// printf("token cont => %s\n", tmp->content);
+		// printf("token exp => %d\n", tmp->expand);
+		// printf("-----------------------------\n");
 		tmp = tmp->next;
 		ft_lstdelone_t(tmp1);
 	}

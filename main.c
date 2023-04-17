@@ -52,6 +52,7 @@ void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 	if (check_syntax(*token))
 	{
 		parse_cmd(token, cmd);
+		
 			// while (*cmd)
 			// {
 			// 	printf("%s\n", (*cmd)->cmd[0]);
@@ -87,69 +88,20 @@ int	main(int ac, char **av, char **env)
 		}
 		add_history(line);
 		if (token_line(line, &token))
-		{	
+		{
 			ft_minishell(&dup_env, &token, &cmd);
-
-			// get_input(cmd);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			// printf("%s\n", token->content);
-			// printf("yassir\n");
-			
-			// while (tmp->cmd[i++])
+			get_input(cmd);
+			// printf("-------TABLE DYAL ZBI-----------\n");
+			// i = 0;
+			// while (cmd)
 			// {
-			// 	printf("%s\n", tmp->cmd[i]);
-			// }
-			// ft_exit();
-			// ft_env(dup_env);
-
-
-
-			if (!token)
-			{
-
-			while (token)
-			{
-				printf("--|%d|--", token->type);
-				token = token->next;
-			}
-			}
-			// printf("\n");
-			// if (ft_strncmp(line, "env", 3) == 0)
-			// {
-			// 	while (dup_env)
-			// 	{
-			// 		printf("%s=", dup_env->key);
-			// 		printf("%s\n", dup_env->value);
-			// 		dup_env = dup_env->next;
-			// 	}
-			// }
-			// if (!dup_env->next)
-			// 	return (0);
-			// printf("%s\n", dup_env->key);
-			// printf("%s\n\n", dup_env->value);
-			
-			// dup_env->value=minishell(env, &dup_env);
-			// int c = 8;
-			// // if (!dup_env)
-			// // 	return (0);
-			// while (c-- > 0)
-			// {
-			// 	printf ("-->%s==", dup_env->key);
-			// 	printf ("%s\n", dup_env->value);
-			// 	dup_env = dup_env->next;
+			// 	printf("[%d] cmd0 = %s\n", i,cmd->cmd[0]);
+			// 	printf("[%d] cmd1 = %s\n", i,cmd->cmd[1]);
+			// 	printf("[%d] cmd2 = %s\n", i,cmd->cmd[2]);
+			// 	printf("[%d] pipe = %d\n", i,cmd->pipe);
+			// 	printf("[%d] err = %d\n", i,cmd->err);
+			// 	i++;
+			// 	cmd = cmd->next;
 			// }
 		}
 		free(line);

@@ -198,7 +198,7 @@ void	here_doc_exp(t_token *token)
 
 int	join_str(t_token **token, t_token *tmp)
 {
-	if ((*token)->type == PIPE || (*token)->type == OPERATOR || (*token)->type == SPACE)
+	if ((*token)->type == PIPE || (*token)->type == OPERATOR || (*token)->type == SPACE || (*token)->type == WORD)
 		return (0);
 	if (!tmp || tmp->type == PIPE || tmp->type == OPERATOR)
 		return (0);
@@ -225,9 +225,7 @@ void	handler_expand(t_token **token, t_env *env, t_token *tok)
 	while (tok)
 	{
 		check_exp(tok, env);
-		
-		// printf("%s\n", tok->content);
-		if (join_str(&tok, tmp) == 0)
+		if (join_str(&tok, tmp) == 0)  ////// added this -> (*token)->type == WORD
 		{
 			tmp = tok;
 			tok = tok->next;

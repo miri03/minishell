@@ -185,6 +185,9 @@ void	set_cmd(t_cmd *cmd);
 
 //*------------------execution-----------------------*//
 
+void    check_tokens(t_token *token);
+void    get_input(t_cmd *command);
+
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env *dup_env);
 void	ft_unset(t_env *dup_env);
