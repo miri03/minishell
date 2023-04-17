@@ -181,4 +181,16 @@ void	is_operator(t_token *token, t_cmd *cmd);
 int		check_redir(t_token *token);
 void	set_oper(t_token *token, t_redi **redir, int type);
 void	set_cmd(t_cmd *cmd);
+
+
+//*------------------execution-----------------------*//
+
+//*-------------------built-ins--------------------*//
+void	ft_env(t_env *dup_env);
+void	ft_unset(t_env *dup_env);
+void	ft_exit(char **cmd);
+void    ft_pwd(void);
+
+
+
 #endif

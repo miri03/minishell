@@ -17,7 +17,8 @@ RM			=	rm -rf
 SRCS		=	main.c  src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
 				src/tools/lst_env.c src/env/environment.c src/expand/expansion.c \
 				src/lexer/checks.c src/parse/parsing.c src/tools/lst_redir.c \
-				src/tools/lst_cmd.c
+				src/tools/lst_cmd.c \
+				src/built-ins/pwd.c src/built-ins/exit.c src/built-ins/env.c\
 				
 OBJS		= ${SRCS:.c=.o}
 

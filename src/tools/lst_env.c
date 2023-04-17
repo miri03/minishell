@@ -110,12 +110,12 @@ int	ft_putendl_fd_2(char *s, char *str, int fd)
 // 	*lst = NULL;
 // }
 
-// void	ft_lstdelone(t_token *lst)
-// {
-// 	if (lst)
-// 	{
-// 		if (lst->content)
-// 			free(lst->content);
-// 		free(lst);
-// 	}
-// }
+void	ft_lstdelone(t_token *lst)
+{
+	if (lst)
+	{
+		if (lst->content)
+			free(lst->content);
+		free(lst);
+	}
+}
