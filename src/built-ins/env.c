@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_env(t_env *dup_env)
+void	ft_env(t_env *dup_env)   //check after unset PATH
 {
 	t_env *tmp;
 

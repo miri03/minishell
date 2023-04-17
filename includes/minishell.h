@@ -125,13 +125,13 @@ typedef struct data
 */
 
 //*----------LEXER----------*//
-int	token_line(char *line, t_token **token);
-int	take_separator(char *line, t_token **token);
-int	whish_separator(char *line);
+int		token_line(char *line, t_token **token);
+int		take_separator(char *line, t_token **token);
+int		whish_separator(char *line);
 void	check_args(int ac, char **av, t_env **dup_env, char **env);
-int	with_quotes(char *line, t_token **token, int c, int *flag);
-int	take_word(char *line, t_token **token, int *flag);
-int	type_token(char *content);
+int		with_quotes(char *line, t_token **token, int c, int *flag);
+int		take_word(char *line, t_token **token, int *flag);
+int		type_token(char *content);
 
 
 //*---------lst_func--------*//
@@ -156,7 +156,7 @@ t_redi	*ft_lstlast_redi(t_redi *lst);
 
 //*---------env--------*//
 void	*parse_env(char **env, t_env **dup_env);
-int	get_idx_of(char *str, int c);
+int		get_idx_of(char *str, int c);
 
 //*---------expand--------*//
 void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd);
@@ -183,17 +183,17 @@ void	set_oper(t_token *token, t_redi **redir, int type);
 void	set_cmd(t_cmd *cmd);
 
 
-//*------------------execution-----------------------*//
+//*-----meharit-------execution--------------------*//
 
 void    check_tokens(t_token *token);
 void    get_input(t_cmd *command);
 
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env *dup_env);
-void	ft_unset(t_env *dup_env);
+void	ft_unset(t_env *dup_env, t_cmd *cmd);
 void	ft_exit(t_cmd *cmd);
 void    ft_pwd(void);
-
+int		cmd_len(char **table);
 
 
 #endif

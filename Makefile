@@ -18,7 +18,7 @@ SRCS		=	main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_
 				src/tools/lst_env.c src/env/environment.c src/expand/expansion.c \
 				src/lexer/checks.c src/parse/parsing.c src/tools/lst_redir.c \
 				src/tools/lst_cmd.c \
-				src/built-ins/pwd.c src/built-ins/exit.c src/built-ins/env.c\
+				src/built-ins/pwd.c src/built-ins/exit.c src/built-ins/env.c src/built-ins/unset.c \
 				
 OBJS		= ${SRCS:.c=.o}
 
@@ -31,6 +31,9 @@ $(NAME)		: $(SRCS)
 clean		:
 			$(RM) $(OBJS)
 			make clean -C libft
+
+cln lib	:
+			make fclean -C libft
 
 fclean		: clean
 			$(RM) $(NAME)
