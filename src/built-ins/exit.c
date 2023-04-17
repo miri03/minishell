@@ -12,12 +12,12 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_exit(char **cmd)
+void	ft_exit(t_cmd *cmd)
 {
-	if (!ft_isdigit(cmd[1][0]))
+	if (!ft_isdigit(cmd->cmd[1][0])) //// !! example => exit 3d
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(cmd[1],2);
+		ft_putstr_fd(cmd->cmd[1],2);
 		ft_putstr_fd(": numeric argument required\n", 2);
 		exit(255);
 	}

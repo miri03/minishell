@@ -191,7 +191,7 @@ void    get_input(t_cmd *command);
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env *dup_env);
 void	ft_unset(t_env *dup_env);
-void	ft_exit(char **cmd);
+void	ft_exit(t_cmd *cmd);
 void    ft_pwd(void);
 
 

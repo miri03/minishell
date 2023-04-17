@@ -80,10 +80,9 @@ int	main(int ac, char **av, char **env)
 		token = NULL;
 		cmd = NULL;
 		line = readline("minishell>");
-		// int i =-1;
 		if (!line)
 		{
-			printf("exit\n"); //////
+			printf("exit\n");
 			exit(1);
 		}
 		add_history(line);
@@ -91,18 +90,17 @@ int	main(int ac, char **av, char **env)
 		{
 			ft_minishell(&dup_env, &token, &cmd);
 			get_input(cmd);
-			// printf("-------TABLE DYAL ZBI-----------\n");
-			// i = 0;
-			// while (cmd)
-			// {
-			// 	printf("[%d] cmd0 = %s\n", i,cmd->cmd[0]);
-			// 	printf("[%d] cmd1 = %s\n", i,cmd->cmd[1]);
-			// 	printf("[%d] cmd2 = %s\n", i,cmd->cmd[2]);
-			// 	printf("[%d] pipe = %d\n", i,cmd->pipe);
-			// 	printf("[%d] err = %d\n", i,cmd->err);
-			// 	i++;
-			// 	cmd = cmd->next;
-			// }
+			ft_exit(cmd);
+
+
+
+
+
+
+
+
+
+
 		}
 		free(line);
 	}
