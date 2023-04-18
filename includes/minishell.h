@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/16 17:22:14 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/04/18 05:04:09 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,12 +187,13 @@ void	set_cmd(t_cmd *cmd);
 
 void    check_tokens(t_token *token);
 void    get_input(t_cmd *command);
+void	execute(t_cmd *cmd);
 
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env *dup_env);
-void	ft_unset(t_env *dup_env, t_cmd *cmd);
+void	ft_unset(t_env **dup_env, t_cmd *cmd);
 void	ft_exit(t_cmd *cmd);
-void    ft_pwd(void);
+void    ft_pwd(t_cmd *cmd);
 int		cmd_len(char **table);
 
 

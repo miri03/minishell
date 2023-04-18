@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/17 04:44:10 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/04/18 05:52:38 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,12 @@ int	main(int ac, char **av, char **env)
 		{
 			ft_minishell(&dup_env, &token, &cmd);
 			get_input(cmd);
+			execute(cmd);
+
+			// ft_pwd(cmd);
 			// ft_exit(cmd);
-
-			ft_unset(dup_env, cmd);
-			printf("-------------\n\n");
-			ft_env(dup_env);
-
+			// ft_unset(&dup_env, cmd);
+			// ft_env(dup_env);
 
 
 

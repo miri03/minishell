@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/17 18:33:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/18 04:50:09 by meharit          ###   ########.fr       */
+/*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
+/*   Updated: 2023/04/18 05:57:49 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void    ft_pwd(t_cmd *cmd)
-{
-    char *ptr;
 
-	if (cmd_len(cmd->cmd) == 1)
-	{
-		ptr = getcwd(NULL, 0);
-		printf("%s\n", ptr);
-	}
-	else
-		ft_putstr_fd("pwd: too many arguments\n", 2);
-}
+/* void	check_builin(t_cmd *cmd)
+{
+	if (ft_strcmp(cmd))
+
+void	execute(t_cmd *cmd)
+{
+	check_builin(cd)); */

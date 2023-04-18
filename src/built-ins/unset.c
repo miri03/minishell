@@ -6,7 +6,7 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:42:54 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/15 21:46:23 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/18 05:22:01 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void make_second_node_head(t_env **head_ptr)
     second_node = (*head_ptr)->next;
     (*head_ptr)->next = second_node->next;
     *head_ptr = second_node;
-    ft_env(*head_ptr);
 }
 
 void    unset_var(t_env *env, int index, t_env **head)
@@ -37,7 +36,7 @@ void    unset_var(t_env *env, int index, t_env **head)
     {
         if (index == 0)
         {
-            make_second_node_head(&env);
+            make_second_node_head(head);
             break ;
         }
 
@@ -55,7 +54,7 @@ void    unset_var(t_env *env, int index, t_env **head)
     }
 }
 
-void	ft_unset(t_env *dup_env, t_cmd *cmd)
+void	ft_unset(t_env **dup_env, t_cmd *cmd)
 {
     int     i;
     int     index;
@@ -67,13 +66,12 @@ void	ft_unset(t_env *dup_env, t_cmd *cmd)
         while (cmd->cmd[i])
         {
             index = 0;
-            tmp = dup_env;
+            tmp = *dup_env;
             while (tmp)
             {
                 if (ft_strcmp(tmp->key, cmd->cmd[i]) == 0)
                 {
-                    printf("INDEX= %d\n", index);
-                    unset_var(dup_env, index, &dup_env);
+                    unset_var(*dup_env, index, dup_env);
                     break ;
                 }
                 index++;
@@ -82,5 +80,4 @@ void	ft_unset(t_env *dup_env, t_cmd *cmd)
             i++;
         }
     }
-    
 }
