@@ -91,8 +91,9 @@ int	main(int ac, char **av, char **env)
 			ft_minishell(&dup_env, &token, &cmd);
 			get_input(cmd);
 			// ft_exit(cmd);
-			
+
 			ft_unset(dup_env, cmd);
+			printf("-------------\n\n");
 			ft_env(dup_env);
 
 

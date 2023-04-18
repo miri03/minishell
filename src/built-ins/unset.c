@@ -12,12 +12,24 @@
 
 #include "../../includes/minishell.h"
 
-void    unset_var(t_env *env, int index)
+void make_second_node_head(t_env **head_ptr)
 {
-    t_env   *next;
+    t_env *second_node;
+
+    if (*head_ptr == NULL || (*head_ptr)->next == NULL)
+        return;
+    second_node = (*head_ptr)->next;
+    (*head_ptr)->next = second_node->next;
+    *head_ptr = second_node;
+    ft_env(*head_ptr);
+}
+
+void    unset_var(t_env *env, int index, t_env **head)
+{
+    t_env   *new;
     t_env   *tmp;
-    t_env   *tmp_;
     int     i;
+    (void) head;
 
     i = 0;
     
@@ -25,28 +37,19 @@ void    unset_var(t_env *env, int index)
     {
         if (index == 0)
         {
-            tmp = env;
-            tmp_ = env->next;
-            free(tmp->key);
-            free(tmp->value);
-            free(tmp);
-            env = tmp_;
-            // next = (*head)->next;
-            // *head = next;
-            printf("yes\n");
+            make_second_node_head(&env);
             break ;
         }
 
         else if (i == index - 1)
         {
-            next = (env->next)->next;
+            new = (env->next)->next;
             tmp = env->next;
             free (tmp->key);
             free (tmp->value);
-            env->next = next;
+            env->next = new;
             break;
         }
-        printf("no\n");
         i++;
         env = env->next;
     }
@@ -70,7 +73,7 @@ void	ft_unset(t_env *dup_env, t_cmd *cmd)
                 if (ft_strcmp(tmp->key, cmd->cmd[i]) == 0)
                 {
                     printf("INDEX= %d\n", index);
-                    unset_var(dup_env, index);
+                    unset_var(dup_env, index, &dup_env);
                     break ;
                 }
                 index++;
@@ -79,4 +82,5 @@ void	ft_unset(t_env *dup_env, t_cmd *cmd)
             i++;
         }
     }
+    
 }
