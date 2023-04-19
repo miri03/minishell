@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/18 05:04:09 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/18 23:29:48 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,9 +140,11 @@ t_token	*ft_lstlast_m(t_token *lst);
 void    ft_lstadd_back_m(t_token **lst, t_token *new);
 void	ft_lstdelone_t(t_token *lst);
 void	ft_lstclear_t(t_token **lst);
+//------------------------------------------------------//
 t_env	*ft_lstnew_env(char *key, char *value);
 t_env	*ft_lstlast_env(t_env *lst);
 void    ft_lstadd_back_env(t_env **lst, t_env *new);
+//-----------------------------------------------------//
 void	ft_lstclear(t_token **lst);
 void	ft_lstdelone(t_token *lst);
 t_cmd	*ft_lstnew_cmd(void);
@@ -187,14 +189,16 @@ void	set_cmd(t_cmd *cmd);
 
 void    check_tokens(t_token *token);
 void    get_input(t_cmd *command);
-void	execute(t_cmd *cmd);
+void	execute(t_cmd *cmd, t_env **dup_env);
+int		cmd_len(char **table);
 
 //*-------------------built-ins--------------------*//
-void	ft_env(t_env *dup_env);
+void	ft_env(t_env **dup_env);
 void	ft_unset(t_env **dup_env, t_cmd *cmd);
 void	ft_exit(t_cmd *cmd);
-void    ft_pwd(t_cmd *cmd);
-int		cmd_len(char **table);
+void	ft_pwd(void);
+void	ft_cd(t_cmd *cmd);
+void	ft_echo(t_cmd *cmd);
 
 
 #endif

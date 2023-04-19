@@ -6,7 +6,7 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:42:54 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/18 05:22:01 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/19 00:35:12 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,25 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd)
     t_env   *tmp;
 
     i = 1;
-    if (cmd_len(cmd->cmd) >= 2)
+    if (cmd_len(cmd->cmd) > 1)
     {
         while (cmd->cmd[i])
         {
             index = 0;
             tmp = *dup_env;
-            while (tmp)
-            {
-                if (ft_strcmp(tmp->key, cmd->cmd[i]) == 0)
-                {
-                    unset_var(*dup_env, index, dup_env);
-                    break ;
-                }
-                index++;
-                tmp = tmp->next;
-            }
+			if (ft_strcmp(cmd->cmd[i], "_"))
+			{
+				while (tmp)
+				{
+			        if (ft_strcmp(tmp->key, cmd->cmd[i]) == 0)
+					{
+						unset_var(*dup_env, index, dup_env);
+						break ;
+					}
+					index++;
+					tmp = tmp->next;
+				}
+			}
             i++;
         }
     }
