@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/18 23:29:48 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/20 03:41:46 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@
 
 int	g_exit_status;
 // char	**g_env;
+
+# define RED "\e[0;31m"
+# define RESET "\e[0m"
 
 enum {
 	heredoc,
@@ -197,7 +200,7 @@ void	ft_env(t_env **dup_env);
 void	ft_unset(t_env **dup_env, t_cmd *cmd);
 void	ft_exit(t_cmd *cmd);
 void	ft_pwd(void);
-void	ft_cd(t_cmd *cmd);
+void	ft_cd(t_cmd *cmd, t_env **env);
 void	ft_echo(t_cmd *cmd);
 
 

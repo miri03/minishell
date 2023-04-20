@@ -6,7 +6,7 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/18 23:30:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/20 03:42:11 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	check_builin(char *cmd, t_cmd *table, t_env **env)
 	}
 	if (ft_strcmp(cmd , "cd") == 0)
 	{
-		ft_cd(table);
+		ft_cd(table, env);
 		return ;
 	}
 	if (ft_strcmp(cmd , "echo") == 0)

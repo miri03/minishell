@@ -6,13 +6,13 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:42:54 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/19 00:35:12 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/19 23:44:42 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void make_second_node_head(t_env **head_ptr)
+void	new_head(t_env **head_ptr)
 {
     t_env *second_node;
 
@@ -28,15 +28,13 @@ void    unset_var(t_env *env, int index, t_env **head)
     t_env   *new;
     t_env   *tmp;
     int     i;
-    (void) head;
 
     i = 0;
-    
     while (env)
     {
         if (index == 0)
         {
-            make_second_node_head(head);
+            new_head(head);
             break ;
         }
 

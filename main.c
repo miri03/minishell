@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/19 00:05:11 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/20 02:02:48 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 	// tmp = *cmd;
 	handler_expand(token, *env, *token);
 	remove_spaces(token, *token);
+	// ft_env(env);
+	// env_export(env);
 	if (check_syntax(*token))
 	{
 		parse_cmd(token, cmd);
@@ -89,14 +91,8 @@ int	main(int ac, char **av, char **env)
 		if (token_line(line, &token))
 		{
 			ft_minishell(&dup_env, &token, &cmd);
-			get_input(cmd);
+			// get_input(cmd);
 			execute(cmd, &dup_env);
-
-			// ft_pwd(cmd);
-			// ft_exit(cmd);
-			// ft_unset(&dup_env, cmd);
-			// ft_env(dup_env);
-
 
 
 
