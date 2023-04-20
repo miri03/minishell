@@ -6,7 +6,7 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:42:54 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/19 23:44:42 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/20 04:11:29 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,11 @@ void    unset_var(t_env *env, int index, t_env **head)
     int     i;
 
     i = 0;
+	if (index == 0)           //check if working
+		new_head(head);
     while (env)
     {
-        if (index == 0)
-        {
-            new_head(head);
-            break ;
-        }
-
-        else if (i == index - 1)
+        if (i == index - 1)
         {
             new = (env->next)->next;
             tmp = env->next;
