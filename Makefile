@@ -20,25 +20,33 @@ SRCS		=	main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_
 				src/tools/lst_cmd.c \
 				src/built-ins/pwd.c src/built-ins/exit.c src/built-ins/env.c src/built-ins/unset.c \
 				src/exec/execution.c  src/built-ins/cd.c src/built-ins/echo.c \
-				
+
+RED			= \e[0;31m				
+YELLOW		= \e[0;33m
+GREEN		= \e[0;92m
+RESET    	= \033[0m
+
 OBJS		= ${SRCS:.c=.o}
 
 all			:	$(NAME)
 
 $(NAME)		: $(SRCS)
-			make -C libft
-			$(CC) $(CFLAGS) $(SRCS) libft/libft.a -o $(NAME) -lreadline 
+			@printf "$(YELLOW)\rMinishell loading ...⏳\n$(RESET)"
+			@make -C libft
+			@$(CC) $(CFLAGS) $(SRCS) libft/libft.a -o $(NAME) -lreadline 
+			@printf "$(GREEN)\rMinishell Ready 👍\n$(RESET)"    #### why /r ??
 			
 clean		:
-			$(RM) $(OBJS)
-			make clean -C libft
+			@printf "$(RED)\rCleaning ... 🗑️\n"
+			@$(RM) $(OBJS)
+			@make clean -C libft
 
-cln lib	:
-			make fclean -C libft
+# cln lib	:
+# 			make fclean -C libft
 
 fclean		: clean
-			$(RM) $(NAME)
-			make fclean -C libft
+			@$(RM) $(NAME)
+			@make fclean -C libft
 
 re			: fclean all
 

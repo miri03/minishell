@@ -25,6 +25,10 @@
 int	g_exit_status;
 // char	**g_env;
 
+
+
+#define BLUE "\e[1;36m"
+# define GREEN "\e[0;92m"
 # define RED "\e[0;31m"
 # define RESET "\e[0m"
 
