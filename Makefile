@@ -41,9 +41,6 @@ clean		:
 			@$(RM) $(OBJS)
 			@make clean -C libft
 
-# cln lib	:
-# 			make fclean -C libft
-
 fclean		: clean
 			@$(RM) $(NAME)
 			@make fclean -C libft
