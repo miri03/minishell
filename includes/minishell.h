@@ -206,6 +206,6 @@ void	ft_exit(t_cmd *cmd);
 void	ft_pwd(void);
 void	ft_cd(t_cmd *cmd, t_env **env);
 void	ft_echo(t_cmd *cmd);
-
+void	ft_export(t_env *dup_env);
 
 #endif

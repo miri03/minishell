@@ -12,9 +12,31 @@
 
 #include "../../includes/minishell.h"
 
-/* void	ft_export(t_env *dup_env)
+int ft_lstsize_env(t_env *lst)
 {
-	
+    int count;
 
-} */
+    count = 0;
+    while (lst)
+    {
+        lst = lst->next;
+        count++;
+    }
+    return (count);
+}
+
+// void    export_env(t_env *env)
+// {
+//     char **tab;
+
+//     tab = (char **)malloc(sizeof(char*) * ft_lstsize_env(env));
+    
+// }
+
+void	ft_export(t_env *dup_env)
+{
+
+    printf("%d\n", ft_strcmp(dup_env->key,dup_env->next->key));
+    // export_env(dup_env);
+}
 

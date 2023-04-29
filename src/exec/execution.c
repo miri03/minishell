@@ -45,6 +45,11 @@ void	check_builin(char *cmd, t_cmd *table, t_env **env)
 		ft_echo(table);
 		return ;
 	}
+	if (ft_strcmp(cmd , "export") == 0)
+	{
+		ft_export(*env);
+		return ;
+	}
 	printf("[%s] not builin\n", cmd);
 }
 
