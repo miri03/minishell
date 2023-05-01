@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 01:54:37 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/17 03:23:13 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/04/30 13:56:13 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	trim_quotes(t_token *token)
 {
 	char *tmp;
-	// t_token *temp;
-	// temp = token;
+	t_token *temp;
+	temp = token;
 
 	// //TODOfree previous token
 	while (token)
@@ -110,36 +110,25 @@ void	expand_var(t_env *env, char **content)
 	join = NULL;
 	last_str = NULL;
 	prev = *content;
-	// printf("<<<<<<<%s\n", *content);
 	i = 0;
 	while (prev[i] && !exp_here(prev[i], prev[i + 1]))
 		i++;
-	if (!prev[i])
+	if (!prev[i] || !prev[i + 1])
 		return ;
 	if (i)
 		str = ft_substr(prev, 0, i);
 	j = i + 1 + count(prev + i + 1);
 	str1 = get_value_of_exp(env, ft_substr(prev, i + 1, j - i -1));
-	// printf ("%d\n", j);
 	join = ft_strjoin(str, str1);
-	// printf ("<<<<%s\n", join);
 	if (ft_strlen(prev + j))
 		last_str = ft_substr(prev, j, ft_strlen(prev + j));
-	// printf (">>>>>%s\n", last_str);
 	*content = ft_strjoin(join, last_str);
-	// printf("-----%s\n", *content);
-	// printf ("%s\n", *content);
-	// if (!last_str)
-	// 	free(join);
-	
-	// if (last_str)
-	// 	free(last_str);
-	// free(str1);
-	// free(prev);
-	// free(str);
-	// free(str1);
-	// free(join);
-	// free(last_str);
+	if (!last_str)
+		free(join);
+	if (last_str)
+		free(last_str);
+	free(prev);
+	free(str1);
 	expand_var(env, content);
 }
 
@@ -198,7 +187,7 @@ void	here_doc_exp(t_token *token)
 
 int	join_str(t_token **token, t_token *tmp)
 {
-	if ((*token)->type == PIPE || (*token)->type == OPERATOR || (*token)->type == SPACE || (*token)->type == WORD)
+	if ((*token)->type == PIPE || (*token)->type == OPERATOR || (*token)->type == SPACE || (*token)->type == WORD || (*token)->type == DOUBLE || (*token)->type == SINGLE)
 		return (0);
 	if (!tmp || tmp->type == PIPE || tmp->type == OPERATOR)
 		return (0);
@@ -225,7 +214,9 @@ void	handler_expand(t_token **token, t_env *env, t_token *tok)
 	while (tok)
 	{
 		check_exp(tok, env);
-		if (join_str(&tok, tmp) == 0)  ////// added this -> (*token)->type == WORD
+		
+		// printf("%s\n", tok->content);
+		if (join_str(&tok, tmp) == 0)
 		{
 			tmp = tok;
 			tok = tok->next;

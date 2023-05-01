@@ -6,15 +6,17 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/20 03:42:11 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/30 18:32:53 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 
-void	check_builin(char *cmd, t_cmd *table, t_env **env)
+void	check_builin(char *cmd, t_cmd *table, t_env **env, t_exp **export)
 {
+	(void) export;
+
 	if (ft_strcmp(cmd , "exit") == 0)
 	{
 		ft_exit(table);
@@ -47,7 +49,7 @@ void	check_builin(char *cmd, t_cmd *table, t_env **env)
 	}
 	if (ft_strcmp(cmd , "export") == 0)
 	{
-		ft_export(*env);
+		ft_export(*env, export, table);
 		return ;
 	}
 	printf("[%s] not builin\n", cmd);
@@ -55,12 +57,14 @@ void	check_builin(char *cmd, t_cmd *table, t_env **env)
 
 void	execute(t_cmd *cmd, t_env **dup_env)
 {
-	int	i;
+	int		i;
+	t_exp	*export;
 
 	i = 0;
 	while (cmd)
 	{
-		check_builin(cmd->cmd[i], cmd, dup_env);
+		// make_export_env(*dup_env, &export); //out
+		check_builin(cmd->cmd[i], cmd, dup_env, &export);
 		cmd = cmd->next;
 		// i++;
 	}

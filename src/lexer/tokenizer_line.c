@@ -35,23 +35,16 @@ int	type_token(char *content)
 		return (DOUBLE);
 	if (*content == '|')
 		return (PIPE);
-		
 	if (content[0] && content[1] && !ft_strncmp(content, "<<", 2))
 		return (OPERATOR);
-		
 	if (content[0] && content[1] && !ft_strncmp(content, ">>", 2))
 		return (OPERATOR);
 	if (*content == '<' || *content == '>')
 		return (OPERATOR);
 	if (*content == '~' && ft_strlen(content) == 1)
 		return (HYPHEN);
-	
 	if (*content == ' ')
-	{
-		printf("type_token space\n");
 		return (SPACE);
-	}
-
 	else
 		return (WORD);
 }
@@ -123,7 +116,6 @@ int	token_line(char *line, t_token **token)
 	{
 		i += take_separator(line + i, token);
 		i += take_word(line + i, token, &flag);
-		
 		if (!flag)
 		{
 			ft_lstclear_t(token);

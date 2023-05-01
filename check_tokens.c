@@ -21,7 +21,7 @@ void    get_input(t_cmd *command)
     int     x;
 
     cmd = command;
-	printf("-------TABLE DYAL ZBI-----------\n");
+	printf("-------TABLE-----------\n");
 	i = 0;
 	while (cmd)
     {

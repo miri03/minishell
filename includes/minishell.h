@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/20 03:41:46 by meharit          ###   ########.fr       */
+/*   Updated: 2023/04/30 18:33:28 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@
 
 int	g_exit_status;
 // char	**g_env;
-
-
 
 #define BLUE "\e[1;36m"
 # define GREEN "\e[0;92m"
@@ -60,8 +58,16 @@ typedef struct s_env
 {
 	char	*key;
 	char	*value;
+	int		valid;
 	struct s_env	*next;
 }					t_env;
+
+typedef struct s_exp
+{
+	char			*key;
+	char			*value;
+	struct s_exp	*next;
+}					t_exp;
 
 typedef struct s_cmd
 {
@@ -132,13 +138,13 @@ typedef struct data
 */
 
 //*----------LEXER----------*//
-int		token_line(char *line, t_token **token);
-int		take_separator(char *line, t_token **token);
-int		whish_separator(char *line);
+int	token_line(char *line, t_token **token);
+int	take_separator(char *line, t_token **token);
+int	whish_separator(char *line);
 void	check_args(int ac, char **av, t_env **dup_env, char **env);
-int		with_quotes(char *line, t_token **token, int c, int *flag);
-int		take_word(char *line, t_token **token, int *flag);
-int		type_token(char *content);
+int	with_quotes(char *line, t_token **token, int c, int *flag);
+int	take_word(char *line, t_token **token, int *flag);
+int	type_token(char *content);
 
 
 //*---------lst_func--------*//
@@ -147,11 +153,9 @@ t_token	*ft_lstlast_m(t_token *lst);
 void    ft_lstadd_back_m(t_token **lst, t_token *new);
 void	ft_lstdelone_t(t_token *lst);
 void	ft_lstclear_t(t_token **lst);
-//------------------------------------------------------//
-t_env	*ft_lstnew_env(char *key, char *value);
+t_env	*ft_lstnew_env(char *key, char *value, int val);
 t_env	*ft_lstlast_env(t_env *lst);
 void    ft_lstadd_back_env(t_env **lst, t_env *new);
-//-----------------------------------------------------//
 void	ft_lstclear(t_token **lst);
 void	ft_lstdelone(t_token *lst);
 t_cmd	*ft_lstnew_cmd(void);
@@ -165,7 +169,7 @@ t_redi	*ft_lstlast_redi(t_redi *lst);
 
 //*---------env--------*//
 void	*parse_env(char **env, t_env **dup_env);
-int		get_idx_of(char *str, int c);
+int	get_idx_of(char *str, int c);
 
 //*---------expand--------*//
 void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd);
@@ -174,6 +178,12 @@ void	trim_quotes(t_token *token);
 void	check_exp(t_token *tok, t_env *env);
 void	hyphen_exp(t_token *tok, t_env *env);
 char	*get_value_of_exp(t_env *env, char *key);
+int	must_expand(int next);
+int	exp_here(int curr, int next);
+int	count(char *str);
+void	expand_var(t_env *env, char **content);
+void	here_doc_exp(t_token *token);
+int	join_str(t_token **token, t_token *tmp);
 
 
 //*---------checks_syntax--------*//
@@ -181,6 +191,8 @@ void	remove_spaces(t_token **token, t_token *tok);
 void	ft_remove(t_token *tmp, t_token **curr, t_token **token);
 int		check_syntax(t_token *token);
 int		ft_putendl_fd_2(char *s, char *str, int fd);
+int		find_error(t_token *token, t_token *tmp);
+int		error_format(t_token *token, t_token *tmp, int i);
 
 //*---------parsing--------*//
 void	parse_cmd(t_token **token, t_cmd **cmd);
@@ -190,7 +202,8 @@ void	is_operator(t_token *token, t_cmd *cmd);
 int		check_redir(t_token *token);
 void	set_oper(t_token *token, t_redi **redir, int type);
 void	set_cmd(t_cmd *cmd);
-
+void	init_args(t_token *token, t_cmd *cmd);
+void	fill_cmd(t_cmd *cmd, t_token *token, int *i);
 
 //*-----meharit-------execution--------------------*//
 
@@ -206,6 +219,8 @@ void	ft_exit(t_cmd *cmd);
 void	ft_pwd(void);
 void	ft_cd(t_cmd *cmd, t_env **env);
 void	ft_echo(t_cmd *cmd);
-void	ft_export(t_env *dup_env);
+void	ft_export(t_env *dup_env, t_exp **export, t_cmd *table);
+void    make_export_env(t_env *env, t_exp **export);
+void    unset_var(t_env *env, int index, t_env **head);
 
 #endif

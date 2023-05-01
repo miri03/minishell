@@ -22,7 +22,6 @@ t_token  *ft_lstnew_m(char *content)
     new->content = content;
 	new->expand = 0;
 	new->type = type_token(content);
-    // printf("----%d\n", new->type);
     new->next = NULL;
     return (new);
 }

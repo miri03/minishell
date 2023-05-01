@@ -6,13 +6,13 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 00:24:02 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/14 05:12:07 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/04/30 17:59:41 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_env  *ft_lstnew_env(char *key, char *value)
+t_env  *ft_lstnew_env(char *key, char *value, int val)
 {
     t_env *new;
 
@@ -21,6 +21,7 @@ t_env  *ft_lstnew_env(char *key, char *value)
         return (NULL);
     new->key = key;
 	new->value = value;
+	new->valid = val;
     new->next = NULL;
     return (new);
 }
@@ -50,6 +51,9 @@ void    ft_lstadd_back_env(t_env **lst, t_env *new)
 
 void	ft_remove(t_token *tmp, t_token **curr, t_token **token)
 {
+	t_token	*exp;
+
+
 	if (!tmp)
 	{
 		*token = (*curr)->next;
@@ -58,10 +62,10 @@ void	ft_remove(t_token *tmp, t_token **curr, t_token **token)
 	}
 	else
 	{
-		*token = (*curr)->next;
+		exp = (*curr)->next;
 		ft_lstdelone_t(*curr);
-		tmp->next = *token;
-		*curr = tmp;
+		tmp->next = exp;
+		*curr = exp;
 	}
 }
 
@@ -110,12 +114,12 @@ int	ft_putendl_fd_2(char *s, char *str, int fd)
 // 	*lst = NULL;
 // }
 
-void	ft_lstdelone(t_token *lst)
-{
-	if (lst)
-	{
-		if (lst->content)
-			free(lst->content);
-		free(lst);
-	}
-}
+// void	ft_lstdelone(t_token *lst)
+// {
+// 	if (lst)
+// 	{
+// 		if (lst->content)
+// 			free(lst->content);
+// 		free(lst);
+// 	}
+// }
