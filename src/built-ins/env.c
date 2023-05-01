@@ -6,7 +6,7 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:22:25 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/30 18:06:19 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/01 14:36:57 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ void	ft_env(t_env **dup_env)
 	tmp = *dup_env;
 	while (tmp)
 	{
-		printf("%s=%s\n", tmp->key,tmp->value);
+		if (tmp->valid)
+			printf("%s=%s\n", tmp->key,tmp->value);
 		tmp = tmp->next;
 	}
 }

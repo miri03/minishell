@@ -6,26 +6,11 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/01 13:31:00 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/01 15:34:04 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdio.h>
-#include <strings.h>
-
-/* int ft_lstsize_env(t_env *lst)
-{
-    int count;
-
-    count = 0;
-    while (lst)
-    {
-        lst = lst->next;
-        count++;
-    }
-    return (count);
-} */
 
 int	valid_ident(char *ident)
 {
@@ -65,13 +50,15 @@ int	env_valid(char *ident)
 	return (0);
 }
 
-char	*get_key(char *ident)
+char	*get_key(char *ident, int *append)
 {
 	int	i;
 
 	i = 0;
-	while (ident[i] && ident[i] != '=')
+	while (ident[i] && ident[i] != '=' && ident[i] != '+')
 		i++;
+	if (ident[i] == '+')
+		(*append) = 1;
 	return (ft_substr(ident, 0, i));
 }
 
@@ -86,17 +73,49 @@ char	*get_value(char *ident)
 		return (ft_strdup(""));
 	return (ft_substr(ident, i+1, ft_strlen(ident))); //skip =
 }
-// append for +=
 
-void	ft_export(t_env *dup_env, t_exp **export, t_cmd *table)
+int	does_exist(char *key, t_env *dup_env)
 {
-	(void) dup_env;
+	while (dup_env)
+	{
+		if (!ft_strcmp(key, dup_env->key))
+		{
+			printf("here\n");
+			return (1);
+		}
+		dup_env = dup_env->next;
+	}
+	return (0);
+}
+// append for +=
+//check if already exists-> change value
+
+void	append_change(t_env *env, int *append, char *key, char *value)
+{
+	if (*append)
+	{
+		while (ft_strcmp(env->key, key))
+			env = env->next;
+		env->value = ft_strjoin(env->value, value);
+	}
+	else 
+	{
+		while (ft_strcmp(env->key, key))
+			env = env->next;
+		env->value = value;
+	}
+}
+
+void	ft_export(t_env *dup_env, t_exp **export, t_cmd *table) //remove t_exp **export
+{
 	(void) export;
 	int	i;
+	char	*key;
+	char	*value;
+	int		append;
 
 	i = 1;
-
-	// add dup_env->valid to env
+	append = 0;
 	if (cmd_len(table->cmd) == 1)
 	{
 		while (dup_env)
@@ -113,10 +132,18 @@ void	ft_export(t_env *dup_env, t_exp **export, t_cmd *table)
 		{
 			if (valid_ident(table->cmd[i]))
 			{
-				if (env_valid(table->cmd[i]))
-					ft_lstadd_back_env(&dup_env, ft_lstnew_env(get_key(table->cmd[i]), get_value(table->cmd[i]), 1));
-				else
-					ft_lstadd_back_env(&dup_env, ft_lstnew_env(get_key(table->cmd[i]), get_value(table->cmd[i]), 0));
+				key = get_key(table->cmd[i], &append);
+				value = get_value(table->cmd[i]);
+				printf("key = %s value = %s\n", key,value);
+				if (!does_exist(key, dup_env))
+				{
+					if (env_valid(table->cmd[i]))
+						ft_lstadd_back_env(&dup_env, ft_lstnew_env(key, value, 1));
+					else
+						ft_lstadd_back_env(&dup_env, ft_lstnew_env(key, value, 0));
+				}
+				else	
+					append_change(dup_env, &append, key, value);
 			}
 			else 
 			{
