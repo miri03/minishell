@@ -6,7 +6,7 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/01 15:34:04 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/01 16:59:00 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	valid_ident(char *ident)
 	i = 1;
 	if (!ft_isalpha(ident[0]))
 	{
-		if (ident[0] != '\\') //remove \ from ident
+		if (ident[0] != '\\')
 			return (0);
 	}
 	while (ident[i] != '=' && ident[i])
@@ -55,6 +55,8 @@ char	*get_key(char *ident, int *append)
 	int	i;
 
 	i = 0;
+	if (ident[0] == '\\')
+		ident++;         // start ident after '\'
 	while (ident[i] && ident[i] != '=' && ident[i] != '+')
 		i++;
 	if (ident[i] == '+')
@@ -87,8 +89,6 @@ int	does_exist(char *key, t_env *dup_env)
 	}
 	return (0);
 }
-// append for +=
-//check if already exists-> change value
 
 void	append_change(t_env *env, int *append, char *key, char *value)
 {
@@ -103,16 +103,16 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 		while (ft_strcmp(env->key, key))
 			env = env->next;
 		env->value = value;
+		env->valid = 1;
 	}
 }
 
-void	ft_export(t_env *dup_env, t_exp **export, t_cmd *table) //remove t_exp **export
+void	ft_export(t_env *dup_env, t_cmd *table)
 {
-	(void) export;
 	int	i;
 	char	*key;
 	char	*value;
-	int		append;
+	int		append; 
 
 	i = 1;
 	append = 0;

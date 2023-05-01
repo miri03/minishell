@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/30 13:53:35 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/01 16:48:30 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	main(int ac, char **av, char **env)
 		if (token_line(line, &token))
 		{	
 			ft_minishell(&dup_env, &token, &cmd);
-			get_input(cmd);
+			// get_input(cmd);
 			execute(cmd, &dup_env);
 
 	

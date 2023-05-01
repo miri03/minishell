@@ -6,7 +6,7 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:50:24 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/15 21:20:41 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/01 17:00:37 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	cmd_len(char **table)
 
 void	ft_exit(t_cmd *cmd)
 {
+	printf("exit\n");
 	if (cmd->cmd[1])
 	{
 		if (!arg_num(cmd->cmd[1]))
