@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/01 16:48:30 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/03 04:50:11 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,12 @@ void	remove_spaces(t_token **token, t_token *tok)
 
 void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 {
-	// t_cmd *tmp;
-
-	// tmp = *cmd;
 	handler_expand(token, *env, *token);
 	remove_spaces(token, *token);
 	if (check_syntax(*token))
 	{
 		parse_cmd(token, cmd);
-		// show_in(*cmd, env);
+		//show_in(*cmd, env);
 			// while (*cmd)
 			// {
 			// 	printf("%s\n", (*cmd)->cmd[0]);
@@ -97,6 +94,7 @@ void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 
 int	main(int ac, char **av, char **env)
 {
+	int		i;
 	char	*line;
 	t_token	*token;
 	t_env	*dup_env;
@@ -110,22 +108,26 @@ int	main(int ac, char **av, char **env)
 		token = NULL;
 		cmd = NULL;
 		line = readline(GREEN"minishell> "RESET);
-		// t_cmd *tmp = cmd;
-		// int i =-1;
 		if (!line)
 		{
-			printf("exit\n"); //////
+			printf("exit\n");
 			exit(1);
 		}
 		add_history(line);
 		if (token_line(line, &token))
-		{	
+		{
 			ft_minishell(&dup_env, &token, &cmd);
-			// get_input(cmd);
+			get_input(cmd);
 			execute(cmd, &dup_env);
-
-	
 		}
 		free(line);
+		i = 0;
+		while (cmd->cmd[i])
+		{
+			free(cmd->cmd[i]);
+			i++;
+		}
+		free (cmd->cmd);  //char **cmd
+		// system("leaks minishell");
 	}
 }

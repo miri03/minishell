@@ -48,6 +48,27 @@ void    unset_var(t_env *env, int index, t_env **head)
     }
 }
 
+int ident_valid(char *ident)
+{
+    int i;
+
+    i = 0;
+    if (!ft_isalpha(ident[0]))
+    {
+        if (ident[0] == '\\' || ident[0] == '_')
+            i++;
+        else
+            return (0);
+    }
+    while (ident[i])
+    {
+        if (!ft_isalpha(ident[i]) && !ft_isdigit(ident[i]) && ident[i] != '_')
+            return (0);
+        i++;
+    }
+    return (0);
+}
+
 void	ft_unset(t_env **dup_env, t_cmd *cmd)
 {
     int     i;
@@ -63,6 +84,12 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd)
             tmp = *dup_env;
 			if (ft_strcmp(cmd->cmd[i], "_"))
 			{
+                if (!ident_valid(cmd->cmd[i]))
+                {
+                    ft_putstr_fd("bash: unset: `", 2);
+                    ft_putstr_fd(cmd->cmd[i], 2);
+                    ft_putstr_fd("': not a valid identifier\n", 2);
+                }
 				while (tmp)
 				{
 			        if (ft_strcmp(tmp->key, cmd->cmd[i]) == 0)
