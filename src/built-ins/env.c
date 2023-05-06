@@ -12,16 +12,21 @@
 
 #include "../../includes/minishell.h"
 
+void	env_i(t_env **dup_env)   //leaks when unset
+{
+	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("PWD"), getcwd(NULL, 0), 1));
+	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("SHLVL"), ft_strdup("1"), 1));
+	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("OLDPWD"), NULL, 1));
+	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("_"), NULL, 1));
+}
+
 void	ft_env(t_env **dup_env)
 {
 	t_env *tmp;
 
 	if (!(*dup_env))  // cd ~
 	{
-		ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("PWD"), getcwd(NULL, 0), 1));
-		ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("SHLVL"), ft_strdup("1"), 1));
-		ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("OLDPWD"), NULL, 1));
-		ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("_"), NULL, 1));
+		env_i(dup_env);
 		//add shell level
 	}
 	tmp = *dup_env;

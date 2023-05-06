@@ -89,6 +89,21 @@ void	upd_pwd(t_env *env, char *pwd)
 	}
 }
 
+void	home(t_env **env)
+{
+	chdir(get_home(*env));
+	if (get_home(*env))
+	{
+		upd_old_pwd(*env);
+		upd_pwd(*env, get_home(*env));
+	}
+	else  		  //HOME unset
+	{
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		g_exit_status = 1;
+	}
+}
+
 void	ft_cd(t_cmd *cmd, t_env **env)
 {
 	int		r_value;
@@ -96,17 +111,7 @@ void	ft_cd(t_cmd *cmd, t_env **env)
 
 	if (cmd_len(cmd->cmd) == 1)
 	{
-		chdir(get_home(*env));
-		if (get_home(*env))
-		{
-			upd_old_pwd(*env);
-			upd_pwd(*env, get_home(*env));
-		}
-		else  		  //HOME unset
-		{
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-			g_exit_status = 1;
-		}
+		home(env);
 		return ;
 	}
 	r_value = chdir(cmd->cmd[1]);
