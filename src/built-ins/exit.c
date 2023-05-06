@@ -46,11 +46,13 @@ void	ft_exit(t_cmd *cmd)
 			ft_putstr_fd("minishell: exit: ", 2);
 			ft_putstr_fd(cmd->cmd[1],2);
 			ft_putstr_fd(": numeric argument required\n", 2);
-			exit(255);
+			g_exit_status = 255;
+			exit(g_exit_status);
 		}
 		else if (cmd_len(cmd->cmd) > 2)
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+			g_exit_status = 1;
 			return ;
 		}
 		else if (cmd_len(cmd->cmd) == 2)

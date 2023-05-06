@@ -60,7 +60,6 @@ char	*get_home(t_env *env)
 			return (env->value);
 		env = env->next;
 	}
-	printf("homeless T-T\n");
 	return (NULL);
 }
 
@@ -79,6 +78,7 @@ void	upd_old_pwd(t_env *env)
 		tmp = tmp->next;
 	}
 }
+
 void	upd_pwd(t_env *env, char *pwd)
 {
 	while (env)
@@ -96,9 +96,17 @@ void	ft_cd(t_cmd *cmd, t_env **env)
 
 	if (cmd_len(cmd->cmd) == 1)
 	{
-		upd_old_pwd(*env);
 		chdir(get_home(*env));
-		upd_pwd(*env, get_home(*env));
+		if (get_home(*env))
+		{
+			upd_old_pwd(*env);
+			upd_pwd(*env, get_home(*env));
+		}
+		else  		  //HOME unset
+		{
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			g_exit_status = 1;
+		}
 		return ;
 	}
 	r_value = chdir(cmd->cmd[1]);
@@ -113,5 +121,6 @@ void	ft_cd(t_cmd *cmd, t_env **env)
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(cmd->cmd[1], 2);
 		perror(" ");
+		g_exit_status = 1;
 	}
 }

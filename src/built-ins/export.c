@@ -56,7 +56,7 @@ char	*get_key(char *ident, int *append)
 
 	i = 0;
 	if (ident[0] == '\\')
-		ident++;         // start ident after '\'
+		ident++;         						// start ident after '\'
 	while (ident[i] && ident[i] != '=' && ident[i] != '+')
 		i++;
 	if (ident[i] == '+')
@@ -81,10 +81,7 @@ int	does_exist(char *key, t_env *dup_env)
 	while (dup_env)
 	{
 		if (!ft_strcmp(key, dup_env->key))
-		{
-			printf("here\n");
 			return (1);
-		}
 		dup_env = dup_env->next;
 	}
 	return (0);
@@ -97,11 +94,16 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 		while (ft_strcmp(env->key, key))
 			env = env->next;
 		env->value = ft_strjoin(env->value, value);
+		free(value);
+		free(key);
+
 	}
 	else 
 	{
 		while (ft_strcmp(env->key, key))
 			env = env->next;
+		free (key);
+		free(env->value);
 		env->value = value;
 		env->valid = 1;
 	}
@@ -134,7 +136,6 @@ void	ft_export(t_env *dup_env, t_cmd *table)
 			{
 				key = get_key(table->cmd[i], &append);
 				value = get_value(table->cmd[i]);
-				printf("key = %s value = %s\n", key,value);
 				if (!does_exist(key, dup_env))
 				{
 					if (env_valid(table->cmd[i]))
@@ -150,9 +151,9 @@ void	ft_export(t_env *dup_env, t_cmd *table)
 				ft_putstr_fd("minishell: export: `", 2);
 				ft_putstr_fd(table->cmd[i], 2);
 				ft_putstr_fd("': not a valid identifier\n", 2);
+				g_exit_status = 1;
 			}
 			i++;
 		}
 	}
 }
-
