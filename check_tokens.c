@@ -22,7 +22,7 @@ void    get_input(t_cmd *command)
     int     x;
 
     cmd = command;
-	printf("-------TABLE-----------\n");
+	printf("----------TABLE-------------\n");
 	i = 0;
 	while (cmd)
     {
@@ -34,8 +34,22 @@ void    get_input(t_cmd *command)
         }
 		printf("[node:%d] pipe   = %d\n", i,cmd->pipe);
 		printf("[node:%d] er     = %d\n", i,cmd->err);
+        if (cmd->in)
+        {
+           printf("-------------in-------------\n");
+            printf("type = %d\n", cmd->in->type);
+            printf("file = %s\n", cmd->in->file);
+            printf("m_expd = %d\n", cmd->in->must_exp);
+        }
+        if (cmd->out)
+        {
+            printf("-------------out------------\n");
+            printf("type = %d\n", cmd->out->type);
+            printf("file = %s\n", cmd->out->file);
+            printf("m_expd = %d\n", cmd->out->must_exp);
+        }
         printf("----------------------------\n");
 		i++;
 		cmd = cmd->next;
-	}    
+	}
 }

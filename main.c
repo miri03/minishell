@@ -117,7 +117,7 @@ int	main(int ac, char **av, char **env)
 		if (token_line(line, &token))
 		{
 			ft_minishell(&dup_env, &token, &cmd);
-			// get_input(cmd);
+			get_input(cmd);
 			execute(cmd, &dup_env);
 		}
 		free(line);

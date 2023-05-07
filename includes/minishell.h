@@ -31,12 +31,11 @@ int	g_exit_status;
 # define RESET "\e[0m"
 
 enum {
-	heredoc,
-	in,
-	out,
-	append,
+	heredoc, //0
+	in, //1
+	out, //2
+	append, //3
 };
-
 
 typedef struct s_redi
 {
@@ -90,52 +89,6 @@ enum {
 	SINGLE_EXP,//7
 };
 
-/*
-
-typedef struct lexer
-{
-	char	c;
-	int		i;
-	char	*value;
-}			lexer;
-
-typedef struct tokens
-{
-	enam{
-		
-	}l;
-	char *p;
-}		tokens;
-
-typedef struct parser
-{
-	int		type;
-	char	*value;
-	struct t_token *next;
-}		parser;
-
-typedef struct t_redi
-{
-	enam{
-		1,in
-		2,out
-		3,append
-		4,herdoc
-	}l;
-	char *filename;
-	int fd;
-	struct t_redi *next;
-}		t_redi;
-
-typedef struct data
-{
-	char	**value;
-	t_redi	*redi;
-	struct t_token *next;
-	int	in_out[2];
-}		data;
-
-*/
 
 //*----------LEXER----------*//
 int	token_line(char *line, t_token **token);

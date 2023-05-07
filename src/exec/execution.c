@@ -65,4 +65,3 @@ void	execute(t_cmd *cmd, t_env **dup_env)
 		// i++;
 	}
 }
-
