@@ -96,7 +96,6 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 		env->value = ft_strjoin(env->value, value);
 		free(value);
 		free(key);
-
 	}
 	else 
 	{
@@ -109,15 +108,8 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 	}
 }
 
-void	ft_export(t_env *dup_env, t_cmd *table)
+void	export(t_env *dup_env, t_cmd *table)
 {
-	int	i;
-	char	*key;
-	char	*value;
-	int		append; 
-
-	i = 1;
-	append = 0;
 	if (cmd_len(table->cmd) == 1)
 	{
 		while (dup_env)
@@ -127,33 +119,49 @@ void	ft_export(t_env *dup_env, t_cmd *table)
 			printf("\"%s\"\n", dup_env->value);
 			dup_env = dup_env->next;
 		}
-	}
+	}	
+}
+
+void	error_mess_exp(char *cmd)
+{
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	g_exit_status = 1;
+}
+
+void	add_to(char *key, char *value, t_env *dup_env, char *ident)
+{
+
+	if (env_valid(ident))
+		ft_lstadd_back_env(&dup_env, ft_lstnew_env(key, value, 1));
 	else
+		ft_lstadd_back_env(&dup_env, ft_lstnew_env(key, value, 0));
+}
+
+void	ft_export(t_env *dup_env, t_cmd *table)
+{
+	int		i;
+	char	*key;
+	char	*value;
+	int		append; 
+
+	i = 1;
+	append = 0;
+	export(dup_env, table);
+	while (table->cmd[i])
 	{
-		while (table->cmd[i])
+		if (valid_ident(table->cmd[i]))
 		{
-			if (valid_ident(table->cmd[i]))
-			{
-				key = get_key(table->cmd[i], &append);
-				value = get_value(table->cmd[i]);
-				if (!does_exist(key, dup_env))
-				{
-					if (env_valid(table->cmd[i]))
-						ft_lstadd_back_env(&dup_env, ft_lstnew_env(key, value, 1));
-					else
-						ft_lstadd_back_env(&dup_env, ft_lstnew_env(key, value, 0));
-				}
-				else	
-					append_change(dup_env, &append, key, value);
-			}
-			else 
-			{
-				ft_putstr_fd("minishell: export: `", 2);
-				ft_putstr_fd(table->cmd[i], 2);
-				ft_putstr_fd("': not a valid identifier\n", 2);
-				g_exit_status = 1;
-			}
-			i++;
+			key = get_key(table->cmd[i], &append);
+			value = get_value(table->cmd[i]);
+			if (!does_exist(key, dup_env))
+				add_to(key, value, dup_env, table->cmd[i]);
+			else	
+				append_change(dup_env, &append, key, value);
 		}
+		else
+			error_mess_exp(table->cmd[i]);
+		i++;
 	}
 }

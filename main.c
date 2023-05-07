@@ -117,17 +117,21 @@ int	main(int ac, char **av, char **env)
 		if (token_line(line, &token))
 		{
 			ft_minishell(&dup_env, &token, &cmd);
-			get_input(cmd);
+			// get_input(cmd);
 			execute(cmd, &dup_env);
 		}
 		free(line);
+
+		//for parsing  leaks
 		i = 0;
+		if (cmd)
+		{
 		while (cmd->cmd[i])
 		{
 			free(cmd->cmd[i]);
 			i++;
 		}
 		free (cmd->cmd);  //char **cmd
-		// system("leaks minishell");
+		}
 	}
 }
