@@ -6,12 +6,62 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/01 16:54:27 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/08 19:13:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <unistd.h>
 
+char	**find_path(t_env *env)
+{
+	while (env)
+	{
+		if (ft_strcmp(env->key, "PATH") == 0)
+			return (ft_split(env->value, ':'));
+		env = env->next;
+	}
+	return (NULL);
+}
+
+char	*cmd_exist(char *cmd, t_env *env)
+{
+	char	**path;
+	char	*test;
+	int		i;
+
+	i = 0;
+	if (access(cmd, F_OK) == 0) //does exist
+		return (cmd);
+	cmd = ft_my_strjoin("/", cmd);
+	path = find_path(env);
+	if (path)
+	{
+		while (path[i])
+		{
+			test = ft_strjoin(path[i],cmd);
+			if (access(test, X_OK) == 0)
+				return (test);
+			i++;
+		}
+	}
+	return (NULL);//
+}
+
+void	exec(char *cmd, t_env *env, t_cmd *table)
+{
+	char	*cmd_path;
+
+	printf("[%s] not builin\n", cmd);
+	cmd_path = cmd_exist(cmd, env);
+	if (!cmd_path)
+	{
+		printf("command not found\n");
+		return ;
+	}
+	execve(cmd_path, &table->cmd[1], find_path(env));  //fix options
+	printf("error\n");
+}
 
 void	check_builin(char *cmd, t_cmd *table, t_env **env)
 {
@@ -50,7 +100,11 @@ void	check_builin(char *cmd, t_cmd *table, t_env **env)
 		ft_export(*env, table);
 		return ;
 	}
-	printf("[%s] not builin\n", cmd);
+	if (!fork())
+		exec(cmd, *env, table);
+	// else
+
+
 }
 
 void	execute(t_cmd *cmd, t_env **dup_env)

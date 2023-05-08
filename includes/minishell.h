@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/04 05:20:17 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/08 19:08:37 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ void    check_tokens(t_token *token);
 void    get_input(t_cmd *command);
 void	execute(t_cmd *cmd, t_env **dup_env);
 int		cmd_len(char **table);
+char	*ft_my_strjoin(char const *s1, char const *s2);
 
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env **dup_env);
