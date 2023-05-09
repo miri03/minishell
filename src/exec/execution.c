@@ -48,63 +48,116 @@ char	*cmd_exist(char *cmd, t_env *env)
 	return (NULL);//
 }
 
+void	redir_in(t_cmd *table, int fd_out)
+{
+	int	fd;
+
+	if (table->in)
+	{
+		fd = open(table->in->file, O_RDONLY);
+		if (fd == -1)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(table->in->file, 2);
+			perror(" ");
+			g_exit_status = 1;
+			exit (g_exit_status);
+		}
+		dup2(fd, 0);
+	}
+	if (table->out)
+		dup2(fd_out, 1);
+}
+
+int	redir_out(t_cmd *table)
+{
+	int	fd;
+
+	fd = 0;
+	if (table->out)
+	{
+		if (table->out->type) // type for >> ?
+			fd = open(table->out->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else
+			fd = open(table->out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		if (fd == -1)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(table->out->file, 2);
+			perror(" ");
+			g_exit_status = 1;
+		}
+	}
+	return (fd);
+}
+
 void	exec(char *cmd, t_env *env, t_cmd *table)
 {
 	char	*cmd_path;
-
-	printf("[%s] not builin\n", cmd);
-	cmd_path = cmd_exist(cmd, env);
-	if (!cmd_path)
+	int		f_pid;
+	int		status;
+	int		fd_out;
+	
+	fd_out = redir_out(table);
+	f_pid = fork();
+	if (!f_pid)
 	{
-		printf("command not found\n");
-		return ;
+		cmd_path = cmd_exist(cmd, env);
+		if (!cmd_path)
+		{
+			printf("command not found\n"); //error mess && exit status
+			g_exit_status = 127;
+			return ;
+		}
+		redir_in(table, fd_out);
+		execve(cmd_path, table->cmd, find_path(env));
+		printf("error exec\n");	
 	}
-	execve(cmd_path, &table->cmd[1], find_path(env));  //fix options
-	printf("error\n");
+	else
+	{
+		waitpid(f_pid, &status, 0);
+		g_exit_status = WEXITSTATUS(status);
+	}
 }
 
 void	check_builin(char *cmd, t_cmd *table, t_env **env)
 {
-	if (ft_strcmp(cmd , "exit") == 0)
+	if (!ft_strcmp(cmd , "exit"))
 	{
 		ft_exit(table);
 		return ;
 	}
-	if (ft_strcmp(cmd , "env") == 0)
+	if (!ft_strcmp(cmd , "env"))
 	{
 		ft_env(env);
 		return ;
 	}
-	if (ft_strcmp(cmd , "pwd") == 0)
+	if (!ft_strcmp(cmd , "pwd"))
 	{
 		ft_pwd();
 		return ;
 	}
-	if (ft_strcmp(cmd , "unset") == 0)
+	if (!ft_strcmp(cmd , "unset"))
 	{
 		ft_unset(env, table);
 		return ;
 	}
-	if (ft_strcmp(cmd , "cd") == 0)
+	if (!ft_strcmp(cmd , "cd"))
 	{
 		ft_cd(table, env);
 		return ;
 	}
-	if (ft_strcmp(cmd , "echo") == 0)
+	if (!ft_strcmp(cmd , "echo"))
 	{
 		ft_echo(table);
 		return ;
 	}
-	if (ft_strcmp(cmd , "export") == 0)
+	if (!ft_strcmp(cmd , "export"))
 	{
 		ft_export(*env, table);
 		return ;
 	}
-	if (!fork())
-		exec(cmd, *env, table);
-	// else
-
-
+	exec(cmd, *env, table);
 }
 
 void	execute(t_cmd *cmd, t_env **dup_env)

@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <signal.h>
+#include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"

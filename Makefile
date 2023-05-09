@@ -12,7 +12,7 @@
 
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Werror -Wextra -Wall #-fsanitize=address -g
+CFLAGS		=	-Werror -Wextra -Wall -fsanitize=address -g
 RM			=	rm -rf
 SRCS		=	main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
 				src/tools/lst_env.c src/env/environment.c src/expand/expansion.c \

@@ -110,7 +110,7 @@ int	main(int ac, char **av, char **env)
 		line = readline(GREEN"minishell> "RESET);
 		if (!line)
 		{
-			printf("exit\n");
+			printf("here\n");
 			exit(1);
 		}
 		add_history(line);
