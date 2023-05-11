@@ -18,6 +18,9 @@ void    check_tokens(t_token *token)
 void    get_input(t_cmd *command)
 {
     t_cmd *cmd;
+	t_redi *in;
+	t_redi *out;
+
     int     i;
     int     x;
 
@@ -36,17 +39,27 @@ void    get_input(t_cmd *command)
 		printf("[node:%d] er     = %d\n", i,cmd->err);
         if (cmd->in)
         {
-           printf("-------------in-------------\n");
-            printf("type = %d\n", cmd->in->type);
-            printf("file = %s\n", cmd->in->file);
-            printf("m_expd = %d\n", cmd->in->must_exp);
+			in = cmd->in;
+			while (in)
+			{
+				printf("-------------in-------------\n");
+				printf("type = %d\n", in->type);
+				printf("file = %s\n", in->file);
+				printf("m_expd = %d\n", in->must_exp);
+				in = in->next;
+			}
         }
         if (cmd->out)
         {
-            printf("-------------out------------\n");
-            printf("type = %d\n", cmd->out->type);
-            printf("file = %s\n", cmd->out->file);
-            printf("m_expd = %d\n", cmd->out->must_exp);
+			out = cmd->out;
+			while (out)
+			{
+			  printf("-------------out------------\n");
+			  printf("type = %d\n", out->type);
+			  printf("file = %s\n", out->file);
+			  printf("m_expd = %d\n", out->must_exp);
+			  out = out->next;
+			}
         }
         printf("----------------------------\n");
 		i++;

@@ -6,11 +6,12 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/08 19:13:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/11 17:10:32 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
 #include <unistd.h>
 
 char	**find_path(t_env *env)
@@ -48,47 +49,62 @@ char	*cmd_exist(char *cmd, t_env *env)
 	return (NULL);//
 }
 
-void	redir_in(t_cmd *table, int fd_out)
+/* void	single_herd(t_cmd *table)
 {
-	int	fd;
 
-	if (table->in)
+
+} */
+
+void	redir_in(t_cmd *table)
+{
+	int		fd;
+	t_redi	*in;
+	
+	in = table->in;
+	while (in)
 	{
-		fd = open(table->in->file, O_RDONLY);
+		fd = open(in->file, O_RDONLY);
 		if (fd == -1)
 		{
 			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(table->in->file, 2);
+			ft_putstr_fd(in->file, 2);
 			perror(" ");
 			g_exit_status = 1;
 			exit (g_exit_status);
 		}
+		/* if (in->type == 0)
+		{
+
+		} */
+
 		dup2(fd, 0);
+		in = in->next;
 	}
-	if (table->out)
-		dup2(fd_out, 1);
 }
 
-int	redir_out(t_cmd *table)
+void	redir_out(t_cmd *table)
 {
-	int	fd;
+	int		fd;
+	t_redi  *out;
 
-	fd = 0;
-	if (table->out)
+	out = table->out;
+	while (out)
 	{
-		if (table->out->type) // type for >> ?
-			fd = open(table->out->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (out->type == 3)
+			fd = open(out->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		else
-			fd = open(table->out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			fd = open(out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
 		{
 			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(table->out->file, 2);
+			ft_putstr_fd(out->file, 2);
 			perror(" ");
 			g_exit_status = 1;
+			exit (g_exit_status);
 		}
+		out = out->next;
 	}
-	return (fd);
+	dup2(fd, 1);
 }
 
 void	exec(char *cmd, t_env *env, t_cmd *table)
@@ -96,9 +112,7 @@ void	exec(char *cmd, t_env *env, t_cmd *table)
 	char	*cmd_path;
 	int		f_pid;
 	int		status;
-	int		fd_out;
 	
-	fd_out = redir_out(table);
 	f_pid = fork();
 	if (!f_pid)
 	{
@@ -109,7 +123,8 @@ void	exec(char *cmd, t_env *env, t_cmd *table)
 			g_exit_status = 127;
 			return ;
 		}
-		redir_in(table, fd_out);
+		redir_out(table);
+		redir_in(table);
 		execve(cmd_path, table->cmd, find_path(env));
 		printf("error exec\n");	
 	}

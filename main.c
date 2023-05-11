@@ -110,10 +110,7 @@ int	main(int ac, char **av, char **env)
 		cmd = NULL;
 		line = readline(GREEN"minishell> "RESET);
 		if (!line)
-		{
-			printf("here\n");
 			exit(g_exit_status);
-		}
 		add_history(line);
 		if (token_line(line, &token))
 		{
@@ -134,5 +131,6 @@ int	main(int ac, char **av, char **env)
 		}
 		free (cmd->cmd);  //char **cmd
 		}
+		//
 	}
 }
