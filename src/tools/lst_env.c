@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 00:24:02 by yismaail          #+#    #+#             */
-/*   Updated: 2023/04/30 17:59:41 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/11 05:53:07 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	ft_putendl_fd_2(char *s, char *str, int fd)
 		write(fd, "\'", 1);
 	}
 	write (fd, "\n", 1);
-	// g_global_data.exit_status = 258;
+	g_exit_status = 258;
 	return (0);
 }
 // void	ft_lstclear(t_token **lst)

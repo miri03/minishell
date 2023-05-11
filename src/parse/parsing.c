@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 08:10:31 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/03 00:31:28 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/11 05:55:52 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	check_redir(t_token *token)
 		if (ft_strchr_2(token->content, ' ') && token->content[len] != ' ')
 		{
 			ft_putendl_fd_2("error in redirection", NULL, 2);
+			g_exit_status = 1;
 			return (1);
 		}
 	}
@@ -51,10 +52,10 @@ void	is_operator(t_token *token, t_cmd *cmd)
 		set_oper(token->next, &cmd->in, heredoc);
 	else if (*(token->content) == '<')
 		set_oper(token->next, &cmd->in, in);
-	else if (*(token->content) == '>')
-		set_oper(token->next, &cmd->out, out);
 	else if (!ft_strcmp(token->content, ">>"))
 		set_oper(token->next, &cmd->out, append);
+	else if (*(token->content) == '>')
+		set_oper(token->next, &cmd->out, out);
 }
 
 void	rub_operator(t_cmd *cmd, t_token *token, t_token **tok)

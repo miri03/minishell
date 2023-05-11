@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 01:54:37 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/03 01:12:46 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/11 05:51:43 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,15 @@ void	trim_quotes(t_token *token)
 
 char	*get_value_of_exp(t_env *env, char *key)
 {
+	char	*s;
+
+	if (*key == '?')
+	{
+		free(key);
+		s = ft_itoa(g_exit_status);
+		g_exit_status = 0;
+		return (s);
+	}
 	while (env && ft_strcmp(env->key, key) != 0)
 		env = env->next;
 	if (env && ft_strcmp(env->key, key) == 0)
@@ -183,10 +192,7 @@ void	here_doc_exp(t_token *token)
 int	join_str(t_token **token, t_token *tmp)
 {
 	if ((*token)->type == PIPE || (*token)->type == OPERATOR || (*token)->type == SPACE)
-	{
-		// printf("ok\n");
 		return (0);
-	}
 	if (!tmp || tmp->type == PIPE || tmp->type == OPERATOR || tmp->type == SPACE)
 		return (0);
 	else
@@ -195,8 +201,8 @@ int	join_str(t_token **token, t_token *tmp)
 		tmp->next = (*token)->next;
 		ft_lstdelone_t(*token);
 		*token = tmp->next;
+		return (1);
 	}
-	return (1);
 }
 
 void	handler_expand(t_token **token, t_env *env, t_token *tok)
