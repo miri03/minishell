@@ -6,7 +6,7 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/01 16:59:00 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/11 21:45:00 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,16 @@ void	export(t_env *dup_env, t_cmd *table)
 {
 	if (cmd_len(table->cmd) == 1)
 	{
+		if (!dup_env)
+			env_i(&dup_env);
 		while (dup_env)
 		{
+			if (dup_env->value)
+			{
 			printf("declare -x ");
 			printf("%s=",dup_env->key);
 			printf("\"%s\"\n", dup_env->value);
+			}
 			dup_env = dup_env->next;
 		}
 	}	

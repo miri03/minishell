@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/08 19:08:37 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/11 21:42:18 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,5 +176,6 @@ void	ft_cd(t_cmd *cmd, t_env **env);
 void	ft_echo(t_cmd *cmd);
 void	ft_export(t_env *dup_env, t_cmd *table);
 void    unset_var(t_env *env, int index, t_env **head);
+void	env_i(t_env **dup_env); 
 
 #endif

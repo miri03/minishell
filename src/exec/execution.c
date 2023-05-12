@@ -6,12 +6,14 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/11 17:10:32 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/11 21:37:46 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <readline/history.h>
 #include <stdio.h>
+#include <sys/fcntl.h>
 #include <unistd.h>
 
 char	**find_path(t_env *env)
@@ -49,36 +51,49 @@ char	*cmd_exist(char *cmd, t_env *env)
 	return (NULL);//
 }
 
-/* void	single_herd(t_cmd *table)
-{
-
-
-} */
-
 void	redir_in(t_cmd *table)
 {
 	int		fd;
 	t_redi	*in;
+	char	*line;
 	
 	in = table->in;
-	while (in)
+	if (in)
 	{
-		fd = open(in->file, O_RDONLY);
-		if (fd == -1)
+		while (in)
 		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(in->file, 2);
-			perror(" ");
-			g_exit_status = 1;
-			exit (g_exit_status);
+			if (in->type == 0)
+			{
+				fd = open(in->file, O_RDONLY);
+				fd = open (".herdoc", O_CREAT | O_RDWR, 0644);
+				while (1)
+				{
+					line = readline(">");
+					if (!line || !ft_strcmp(line, in->file))
+						break;
+					write(fd, line, ft_strlen(line));
+					write(fd, "\n", 1);
+				}
+				fd = open(".herdoc", O_RDWR);
+				dup2(fd, 0);
+				unlink(".herdoc");
+			}
+			else
+			{
+				fd = open(in->file, O_RDONLY);
+				if (fd == -1)
+				{
+					ft_putstr_fd("minishell: ", 2);
+					ft_putstr_fd(in->file, 2);
+					perror(" ");
+					g_exit_status = 1;
+					exit (g_exit_status);
+				}
+			// dup2(fd, 0); /// problem here
+			}
+			in = in->next;
 		}
-		/* if (in->type == 0)
-		{
-
-		} */
-
 		dup2(fd, 0);
-		in = in->next;
 	}
 }
 
@@ -103,8 +118,8 @@ void	redir_out(t_cmd *table)
 			exit (g_exit_status);
 		}
 		out = out->next;
+		dup2(fd, 1); /// out of the loop?
 	}
-	dup2(fd, 1);
 }
 
 void	exec(char *cmd, t_env *env, t_cmd *table)

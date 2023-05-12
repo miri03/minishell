@@ -6,13 +6,13 @@
 /*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:22:25 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/01 14:36:57 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/11 21:39:45 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	env_i(t_env **dup_env)   //leaks when unset
+void	env_i(t_env **dup_env)   // export when no env 
 {
 	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("PWD"), getcwd(NULL, 0), 1));
 	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("SHLVL"), ft_strdup("1"), 1));
