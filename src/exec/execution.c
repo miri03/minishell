@@ -16,6 +16,7 @@
 #include <sys/fcntl.h>
 #include <unistd.h>
 
+
 char	**find_path(t_env *env)
 {
 	while (env)
@@ -64,8 +65,7 @@ void	redir_in(t_cmd *table)
 		{
 			if (in->type == 0)
 			{
-				fd = open(in->file, O_RDONLY);
-				fd = open (".herdoc", O_CREAT | O_RDWR, 0644);
+				fd = open (".herdoc", O_CREAT | O_TRUNC | O_RDWR, 0644);
 				while (1)
 				{
 					line = readline(">");
@@ -75,8 +75,6 @@ void	redir_in(t_cmd *table)
 					write(fd, "\n", 1);
 				}
 				fd = open(".herdoc", O_RDWR);
-				dup2(fd, 0);
-				unlink(".herdoc");
 			}
 			else
 			{
@@ -89,11 +87,11 @@ void	redir_in(t_cmd *table)
 					g_exit_status = 1;
 					exit (g_exit_status);
 				}
-			// dup2(fd, 0); /// problem here
 			}
 			in = in->next;
 		}
 		dup2(fd, 0);
+		unlink(".herdoc");
 	}
 }
 
@@ -103,6 +101,8 @@ void	redir_out(t_cmd *table)
 	t_redi  *out;
 
 	out = table->out;
+	if (out)
+	{
 	while (out)
 	{
 		if (out->type == 3)
@@ -118,7 +118,8 @@ void	redir_out(t_cmd *table)
 			exit (g_exit_status);
 		}
 		out = out->next;
-		dup2(fd, 1); /// out of the loop?
+	}
+	dup2(fd, 1);
 	}
 }
 
@@ -138,10 +139,11 @@ void	exec(char *cmd, t_env *env, t_cmd *table)
 			g_exit_status = 127;
 			return ;
 		}
-		redir_out(table);
 		redir_in(table);
-		execve(cmd_path, table->cmd, find_path(env));
-		printf("error exec\n");	
+		redir_out(table);
+		check_builin(cmd, table, &env, cmd_path);
+		// execve(cmd_path, table->cmd, find_path(env));
+		
 	}
 	else
 	{
@@ -150,44 +152,46 @@ void	exec(char *cmd, t_env *env, t_cmd *table)
 	}
 }
 
-void	check_builin(char *cmd, t_cmd *table, t_env **env)
+void	check_builin(char *cmd, t_cmd *table, t_env **env, char *cmd_path)
 {
 	if (!ft_strcmp(cmd , "exit"))
 	{
 		ft_exit(table);
-		return ;
+		exit (g_exit_status);
 	}
 	if (!ft_strcmp(cmd , "env"))
 	{
 		ft_env(env);
-		return ;
+		exit (g_exit_status);
 	}
 	if (!ft_strcmp(cmd , "pwd"))
 	{
 		ft_pwd();
-		return ;
+		exit (g_exit_status);
 	}
 	if (!ft_strcmp(cmd , "unset"))
 	{
 		ft_unset(env, table);
-		return ;
+		exit (g_exit_status);
 	}
 	if (!ft_strcmp(cmd , "cd"))
 	{
 		ft_cd(table, env);
-		return ;
+		exit (g_exit_status);
 	}
 	if (!ft_strcmp(cmd , "echo"))
 	{
 		ft_echo(table);
-		return ;
+		exit (g_exit_status);
 	}
 	if (!ft_strcmp(cmd , "export"))
 	{
 		ft_export(*env, table);
-		return ;
+		exit (g_exit_status);
 	}
-	exec(cmd, *env, table);
+	execve(cmd_path, table->cmd, find_path(*env));
+	printf("error exec\n");	
+	// exec(cmd, *env, table);
 }
 
 void	execute(t_cmd *cmd, t_env **dup_env)
@@ -197,8 +201,8 @@ void	execute(t_cmd *cmd, t_env **dup_env)
 	i = 0;
 	while (cmd)
 	{
-		check_builin(cmd->cmd[i], cmd, dup_env);
+		exec(cmd->cmd[i], *dup_env, cmd);
+		// check_builin(cmd->cmd[i], cmd, dup_env);
 		cmd = cmd->next;
-		// i++;
 	}
 }

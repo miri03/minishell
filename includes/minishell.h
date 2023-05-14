@@ -166,6 +166,7 @@ void    get_input(t_cmd *command);
 void	execute(t_cmd *cmd, t_env **dup_env);
 int		cmd_len(char **table);
 char	*ft_my_strjoin(char const *s1, char const *s2);
+void	check_builin(char *cmd, t_cmd *table, t_env **env, char *cmd_path);
 
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env **dup_env);
