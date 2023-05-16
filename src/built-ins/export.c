@@ -108,7 +108,7 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 	}
 }
 
-void	export(t_env *dup_env, t_cmd *table)
+void	export(t_env *dup_env, t_cmd *table) //??
 {
 	if (cmd_len(table->cmd) == 1)
 	{
@@ -119,8 +119,9 @@ void	export(t_env *dup_env, t_cmd *table)
 			if (dup_env->value)
 			{
 			printf("declare -x ");
-			printf("%s=",dup_env->key);
-			printf("\"%s\"\n", dup_env->value);
+			printf("%s",dup_env->key);
+			if (dup_env->value)
+				printf("=\"%s\"\n", dup_env->value);
 			}
 			dup_env = dup_env->next;
 		}

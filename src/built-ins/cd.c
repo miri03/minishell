@@ -104,7 +104,7 @@ void	home(t_env **env)
 	}
 }
 
-void	ft_cd(t_cmd *cmd, t_env **env)
+void	ft_cd(t_cmd *cmd, t_env **env)  // cd .. does not work
 {
 	int		r_value;
 	char	*pwd;

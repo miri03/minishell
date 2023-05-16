@@ -42,15 +42,8 @@ void	ft_echo(t_cmd *cmd)
 	if (opt)
 		i++;
 	while (cmd->cmd[i])
-	{	
-		if (!ft_strcmp(cmd->cmd[i], "?"))  //remove this after ? expand
-		{
-			printf("%d", g_exit_status);
-			g_exit_status = 0;
-		}
-		else
-			printf("%s",cmd->cmd[i]);
-		
+	{
+		printf("%s",cmd->cmd[i]);
 		if (i < cmd_len(cmd->cmd) - 1)
 			printf(" ");
 		i++;

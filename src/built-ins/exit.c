@@ -38,7 +38,7 @@ int	cmd_len(char **table)
 
 void	ft_exit(t_cmd *cmd) // handle overflow
 {
-	printf("exit\n");
+	ft_putstr_fd("exit\n", 2);
 	if (cmd->cmd[1])
 	{
 		if (!arg_num(cmd->cmd[1]))
