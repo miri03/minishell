@@ -75,7 +75,7 @@ int	check_herdoc(t_redi *in)
 	return (fd);
 }
 
-int	redir_in(t_cmd *table)
+int	redir_in(t_cmd *table, char *cmd_path, char *cmd)
 {
 	int		fd;
 	int		fd_h;
@@ -100,6 +100,14 @@ int	redir_in(t_cmd *table)
 					exit (g_exit_status);
 				}
 			}
+			if (!cmd_path && cmd)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(cmd, 2);
+				ft_putstr_fd(": command not found\n", 2);
+				g_exit_status = 127;
+				exit (g_exit_status);
+			}
 			in = in->next;
 		}
 		if (fd_h > 0)
@@ -110,9 +118,7 @@ int	redir_in(t_cmd *table)
 	return (fd);
 }
 
-// cat < r  < t << m
-
-int	redir_out(t_cmd *table)
+int	redir_out(t_cmd *table, char *cmd_path, char *cmd)
 {
 	int		fd;
 	t_redi  *out;
@@ -135,6 +141,14 @@ int	redir_out(t_cmd *table)
 				g_exit_status = 1;
 				exit (g_exit_status);
 			}
+			if (!cmd_path && cmd)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(cmd, 2);
+				ft_putstr_fd(": command not found\n", 2);
+				g_exit_status = 127;
+				exit (g_exit_status);
+			}
 			out = out->next;
 		}
 		dup2(fd, 1);
@@ -147,7 +161,7 @@ void	exec(char *cmd, t_env *env, t_cmd *table)
 	char	*cmd_path;
 	int		f_pid;
 	int		status;
-	
+
 	if (is_builtin(cmd))
 		exec_builtin(cmd, table, &env);
 	else
@@ -156,17 +170,10 @@ void	exec(char *cmd, t_env *env, t_cmd *table)
 		if (!f_pid)
 		{
 			cmd_path = cmd_exist(cmd, env);
-			if (!cmd_path)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(cmd, 2);
-				ft_putstr_fd(": command not found\n", 2);
-				g_exit_status = 127;
-				return ;
-			}
-			redir_in(table);
-			redir_out(table);
+			redir_in(table, cmd_path, cmd);
+			redir_out(table, cmd_path, cmd);
 			execve(cmd_path, table->cmd, find_path(env));
+			dprintf(2, "problem exec\n");
 		}
 		else
 		{

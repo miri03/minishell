@@ -168,8 +168,10 @@ int		cmd_len(char **table);
 char	*ft_my_strjoin(char const *s1, char const *s2);
 void	which_builtin(char *cmd, t_cmd *table, t_env **env);
 int		is_builtin(char *cmd);
-int		redir_in(t_cmd *table);
-int		redir_out(t_cmd *table);
+// int		redir_in(t_cmd *table);
+int	redir_in(t_cmd *table, char *cmd_path, char *cmd);
+// int		redir_out(t_cmd *table);
+int	redir_out(t_cmd *table, char *cmd_path, char *cmd);
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
 
 //*-------------------built-ins--------------------*//
