@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 01:54:37 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/11 05:51:43 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/18 06:07:44 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ int	count(char *str)
 
 void	expand_var(t_env *env, char **content)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*prev;
 	char	*str;
 	char	*str1;
@@ -129,14 +129,45 @@ void	expand_var(t_env *env, char **content)
 	join = ft_strjoin(str, str1);
 	if (ft_strlen(prev + j))
 		last_str = ft_substr(prev, j, ft_strlen(prev + j));
-	*content = ft_strjoin(join, last_str);
-	// if (!last_str)
-	// 	free(join);
+	(*content) = ft_strjoin(join, last_str);
+	expand_var(env, content);
 	if (last_str)
-		free(last_str);
+		free (last_str);
 	free(prev);
 	free(str1);
+	// free(join);
 	expand_var(env, content);
+}
+
+void	expand_var_2(t_env *env, t_token **tok)
+{
+	int		i;
+	int		j;
+	char	*str;
+	char	*str1;
+	char	*last_str;
+	char	*join;
+
+	str = NULL;
+	str1 = NULL;
+	join = NULL;
+	last_str = NULL;
+	i = 0;
+	while ((*tok)->content[i] && !exp_here((*tok)->content[i], (*tok)->content[i + 1]))
+		i++;
+	if (!(*tok)->content[i] || !(*tok)->content[i + 1])
+		return ;
+	if (i)
+		str = ft_substr((*tok)->content, 0, i);
+	j = i + 1 + count((*tok)->content + i + 1);
+	str1 = get_value_of_exp(env, ft_substr((*tok)->content, i + 1, j - i -1));
+	join = ft_strjoin(str, str1);
+	if (ft_strlen((*tok)->content + j))
+		last_str = ft_substr((*tok)->content, j, ft_strlen((*tok)->content + j));
+	(*tok)->content = ft_strjoin(join, last_str);
+	free (last_str);
+	free(str1);
+	system("leaks minishell");
 }
 
 void	check_exp(t_token *tok, t_env *env)

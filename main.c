@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/11 21:43:03 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/18 03:53:04 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,55 @@ void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 	else
 		ft_lstclear_t(token);
 }
+int	is_all_spaces(char *str)
+{
+	int i = 0;
+	while(str[i])
+	{
+		if((str[i] != ' ' || str[i] != '\n' || str[i] != '\t'))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
+void	ft_free(char **str)
+{
+	int	i;
+
+	i = 0;
+	if (str)
+	{
+		while (str[i])
+			free(str[i++]);
+		free(str);
+	}
+}
+
+void	clear_cmds(t_cmd **cmd)
+{
+	t_cmd	*tmp1;
+	t_cmd	*tmp2;
+
+	if (!cmd || !*cmd)
+		return ;
+	tmp1 = *cmd;
+	while (tmp1)
+	{
+		if (tmp1->in)
+			ft_lstclear_2(&tmp1->in);
+		if (tmp1->out)
+			ft_lstclear_2(&tmp1->out);
+		if (tmp1->cmd)
+			ft_free(tmp1->cmd);
+		tmp2 = tmp1->next;
+		free(tmp1);
+		tmp1 = tmp2;
+	}
+}
 int	main(int ac, char **av, char **env)
 {
-	int		i;
+	// int		i;
 	char	*line;
 	t_token	*token;
 	t_env	*dup_env;
@@ -111,26 +156,32 @@ int	main(int ac, char **av, char **env)
 		line = readline(GREEN"minishell> "RESET);
 		if (!line)
 			exit(g_exit_status);
+		if(is_all_spaces(line))
+		{
+			free(line);
+			continue ;
+		}
 		add_history(line);
 		if (token_line(line, &token))
 		{
 			ft_minishell(&dup_env, &token, &cmd);
 			get_input(cmd);
-			execute(cmd, &dup_env);
+			// execute(cmd, &dup_env);
+			clear_cmds(&cmd);
 		}
 		free(line);
 
-		//for parsing  leaks
-		i = 0;
-		if (cmd)
-		{
-		while (cmd->cmd[i])
-		{
-			free(cmd->cmd[i]);
-			i++;
-		}
-		free (cmd->cmd);  //char **cmd
-		}
-		//
+		// //for parsing  leaks
+		// i = 0;
+		// if (cmd)
+		// {
+		// while (cmd->cmd[i])
+		// {
+		// 	free(cmd->cmd[i]);
+		// 	i++;
+		// }
+		// free (cmd->cmd);  //char **cmd
+		// }
+		// //
 	}
 }

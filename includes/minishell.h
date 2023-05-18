@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/11 21:42:18 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/18 03:39:35 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ enum {
 
 
 //*----------LEXER----------*//
+int	is_all_spaces(char *str);
 int	token_line(char *line, t_token **token);
 int	take_separator(char *line, t_token **token);
 int	whish_separator(char *line);
@@ -115,10 +116,12 @@ void	ft_lstdelone(t_token *lst);
 t_cmd	*ft_lstnew_cmd(void);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 void    ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
+void	clear_cmds(t_cmd **cmd);
 int		ft_strchr_2(const char *str, int c);
 void	ft_lstadd_back_redi(t_redi **lst, t_redi *new);
 t_redi	*ft_lstnew_redi(char *out, int type);
 t_redi	*ft_lstlast_redi(t_redi *lst);
+void	ft_lstclear_2(t_redi **lst);
 
 
 //*---------env--------*//
@@ -136,8 +139,11 @@ int	must_expand(int next);
 int	exp_here(int curr, int next);
 int	count(char *str);
 void	expand_var(t_env *env, char **content);
+void	expand_var_2(t_env *env, t_token **tok);
 void	here_doc_exp(t_token *token);
 int	join_str(t_token **token, t_token *tmp);
+void	ft_free(char **str);
+
 
 
 //*---------checks_syntax--------*//
