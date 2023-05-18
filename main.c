@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/18 03:53:04 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/18 07:57:19 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	minishell_mess()
 	printf("       ░    ░           ░  ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░\n"RESET);
 	printf(BLUE"\nby: meharit && yismaail\n"RESET);
 	printf("\n\n");
-	
 }
 
 void	check_args(int ac, char **av, t_env **dup_env, char **env)
@@ -42,8 +41,8 @@ void	check_args(int ac, char **av, t_env **dup_env, char **env)
 
 void	remove_spaces(t_token **token, t_token *tok)
 {
-	t_token *tmp;
-	
+	t_token	*tmp;
+
 	tmp = NULL;
 	while (tok)
 	{
@@ -59,85 +58,16 @@ void	remove_spaces(t_token **token, t_token *tok)
 	}
 }
 
-/* void	show_in(t_cmd *cmd, t_env **env)
-{
-	(void)env;
-	while (cmd)
-	{
-		printf("content : %s\n", cmd->cmd[0]);
-	
-		printf("content : %s\n", cmd->cmd[2]);
-
-		cmd = cmd->next;
-	}
-} */
-
 void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 {
 	handler_expand(token, *env, *token);
 	remove_spaces(token, *token);
 	if (check_syntax(*token))
-	{
 		parse_cmd(token, cmd);
-		//show_in(*cmd, env);
-			// while (*cmd)
-			// {
-			// 	printf("%s\n", (*cmd)->cmd[0]);
-			// 	printf("%s\n", (*cmd)->cmd[1]);
-			// 	(*cmd) = (*cmd)->next;
-			// }
-		
-		// // printf("lhamdolilah\n");
-	}
 	else
 		ft_lstclear_t(token);
 }
-int	is_all_spaces(char *str)
-{
-	int i = 0;
-	while(str[i])
-	{
-		if((str[i] != ' ' || str[i] != '\n' || str[i] != '\t'))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
-void	ft_free(char **str)
-{
-	int	i;
-
-	i = 0;
-	if (str)
-	{
-		while (str[i])
-			free(str[i++]);
-		free(str);
-	}
-}
-
-void	clear_cmds(t_cmd **cmd)
-{
-	t_cmd	*tmp1;
-	t_cmd	*tmp2;
-
-	if (!cmd || !*cmd)
-		return ;
-	tmp1 = *cmd;
-	while (tmp1)
-	{
-		if (tmp1->in)
-			ft_lstclear_2(&tmp1->in);
-		if (tmp1->out)
-			ft_lstclear_2(&tmp1->out);
-		if (tmp1->cmd)
-			ft_free(tmp1->cmd);
-		tmp2 = tmp1->next;
-		free(tmp1);
-		tmp1 = tmp2;
-	}
-}
 int	main(int ac, char **av, char **env)
 {
 	// int		i;
@@ -156,7 +86,7 @@ int	main(int ac, char **av, char **env)
 		line = readline(GREEN"minishell> "RESET);
 		if (!line)
 			exit(g_exit_status);
-		if(is_all_spaces(line))
+		if (is_all_spaces(line))
 		{
 			free(line);
 			continue ;
@@ -166,11 +96,10 @@ int	main(int ac, char **av, char **env)
 		{
 			ft_minishell(&dup_env, &token, &cmd);
 			get_input(cmd);
-			// execute(cmd, &dup_env);
+			execute(cmd, &dup_env);
 			clear_cmds(&cmd);
 		}
 		free(line);
-
 		// //for parsing  leaks
 		// i = 0;
 		// if (cmd)

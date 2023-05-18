@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 11:38:29 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/18 02:17:51 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/18 07:45:13 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,18 @@ void	ft_lstclear_2(t_redi **lst)
 		ptr = tmp;
 	}
 	*lst = NULL;
+}
+
+int	is_all_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if ((str[i] != ' ' || str[i] != '\n' || str[i] != '\t'))
+			return (0);
+		i++;
+	}
+	return (1);
 }

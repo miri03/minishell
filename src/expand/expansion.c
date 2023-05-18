@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 01:54:37 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/18 06:07:44 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/18 07:24:57 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	trim_quotes(t_token *token)
 {
-	char *tmp;
-	
-	// //TODOfree previous token
+	char	*tmp;
+
 	while (token)
 	{
 		tmp = token->content;
@@ -70,7 +69,7 @@ void	hyphen_exp(t_token *tok, t_env *env)
 	{
 		tmp = tok->content;
 		tok->content = get_value_of_exp(env, ft_strdup("HOME"));
-		free(tmp); 
+		free(tmp);
 	}
 }
 
@@ -79,179 +78,4 @@ int	must_expand(int next)
 	if (!ft_isalnum(next) && next != '_')
 		return (1);
 	return (0);
-}
-
-int	exp_here(int curr, int next)
-{
-	if (curr == '$' && next == '?')
-		return (1);
-	if (curr == '$' && !must_expand(next))
-		return (1);
-	return (0);
-}
-
-int	count(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (ft_isdigit(str[i]) || str[i] == '?')
-		return (1);
-	while (str[i] && !must_expand(str[i]))
-		i++;
-	return (i);
-}
-
-void	expand_var(t_env *env, char **content)
-{
-	int		i;
-	int		j;
-	char	*prev;
-	char	*str;
-	char	*str1;
-	char	*last_str;
-	char	*join;
-
-	str = NULL;
-	str1 = NULL;
-	join = NULL;
-	last_str = NULL;
-	prev = *content;
-	i = 0;
-	while (prev[i] && !exp_here(prev[i], prev[i + 1]))
-		i++;
-	if (!prev[i] || !prev[i + 1])
-		return ;
-	if (i)
-		str = ft_substr(prev, 0, i);
-	j = i + 1 + count(prev + i + 1);
-	str1 = get_value_of_exp(env, ft_substr(prev, i + 1, j - i -1));
-	join = ft_strjoin(str, str1);
-	if (ft_strlen(prev + j))
-		last_str = ft_substr(prev, j, ft_strlen(prev + j));
-	(*content) = ft_strjoin(join, last_str);
-	expand_var(env, content);
-	if (last_str)
-		free (last_str);
-	free(prev);
-	free(str1);
-	// free(join);
-	expand_var(env, content);
-}
-
-void	expand_var_2(t_env *env, t_token **tok)
-{
-	int		i;
-	int		j;
-	char	*str;
-	char	*str1;
-	char	*last_str;
-	char	*join;
-
-	str = NULL;
-	str1 = NULL;
-	join = NULL;
-	last_str = NULL;
-	i = 0;
-	while ((*tok)->content[i] && !exp_here((*tok)->content[i], (*tok)->content[i + 1]))
-		i++;
-	if (!(*tok)->content[i] || !(*tok)->content[i + 1])
-		return ;
-	if (i)
-		str = ft_substr((*tok)->content, 0, i);
-	j = i + 1 + count((*tok)->content + i + 1);
-	str1 = get_value_of_exp(env, ft_substr((*tok)->content, i + 1, j - i -1));
-	join = ft_strjoin(str, str1);
-	if (ft_strlen((*tok)->content + j))
-		last_str = ft_substr((*tok)->content, j, ft_strlen((*tok)->content + j));
-	(*tok)->content = ft_strjoin(join, last_str);
-	free (last_str);
-	free(str1);
-	system("leaks minishell");
-}
-
-void	check_exp(t_token *tok, t_env *env)
-{
-	(void)env;
-
-	if (tok->type == HYPHEN)
-	{
-		hyphen_exp(tok, env);
-		printf("%s\n", tok->content);
-	}
-	else if ((tok->type == DOUBLE || tok->type == WORD) && ft_strlen(tok->content) > 1)
-	{
-		if (*(tok->content) == '$')
-			tok->expand = 1;
-		expand_var(env, &tok->content);
-	}
-}
-
-void	here_doc_exp(t_token *token)
-{
-	while (token)
-	{
-		if (*token->content == '$' && ft_strlen(token->content) == 1)
-		{
-			if (token->next && (token->next->type == DOUBLE || token->next->type == SINGLE))
-				token->content = ft_strdup("");
-		}
-		else if (ft_strlen(token->content) == 2 && token->type == OPERATOR && ft_strcmp(token->content, "<<") == 0)
-		{
-			if (token->next && token->next->type == SPACE)
-			{
-				if (token->next->next && token->next->next->type != PIPE && token->next->next->type != OPERATOR)
-				{
-					if (token->next->next->type == WORD)
-						token->next->next->type = SINGLE_EXP;
-					else
-						token->next->next->type = SINGLE;
-				}
-			}
-			else if (token->next && token->next->type != PIPE && token->next->type != OPERATOR)
-			{
-				if (token->next->type == WORD)
-					token->next->type = SINGLE_EXP;
-				else
-					token->next->type = SINGLE;
-			}
-		}
-		token = token->next;
-	}
-}
-
-int	join_str(t_token **token, t_token *tmp)
-{
-	if ((*token)->type == PIPE || (*token)->type == OPERATOR || (*token)->type == SPACE)
-		return (0);
-	if (!tmp || tmp->type == PIPE || tmp->type == OPERATOR || tmp->type == SPACE)
-		return (0);
-	else
-	{
-		tmp->content = ft_strjoin(tmp->content, (*token)->content);
-		tmp->next = (*token)->next;
-		ft_lstdelone_t(*token);
-		*token = tmp->next;
-		return (1);
-	}
-}
-
-void	handler_expand(t_token **token, t_env *env, t_token *tok)
-{
-	t_token *tmp;
-	
-	(void)env;
-	(void)token;
-	tmp = NULL;
-	trim_quotes(*token);
-	here_doc_exp(*token);
-	while (tok)
-	{
-		check_exp(tok, env);
-		if (join_str(&tok, tmp) == 0)
-		{
-			tmp = tok;
-			tok = tok->next;
-		}
-	}
 }

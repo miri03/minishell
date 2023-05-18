@@ -1,15 +1,15 @@
 #include "includes/minishell.h"
 
-void    check_tokens(t_token *token)
+void	check_tokens(t_token *token)
 {
-    t_token	*tmp;
+	t_token	*tmp;
 
-    tmp = token;
-    printf("--------CHECK_TOKENS-----------\n");
-    while (tmp)
-    {
+	tmp = token;
+	printf("--------CHECK_TOKENS-----------\n");
+	while (tmp)
+	{
 		printf("content = %s\n", tmp->content);
-        printf("type    = %d\n", tmp->type);
+		printf("type    = %d\n", tmp->type);
 		tmp = tmp->next;
 	}
 	printf("----------------------------\n");
