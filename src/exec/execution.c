@@ -172,6 +172,14 @@ void	exec(char *cmd, t_env *env, t_cmd *table)
 			cmd_path = cmd_exist(cmd, env);
 			redir_in(table, cmd_path, cmd);
 			redir_out(table, cmd_path, cmd);
+			if (!cmd_path)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(cmd, 2);
+				ft_putstr_fd(": command not found\n", 2);
+				g_exit_status = 127;
+				exit (g_exit_status);
+			}
 			execve(cmd_path, table->cmd, find_path(env));
 			dprintf(2, "problem exec\n");
 		}
@@ -183,14 +191,29 @@ void	exec(char *cmd, t_env *env, t_cmd *table)
 	}
 }
 
+int	table_len(t_cmd *table)
+{
+	int	len;
+
+	len = 0;
+	while (table)
+	{
+		table = table->next;
+		len++;
+	}
+	return (len);
+}
+
 void	execute(t_cmd *table, t_env **dup_env)
 {
 	int		i;
 
 	i = 0;
-	while (table)
-	{
+	if (table_len(table) == 1)
 		exec(table->cmd[i], *dup_env, table);
-		table = table->next;
+	else
+	{
+		printf("pipes\n");
+		// pipes(*dup_env, table);
 	}
 }

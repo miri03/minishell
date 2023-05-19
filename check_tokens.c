@@ -17,13 +17,14 @@ void	check_tokens(t_token *token)
 
 void    get_input(t_cmd *command)
 {
+	
     t_cmd *cmd;
 	t_redi *in;
 	t_redi *out;
 
     int     i;
     int     x;
-
+	
     cmd = command;
 	printf("----------TABLE-------------\n");
 	i = 0;

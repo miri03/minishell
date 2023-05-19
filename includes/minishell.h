@@ -187,6 +187,8 @@ int		redir_in(t_cmd *table, char *cmd_path, char *cmd);
 // int		redir_out(t_cmd *table);
 int		redir_out(t_cmd *table, char *cmd_path, char *cmd);
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
+void    pipes(t_env *env, t_cmd table);
+int		table_len(t_cmd *table);
 
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env **dup_env);

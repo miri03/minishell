@@ -12,7 +12,7 @@
 
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Werror -Wextra -Wall #-fsanitize=address -g
+CFLAGS		=	-Werror -Wextra -Wall -fsanitize=address -g
 RM			=	rm -rf
 SRCS		=	main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
 				src/tools/lst_env.c src/env/environment.c src/expand/expansion.c \
@@ -21,7 +21,7 @@ SRCS		=	main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_
 				src/tools/lst_cmd.c \
 				src/built-ins/pwd.c src/built-ins/exit.c src/built-ins/env.c src/built-ins/unset.c \
 				src/exec/execution.c src/exec/exec_built.c  src/built-ins/cd.c src/built-ins/echo.c  \
-				src/built-ins/export.c src/built-ins/exp_uti.c \
+				src/built-ins/export.c src/built-ins/exp_uti.c src/exec/pipes.c \
 
 RED			= \e[0;31m				
 YELLOW		= \e[0;33m

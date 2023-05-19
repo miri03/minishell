@@ -100,17 +100,6 @@ int	main(int ac, char **av, char **env)
 			clear_cmds(&cmd);
 		}
 		free(line);
-		// //for parsing  leaks
-		// i = 0;
-		// if (cmd)
-		// {
-		// while (cmd->cmd[i])
-		// {
-		// 	free(cmd->cmd[i]);
-		// 	i++;
-		// }
-		// free (cmd->cmd);  //char **cmd
-		// }
-		// //
 	}
 }
+ // ------------>   example of the problem << m > d
