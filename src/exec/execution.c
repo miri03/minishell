@@ -159,7 +159,7 @@ int	redir_out(t_cmd *table, char *cmd_path)
 	return (fd);
 }
 
-void	exec(t_env *env, t_cmd *table) // cmd!!
+void	exec(t_env *env, t_cmd *table)
 {
 	char	*cmd_path;
 	int		f_pid;
@@ -216,8 +216,8 @@ void	execute(t_cmd *table, t_env **dup_env)
 	i = 0;
 	if (table_len(table) == 1)
 		exec(*dup_env, table);
-	// else
-	// {
-	// 	pipes(*dup_env, table);
-	// }
+	else
+	{
+		pipes(*dup_env, table);
+	}
 }
