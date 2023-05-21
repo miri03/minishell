@@ -183,12 +183,16 @@ char	*ft_my_strjoin(char const *s1, char const *s2);
 void	which_builtin(char *cmd, t_cmd *table, t_env **env);
 int		is_builtin(char *cmd);
 // int		redir_in(t_cmd *table);
-int		redir_in(t_cmd *table, char *cmd_path, char *cmd);
+int		redir_in(t_cmd *table, char *cmd_path);
 // int		redir_out(t_cmd *table);
-int		redir_out(t_cmd *table, char *cmd_path, char *cmd);
+int		redir_out(t_cmd *table, char *cmd_path);
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
-void    pipes(t_env *env, t_cmd table);
+void    pipes(t_env *env, t_cmd *table);
 int		table_len(t_cmd *table);
+char	*cmd_exist(t_cmd *table, t_env *env);
+// char	*cmd_exist(char *cmd, t_env *env);
+char	**find_path(t_env *env);
+void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);
 
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env **dup_env);

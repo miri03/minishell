@@ -118,13 +118,14 @@ void	export(t_env *dup_env, t_cmd *table) //??
 		{
 			if (dup_env->value)
 			{
-			printf("declare -x ");
-			printf("%s",dup_env->key);
-			if (dup_env->value)
-				printf("=\"%s\"\n", dup_env->value);
+				printf("declare -x ");
+				printf("%s",dup_env->key);
+				if (dup_env->value)
+					printf("=\"%s\"\n", dup_env->value);
 			}
 			dup_env = dup_env->next;
 		}
+		g_exit_status = 0;
 	}	
 }
 

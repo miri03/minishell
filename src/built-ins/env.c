@@ -46,4 +46,5 @@ void	ft_env(t_env **dup_env)
 			
 		tmp = tmp->next;
 	}
+	g_exit_status = 0;
 }

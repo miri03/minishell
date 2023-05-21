@@ -19,4 +19,5 @@ void	ft_pwd(void)
 	ptr = getcwd(NULL, 0);
 	printf("%s\n", ptr);
 	free(ptr);
+	g_exit_status = 0;
 }

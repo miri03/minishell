@@ -31,7 +31,7 @@ void    get_input(t_cmd *command)
 	while (cmd)
     {
         x = 0;
-        while (cmd->cmd[x])
+        while (cmd->cmd && cmd->cmd[x])
         {
             printf("[node:%d] cmd[%d] = %s\n", i, x, cmd->cmd[x]);
             x++;

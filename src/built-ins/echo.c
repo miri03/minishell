@@ -50,4 +50,5 @@ void	ft_echo(t_cmd *cmd)
 	}
 	if (!opt)
 		printf("\n");
+	g_exit_status = 0;
 }

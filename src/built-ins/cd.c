@@ -104,7 +104,7 @@ void	home(t_env **env)
 	}
 }
 
-void	ft_cd(t_cmd *cmd, t_env **env)  // cd .. does not work
+void	ft_cd(t_cmd *cmd, t_env **env)
 {
 	int		r_value;
 	char	*pwd;
@@ -112,6 +112,7 @@ void	ft_cd(t_cmd *cmd, t_env **env)  // cd .. does not work
 	if (cmd_len(cmd->cmd) == 1)
 	{
 		home(env);
+		g_exit_status = 0;
 		return ;
 	}
 	r_value = chdir(cmd->cmd[1]);
@@ -120,6 +121,7 @@ void	ft_cd(t_cmd *cmd, t_env **env)  // cd .. does not work
 		pwd = getcwd(NULL, 0);
 		upd_old_pwd(*env);
 		upd_pwd(*env, pwd);
+		g_exit_status = 0;
 	}
 	else if (r_value == -1) // path does not exist
 	{

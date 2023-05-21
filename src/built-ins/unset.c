@@ -103,6 +103,7 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd)
     t_env   *tmp;
 
     i = 1;
+    g_exit_status = 0;
     if (cmd_len(cmd->cmd) > 1)
     {
         while (cmd->cmd[i])

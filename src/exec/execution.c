@@ -23,33 +23,36 @@ char	**find_path(t_env *env)
 	return (NULL);
 }
 
-char	*cmd_exist(char *cmd, t_env *env)
+char	*cmd_exist(t_cmd *table, t_env *env)
 {
 	char	**path;
+	char	*cmd;
 	char	*test;
 	int		i;
 
 	i = 0;
-	if (access(cmd, F_OK) == 0) //does exist
-		return (cmd);
-	cmd = ft_my_strjoin("/", cmd);
+	if (!table->cmd)
+		return (NULL);
+	if (access(table->cmd[0], F_OK) == 0) //does exist
+		return (table->cmd[0]);
+	cmd = ft_my_strjoin("/", table->cmd[0]);
 	path = find_path(env);
 	if (path)
 	{
 		while (path[i])
 		{
-			test = ft_strjoin(path[i],cmd);
+			test = ft_strjoin(path[i], cmd);
 			if (access(test, X_OK) == 0)
 				return (test);
 			i++;
 		}
 	}
-	return (NULL);//
+	return (NULL); //
 }
 
-int	check_herdoc(t_redi *in)
+int	check_herdoc(t_redi *in)  // outfile /dev/stdout
 {
-	int	fd;
+	int		fd;
 	char	*line;
 
 	fd = -1;
@@ -58,16 +61,16 @@ int	check_herdoc(t_redi *in)
 		if (in->type == 0)
 		{
 			unlink(".herdoc");
-			fd = open (".herdoc", O_CREAT | O_TRUNC | O_RDWR, 0644);
+			fd = open(".herdoc", O_CREAT | O_TRUNC | O_RDWR, 0644);
 			while (1)
 			{
 				line = readline(">");
 				if (!line || !ft_strcmp(line, in->file))
-					break;
+					break ;
 				write(fd, line, ft_strlen(line));
 				write(fd, "\n", 1);
 			}
-			close (fd);
+			close(fd);
 			fd = open(".herdoc", O_RDWR);
 		}
 		in = in->next;
@@ -75,12 +78,12 @@ int	check_herdoc(t_redi *in)
 	return (fd);
 }
 
-int	redir_in(t_cmd *table, char *cmd_path, char *cmd)
+int	redir_in(t_cmd *table, char *cmd_path)
 {
 	int		fd;
 	int		fd_h;
 	t_redi	*in;
-	
+
 	fd = -1;
 	in = table->in;
 	if (in)
@@ -97,16 +100,16 @@ int	redir_in(t_cmd *table, char *cmd_path, char *cmd)
 					ft_putstr_fd(in->file, 2);
 					perror(" ");
 					g_exit_status = 1;
-					exit (g_exit_status);
+					exit(g_exit_status);
 				}
 			}
-			if (!cmd_path && cmd)
+			if (!cmd_path && table->cmd)
 			{
 				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(cmd, 2);
+				ft_putstr_fd(table->cmd[0], 2);
 				ft_putstr_fd(": command not found\n", 2);
 				g_exit_status = 127;
-				exit (g_exit_status);
+				exit(g_exit_status);
 			}
 			in = in->next;
 		}
@@ -118,10 +121,10 @@ int	redir_in(t_cmd *table, char *cmd_path, char *cmd)
 	return (fd);
 }
 
-int	redir_out(t_cmd *table, char *cmd_path, char *cmd)
+int	redir_out(t_cmd *table, char *cmd_path)
 {
 	int		fd;
-	t_redi  *out;
+	t_redi	*out;
 
 	fd = -1;
 	out = table->out;
@@ -139,15 +142,15 @@ int	redir_out(t_cmd *table, char *cmd_path, char *cmd)
 				ft_putstr_fd(out->file, 2);
 				perror(" ");
 				g_exit_status = 1;
-				exit (g_exit_status);
+				exit(g_exit_status);
 			}
-			if (!cmd_path && cmd)
+			if (!cmd_path && table->cmd)
 			{
 				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(cmd, 2);
+				ft_putstr_fd(table->cmd[0], 2);
 				ft_putstr_fd(": command not found\n", 2);
 				g_exit_status = 127;
-				exit (g_exit_status);
+				exit(g_exit_status);
 			}
 			out = out->next;
 		}
@@ -156,32 +159,34 @@ int	redir_out(t_cmd *table, char *cmd_path, char *cmd)
 	return (fd);
 }
 
-void	exec(char *cmd, t_env *env, t_cmd *table)
+void	exec(t_env *env, t_cmd *table) // cmd!!
 {
 	char	*cmd_path;
 	int		f_pid;
 	int		status;
 
-	if (is_builtin(cmd))
-		exec_builtin(cmd, table, &env);
+	if (table->cmd && is_builtin(table->cmd[0]))
+		exec_builtin(table->cmd[0], table, &env);
 	else
 	{
 		f_pid = fork();
 		if (!f_pid)
 		{
-			cmd_path = cmd_exist(cmd, env);
-			redir_in(table, cmd_path, cmd);
-			redir_out(table, cmd_path, cmd);
-			if (!cmd_path)
+			cmd_path = cmd_exist(table, env);
+			redir_in(table, cmd_path);
+			redir_out(table, cmd_path);
+			if (!cmd_path && table->cmd)
 			{
 				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(cmd, 2);
+				ft_putstr_fd(table->cmd[0], 2);
 				ft_putstr_fd(": command not found\n", 2);
 				g_exit_status = 127;
-				exit (g_exit_status);
-			}
+				exit(g_exit_status);
+			} //if no infile or outfile
 			execve(cmd_path, table->cmd, find_path(env));
-			dprintf(2, "problem exec\n");
+			if (!table->cmd)
+				exit(0);
+			ft_putstr_fd("problem exec\n", 2);
 		}
 		else
 		{
@@ -206,14 +211,13 @@ int	table_len(t_cmd *table)
 
 void	execute(t_cmd *table, t_env **dup_env)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	if (table_len(table) == 1)
-		exec(table->cmd[i], *dup_env, table);
+		exec(*dup_env, table);
 	else
 	{
-		printf("pipes\n");
-		// pipes(*dup_env, table);
+		pipes(*dup_env, table);
 	}
 }

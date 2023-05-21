@@ -102,4 +102,3 @@ int	main(int ac, char **av, char **env)
 		free(line);
 	}
 }
- // ------------>   example of the problem << m > d

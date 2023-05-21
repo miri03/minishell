@@ -30,8 +30,8 @@ void	exec_builtin(char *cmd, t_cmd *table, t_env **env)
 
 	in = dup(0);
 	out = dup(1);
-	dup_in = redir_in(table, NULL, NULL);
-	dup_out = redir_out(table, NULL, NULL);
+	dup_in = redir_in(table, NULL);
+	dup_out = redir_out(table, NULL);
 	which_builtin(cmd, table, env);
 	dup2(in, 0);
 	dup2(out, 1);
