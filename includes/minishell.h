@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/23 16:00:56 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/23 18:13:00 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,9 @@ void    pipes(t_env *env, t_cmd *table);
 int		table_len(t_cmd *table);
 char	*cmd_exist(t_cmd *table, t_env *env);
 char	**find_path(t_env *env);
+void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
+void	which_builtin(char *cmd, t_cmd *table, t_env **env);
+
 //*-------------------pipes------------------------*//
 void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);
 void    cmds(char *cmd, t_cmd *table, t_env *env, int **pipes, int j);

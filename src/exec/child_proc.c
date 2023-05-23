@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/23 16:29:41 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/23 19:01:35 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,23 @@
 void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes)
 {
 	char    *cmd_path;
+    int     built_in;
+
+    built_in = 0;
+    if (is_builtin(cmd))
+        built_in = 1;
 
     close(pipes[1][0]);
     close(pipes[1][1]);
     close(pipes[0][0]);
+
 	cmd_path = cmd_exist(table, env);
+    if (built_in)
+        cmd_path = NULL;
 	redir_in(table, cmd_path);
 	redir_out(table, cmd_path); /// ?
 	dup2(pipes[0][1], 1);
-	if (!cmd_path)
+	if (!cmd_path && !built_in)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
@@ -31,6 +39,64 @@ void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes)
 		g_exit_status = 127;
 		exit (g_exit_status);
 	}     //if no infile or outfile
+    if (built_in)
+    {
+        
+        which_builtin(cmd, table, &env);
+        // dprintf(2, "stat = %d\n", g_exit_status);
+        return;
+    }
+	execve(cmd_path, table->cmd, find_path(env));
+	ft_putstr_fd("problem exec\n", 2);
+}
+
+void    cmds(char *cmd, t_cmd *table, t_env *env, int **pipes, int j)
+{
+    char    *cmd_path;
+    int     built_in;
+
+    built_in = 0;
+    if (is_builtin(cmd))
+        built_in = 1;
+
+    cmd_path = cmd_exist(table, env);
+    if (built_in)
+        cmd_path = NULL;
+    redir_in(table, cmd_path); /// ?
+	redir_out(table, cmd_path);
+    if (j % 2 == 0)
+    {
+        // printf("J[2]===%d\n", j);
+        dup2(pipes[1][0], 0);
+        dup2(pipes[0][1], 1); ///
+
+        close(pipes[1][1]);
+        close(pipes[0][0]);
+    }
+    else
+    {
+        // printf("J[1]====%d\n", j);
+        dup2(pipes[0][0], 0);
+        dup2(pipes[1][1], 1);
+
+        close(pipes[0][1]);
+        close(pipes[1][0]);
+    }
+    
+    if (!cmd_path && !built_in)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		g_exit_status = 127;
+		exit (g_exit_status);
+	}     //if no infile or outfile
+    if (built_in)
+    {
+        which_builtin(cmd, table, &env);
+        dprintf(2, "stat = %d\n", g_exit_status);
+        return;
+    }
 	execve(cmd_path, table->cmd, find_path(env));
 	ft_putstr_fd("problem exec\n", 2);
 }
@@ -38,9 +104,16 @@ void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes)
 void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int j)
 {
     char    *cmd_path;
+    int     built_in;
 
+    built_in = 0;
+    if (is_builtin(cmd))
+        built_in = 1;
+    
     close(pipes[0][1]);
     cmd_path = cmd_exist(table, env);
+    if (built_in)
+        cmd_path = NULL;
     redir_in(table, cmd_path); /// ?
 	redir_out(table, cmd_path);
 
@@ -65,7 +138,7 @@ void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int 
         close(pipes[1][1]);
     }
         
-    if (!cmd_path)
+    if (!cmd_path && !built_in)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd, 2);
@@ -73,44 +146,13 @@ void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int 
 		g_exit_status = 127;
 		exit (g_exit_status);
 	}     //if no infile or outfile
-	execve(cmd_path, table->cmd, find_path(env));
-	ft_putstr_fd("problem exec\n", 2);
-}
-
-void    cmds(char *cmd, t_cmd *table, t_env *env, int **pipes, int j)
-{
-     char    *cmd_path;
-
-    cmd_path = cmd_exist(table, env);
-    redir_in(table, cmd_path); /// ?
-	redir_out(table, cmd_path);
-    if (j % 2 == 0)
+    if (built_in)
     {
-        // printf("J[2]===%d\n", j);
-        dup2(pipes[1][0], 0);
-        dup2(pipes[0][1], 1); ///
-
-        close(pipes[1][1]);
-        close(pipes[0][0]);
+        which_builtin(cmd, table, &env);
+        dprintf(2, "stat = %d\n", g_exit_status);
+        return;
     }
-    else
-    {
-        // printf("J[1]====%d\n", j);
-        dup2(pipes[0][0], 0);
-        dup2(pipes[1][1], 1);
-
-        close(pipes[0][1]);
-        close(pipes[1][0]);
-    }
-    
-    if (!cmd_path)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		g_exit_status = 127;
-		exit (g_exit_status);
-	}     //if no infile or outfile
+    // while(1);
 	execve(cmd_path, table->cmd, find_path(env));
 	ft_putstr_fd("problem exec\n", 2);
 }

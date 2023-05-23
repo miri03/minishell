@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 23:26:44 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/03 01:14:56 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/23 18:56:57 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ void	ft_echo(t_cmd *cmd)
 	}
 	if (!opt)
 		printf("\n");
+	dprintf(2, "good\n");
 	g_exit_status = 0;
 }
