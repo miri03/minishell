@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/18 07:48:33 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/23 16:00:56 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,8 +189,11 @@ void    pipes(t_env *env, t_cmd *table);
 int		table_len(t_cmd *table);
 char	*cmd_exist(t_cmd *table, t_env *env);
 char	**find_path(t_env *env);
+//*-------------------pipes------------------------*//
 void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);
-void 	wait_all(int *pid, int *status, int last, int **pipes);
+void    cmds(char *cmd, t_cmd *table, t_env *env, int **pipes, int j);
+void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int j);
+void 	wait_all(int *pid, int last, int **pipes);
 
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env **dup_env);

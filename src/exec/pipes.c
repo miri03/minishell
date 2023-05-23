@@ -3,118 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/21 16:45:08 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/23 16:18:33 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes)
-{
-	char    *cmd_path;
-
-    close(pipes[1][0]);
-    close(pipes[1][1]);
-    close(pipes[0][0]);
-	cmd_path = cmd_exist(table, env);
-	redir_in(table, cmd_path);
-	redir_out(table, cmd_path); /// ?
-	dup2(pipes[0][1], 1);
-	if (!cmd_path)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		g_exit_status = 127;
-		exit (g_exit_status);
-	}     //if no infile or outfile
-	execve(cmd_path, table->cmd, find_path(env));
-	ft_putstr_fd("problem exec\n", 2);
-}
-
-void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int j)
-{
-    char    *cmd_path;
-
-    close(pipes[0][1]);
-    cmd_path = cmd_exist(table, env);
-    redir_in(table, cmd_path); /// ?
-	redir_out(table, cmd_path);
-
-    if (len == 2)
-    {
-        close(pipes[1][0]);
-        close(pipes[1][1]);
-        dup2(pipes[0][0], 0);
-    }
-    if (j % 2 == 0)
-    {
-        dup2(pipes[1][0], 0);
-        close(pipes[0][0]);
-        close(pipes[0][1]);
-        close(pipes[1][1]);
-    }
-    if (j % 2 != 0)
-    {
-        dup2(pipes[0][0], 0);
-        close(pipes[0][0]);
-        close(pipes[0][1]);
-        close(pipes[1][1]);
-    }
-        
-    if (!cmd_path)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		g_exit_status = 127;
-		exit (g_exit_status);
-	}     //if no infile or outfile
-	execve(cmd_path, table->cmd, find_path(env));
-	ft_putstr_fd("problem exec\n", 2);
-}
-
-void    cmds(char *cmd, t_cmd *table, t_env *env, int **pipes, int j)
-{
-     char    *cmd_path;
-
-    cmd_path = cmd_exist(table, env);
-    redir_in(table, cmd_path); /// ?
-	redir_out(table, cmd_path);
-    if (j % 2 == 0)
-    {
-        printf("J[2]===%d\n", j);
-        dup2(pipes[1][0], 0);
-        dup2(pipes[0][1], 1); ///
-
-        close(pipes[1][1]);
-        close(pipes[0][0]);
-    }
-    else
-    {
-        printf("J[1]====%d\n", j);
-        dup2(pipes[0][0], 0);
-        dup2(pipes[1][1], 1);
-
-        close(pipes[0][1]);
-        close(pipes[1][0]);
-    }
-    
-    if (!cmd_path)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		g_exit_status = 127;
-		exit (g_exit_status);
-	}     //if no infile or outfile
-    dprintf(2,"here\n");
-	execve(cmd_path, table->cmd, find_path(env));
-	ft_putstr_fd("problem exec\n", 2);
-}
 
 void    make_pipes(int **pipes)
 {
@@ -137,7 +33,6 @@ void    pipes(t_env *env, t_cmd *table)
 	int *f_pid;
 	int i;
 	int j;
-	int	status;
     int tbl_len;
 
 	j = 0;
@@ -151,8 +46,8 @@ void    pipes(t_env *env, t_cmd *table)
 		if (!is_builtin(table->cmd[0]))
 		{
 			f_pid[i] = fork();
-            if (f_pid[i])
-                dprintf(2, "%d==>%d\n", i, f_pid[i]);
+            // if (f_pid[i])
+            //     dprintf(2, "%d==>%d\n", i, f_pid[i]);
             if (j == 0 && !f_pid[i])
                 first_cmd(table->cmd[0], table, env, pipes);
 
@@ -177,23 +72,25 @@ void    pipes(t_env *env, t_cmd *table)
 		
 		table = table->next;
 	}
-	wait_all(f_pid, &status, i, pipes);
+	wait_all(f_pid, i, pipes);
 }
 
-void wait_all(int *pid, int *status, int last, int **pipes)
+void wait_all(int *pid, int last, int **pipes)
 {
     int i;
-    (void)status;
-    (void)pid;
+    int status;
 
     i = 0;
     close(pipes[1][0]);
     close(pipes[1][1]);
     close(pipes[0][1]);
     close(pipes[0][0]);
-    while (i < last)
+    while (i < last - 1)
     {
-        waitpid(-1, NULL, 0);
+        waitpid(pid[i] , NULL, 0);
         i++;
     }
+    waitpid(pid[i], &status, 0);
+    if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
 }
