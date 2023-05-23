@@ -6,7 +6,7 @@
 /*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 07:24:03 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/18 07:55:37 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/23 13:14:14 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	expand_var(t_env *env, char **content)
 		help.str = ft_substr(help.prev, 0, help.i);
 	help.j = help.i + 1 + count(help.prev + help.i + 1);
 	help.str1 = get_value_of_exp(env, ft_substr(help.prev,
-				help.i + 1, help.j - help.j - 1));
+				help.i + 1, help.j - help.i - 1));
 	help.join = ft_strjoin(help.str, help.str1);
 	if (ft_strlen(help.prev + help.j))
 		help.last_str = ft_substr(help.prev,
