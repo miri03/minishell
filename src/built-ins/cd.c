@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 21:41:39 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/20 03:54:59 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 18:33:33 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	home(t_env **env)
 	}
 }
 
-void	ft_cd(t_cmd *cmd, t_env **env)
+void	ft_cd(t_cmd *cmd, t_env **env, int fork)
 {
 	int		r_value;
 	char	*pwd;
@@ -130,4 +130,6 @@ void	ft_cd(t_cmd *cmd, t_env **env)
 		perror(" ");
 		g_exit_status = 1;
 	}
+	if (fork)
+		exit (g_exit_status);
 }

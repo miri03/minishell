@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:22:25 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/11 21:39:45 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 18:34:08 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	env_i(t_env **dup_env)   // export when no env
 	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("_"), NULL, 1));
 }
 
-void	ft_env(t_env **dup_env)
+void	ft_env(t_env **dup_env, int fork)
 {
 	t_env *tmp;
 
@@ -47,4 +47,6 @@ void	ft_env(t_env **dup_env)
 		tmp = tmp->next;
 	}
 	g_exit_status = 0;
+	if (fork)
+		exit (g_exit_status);
 }

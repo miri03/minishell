@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/26 01:24:08 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 21:26:40 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ int	g_exit_status;
 # define GREEN "\e[0;92m"
 # define RED "\e[0;31m"
 # define RESET "\e[0m"
+
+#define TRUE 1
+#define FALSE 0
 
 enum {
 	heredoc,
@@ -59,11 +62,12 @@ typedef struct s_redi
 
 typedef struct s_exec
 {
-	int	*herdoc_pipe;
+	int		*herdoc_pipe;
+	int		**pipes;
 	char	**env;
-	int	built_in;
-	int	std_in;
-	int	std_out;
+	int		built_in;
+	int		std_in;
+	int		std_out;
 }				t_exec;
 
 extern t_exec exec;
@@ -191,7 +195,6 @@ void	get_input(t_cmd *command);
 void	execute(t_cmd *cmd, t_env **dup_env);
 int		cmd_len(char **table);
 char	*ft_my_strjoin(char const *s1, char const *s2);
-void	which_builtin(char *cmd, t_cmd *table, t_env **env);
 int		is_builtin(char *cmd);
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
 void	multi_cmd(t_env *env, t_cmd *table);
@@ -199,28 +202,29 @@ int		table_len(t_cmd *table);
 char	*cmd_exist(t_cmd *table, t_env *env);
 char	**find_path(t_env *env);
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
-void	which_builtin(char *cmd, t_cmd *table, t_env **env);
+void	which_builtin(char *cmd, t_cmd *table, t_env **env, int fork);
 t_exec	init_exec();
 
 //*-------------------redir-----------------------*//
-void	redir_in(t_cmd *table, char *cmd_path);
-int		redir_out(t_cmd *table, char *cmd_path);
+void	redir_in(t_cmd *table);
+int		redir_out(t_cmd *table);
 void	open_herdoc(t_cmd *table);
 
 //*-------------------pipes------------------------*//
-void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);
-void    cmds(char *cmd, t_cmd *table, t_env *env, int **pipes, int j);
-void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int j);
-void 	wait_all(int *pid, int last, int **pipes);
+// void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);
+// void    cmds(char *cmd, t_cmd *table, t_env *env, int **pipes, int j);
+// void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int j);
+void    execute_cmds(char *cmd, t_cmd *table, t_env *env, int phase, int i);
+void 	wait_all(int *pid, int last);
 
 //*-------------------built-ins--------------------*//
-void	ft_env(t_env **dup_env);
-void	ft_unset(t_env **dup_env, t_cmd *cmd);
+void	ft_env(t_env **dup_env, int fork);
+void	ft_unset(t_env **dup_env, t_cmd *cmd, int fork);
 void	ft_exit(t_cmd *cmd);
-void	ft_pwd(void);
-void	ft_cd(t_cmd *cmd, t_env **env);
-void	ft_echo(t_cmd *cmd);
-void	ft_export(t_env *dup_env, t_cmd *table);
+void	ft_pwd(int fork);
+void	ft_cd(t_cmd *cmd, t_env **env, int fork);
+void	ft_echo(t_cmd *cmd, int fork);
+void	ft_export(t_env *dup_env, t_cmd *table, int fork);
 void	unset_var(t_env *env, int index, t_env **head);
 void	env_i(t_env **dup_env);
 

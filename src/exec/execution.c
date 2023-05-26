@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/26 01:26:48 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 21:54:21 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	exec_single(t_env *env, t_cmd *table)
 		if (!f_pid)
 		{
 			cmd_path = cmd_exist(table, env);
-			redir_in(table, cmd_path);
-			redir_out(table, cmd_path);
+			redir_in(table);
+			redir_out(table);
 			if (!cmd_path && table->cmd)
 			{
 				ft_putstr_fd("minishell: ", 2);
@@ -73,11 +73,7 @@ void	exec_single(t_env *env, t_cmd *table)
 				ft_putstr_fd(": command not found\n", 2);
 				g_exit_status = 127;
 				exit(g_exit_status);
-			} //if no infile or outfile
-			write(2, "hihi\n", 5);
-			//dprintf(2, "good\n");
-			while(1);
-			
+			}
 			execve(cmd_path, table->cmd, exec.env);
 			if (!table->cmd)
 				exit(0);
@@ -86,7 +82,6 @@ void	exec_single(t_env *env, t_cmd *table)
 		else
 		{
 			close(exec.herdoc_pipe[1]);
-			
 			close(exec.herdoc_pipe[0]);
 			waitpid(f_pid, &status, 0);
 			g_exit_status = WEXITSTATUS(status);
@@ -111,6 +106,7 @@ t_exec	init_exec()
 {
 	t_exec	exec;
 	
+	exec.herdoc_pipe = malloc(sizeof(t_exec) * 2); //
 	exec.built_in = 0;
 	exec.std_in = dup(STDIN_FILENO);
 	exec.std_out = dup(STDOUT_FILENO);
@@ -129,5 +125,8 @@ void	execute(t_cmd *table, t_env **dup_env)
 		exec_single(*dup_env, table);
 	}
 	else
+	{
+		dprintf(2, "exec multi\n");
 		multi_cmd(*dup_env, table);
+	}
 }

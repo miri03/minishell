@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/26 01:20:08 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 16:15:28 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,10 @@ void	open_herdoc(t_cmd *table)
 	}
 }
 
-void	redir_in(t_cmd *table, char *cmd_path)
+void	redir_in(t_cmd *table)
 {
 	int		fd;
 	t_redi	*r_in;
-	(void)cmd_path;
 
 	r_in = table->in;
 	while (r_in)
@@ -82,9 +81,7 @@ void	redir_in(t_cmd *table, char *cmd_path)
 				perror(" ");
 				g_exit_status = 1;
 				if (exec.built_in == 0)
-				{
 					exit(g_exit_status);
-				}
 				return ;
 			}
 			dup2(fd, 0);
@@ -95,23 +92,14 @@ void	redir_in(t_cmd *table, char *cmd_path)
 			dup2(exec.herdoc_pipe[0], STDIN_FILENO);
 			close(exec.herdoc_pipe[0]);
 		}
-		// if (!cmd_path && table->cmd)
-		// {
-		// 	ft_putstr_fd("minishell: ", 2);
-		// 	ft_putstr_fd(table->cmd[0], 2);
-		// 	ft_putstr_fd(": command not found\n", 2);
-		// 	g_exit_status = 127;
-		// 	exit(g_exit_status);
-		// }
 		r_in = r_in->next;
 	}
 }
 
-int	redir_out(t_cmd *table, char *cmd_path)
+int	redir_out(t_cmd *table)
 {
 	int		fd;
 	t_redi	*out;
-	(void)cmd_path;
 
 	fd = -1;
 	out = table->out;
@@ -131,14 +119,6 @@ int	redir_out(t_cmd *table, char *cmd_path)
 				g_exit_status = 1;
 				exit(g_exit_status);
 			}
-			// if (!cmd_path && table->cmd)
-			// {
-			// 	ft_putstr_fd("minishell: ", 2);
-			// 	ft_putstr_fd(table->cmd[0], 2);
-			// 	ft_putstr_fd(": command not found\n", 2);
-			// 	g_exit_status = 127;
-			// 	exit(g_exit_status);
-			// }
 			out = out->next;
 		}
 		dup2(fd, 1);

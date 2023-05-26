@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/11 21:45:00 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 18:35:09 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void	add_to(char *key, char *value, t_env *dup_env, char *ident)
 		ft_lstadd_back_env(&dup_env, ft_lstnew_env(key, value, 0));
 }
 
-void	ft_export(t_env *dup_env, t_cmd *table)
+void	ft_export(t_env *dup_env, t_cmd *table, int fork)
 {
 	int		i;
 	char	*key;
@@ -171,4 +171,6 @@ void	ft_export(t_env *dup_env, t_cmd *table)
 			error_mess_exp(table->cmd[i]);
 		i++;
 	}
+	if (fork)
+		exit (g_exit_status);
 }

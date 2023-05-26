@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/26 01:23:57 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 15:48:54 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,18 @@ void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 
 int	main(int ac, char **av, char **env)
 {
-	// int		i;
 	char	*line;
 	t_token	*token;
 	t_env	*dup_env;
 	t_cmd	*cmd;
 
 	dup_env = NULL;
+	// minishell_mess();
+	
 	check_args(ac, av, &dup_env, env);
 	exec = init_exec();
 	exec.env = env;
-	// minishell_mess();
+	
 	while (1)
 	{
 		token = NULL;

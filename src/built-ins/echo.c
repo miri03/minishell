@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 23:26:44 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/25 20:02:42 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 18:33:51 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	check_if_option(char *str, int *opt)
 	}
 }
 
-void	ft_echo(t_cmd *cmd)
+void	ft_echo(t_cmd *cmd, int fork)
 {
 	int	opt;
 	int	i;
@@ -51,4 +51,6 @@ void	ft_echo(t_cmd *cmd)
 	if (!opt)
 		printf("\n");
 	g_exit_status = 0;
+	if (fork)
+		exit (g_exit_status);
 }

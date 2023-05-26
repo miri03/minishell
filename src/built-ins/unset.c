@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:42:54 by meharit           #+#    #+#             */
-/*   Updated: 2023/04/20 04:11:29 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 18:35:30 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void    unset(t_env **dup_env, char *cmd, t_env *tmp)
     free(tmp);
 }
 
-void	ft_unset(t_env **dup_env, t_cmd *cmd)
+void	ft_unset(t_env **dup_env, t_cmd *cmd, int fork)
 {
     int     i;
     t_env   *tmp;
@@ -118,4 +118,6 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd)
             i++;
         }
     }
+    if (fork)
+		exit (g_exit_status);
 }
