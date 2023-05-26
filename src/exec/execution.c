@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/11 21:37:46 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 01:26:48 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,116 +50,7 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 	return (NULL); //
 }
 
-int	check_herdoc(t_redi *in)  // outfile /dev/stdout
-{
-	int		fd;
-	char	*line;
-
-	fd = -1;
-	while (in)
-	{
-		if (in->type == 0)
-		{
-			unlink(".herdoc");
-			fd = open(".herdoc", O_CREAT | O_TRUNC | O_RDWR, 0644);
-			while (1)
-			{
-				line = readline(">");
-				if (!line || !ft_strcmp(line, in->file))
-					break ;
-				write(fd, line, ft_strlen(line));
-				write(fd, "\n", 1);
-			}
-			close(fd);
-			fd = open(".herdoc", O_RDWR);
-		}
-		in = in->next;
-	}
-	return (fd);
-}
-
-int	redir_in(t_cmd *table, char *cmd_path)
-{
-	int		fd;
-	int		fd_h;
-	t_redi	*in;
-
-	fd = -1;
-	in = table->in;
-	if (in)
-	{
-		fd_h = check_herdoc(in);
-		while (in)
-		{
-			if (in->type)
-			{
-				fd = open(in->file, O_RDONLY);
-				if (fd == -1)
-				{
-					ft_putstr_fd("minishell: ", 2);
-					ft_putstr_fd(in->file, 2);
-					perror(" ");
-					g_exit_status = 1;
-					exit(g_exit_status);
-				}
-			}
-			if (!cmd_path && table->cmd)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(table->cmd[0], 2);
-				ft_putstr_fd(": command not found\n", 2);
-				g_exit_status = 127;
-				exit(g_exit_status);
-			}
-			in = in->next;
-		}
-		if (fd_h > 0)
-			fd = fd_h;
-		dup2(fd, 0);
-		unlink(".herdoc");
-	}
-	return (fd);
-}
-
-int	redir_out(t_cmd *table, char *cmd_path)
-{
-	int		fd;
-	t_redi	*out;
-
-	fd = -1;
-	out = table->out;
-	if (out)
-	{
-		while (out)
-		{
-			if (out->type == 3)
-				fd = open(out->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			else
-				fd = open(out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (fd == -1)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(out->file, 2);
-				perror(" ");
-				g_exit_status = 1;
-				exit(g_exit_status);
-			}
-			if (!cmd_path && table->cmd)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(table->cmd[0], 2);
-				ft_putstr_fd(": command not found\n", 2);
-				g_exit_status = 127;
-				exit(g_exit_status);
-			}
-			out = out->next;
-		}
-		dup2(fd, 1);
-	}
-	return (fd);
-}
-
-void	exec(t_env *env, t_cmd *table)
+void	exec_single(t_env *env, t_cmd *table)
 {
 	char	*cmd_path;
 	int		f_pid;
@@ -183,13 +74,20 @@ void	exec(t_env *env, t_cmd *table)
 				g_exit_status = 127;
 				exit(g_exit_status);
 			} //if no infile or outfile
-			execve(cmd_path, table->cmd, find_path(env));
+			write(2, "hihi\n", 5);
+			//dprintf(2, "good\n");
+			while(1);
+			
+			execve(cmd_path, table->cmd, exec.env);
 			if (!table->cmd)
 				exit(0);
 			ft_putstr_fd("problem exec\n", 2);
 		}
 		else
 		{
+			close(exec.herdoc_pipe[1]);
+			
+			close(exec.herdoc_pipe[0]);
 			waitpid(f_pid, &status, 0);
 			g_exit_status = WEXITSTATUS(status);
 		}
@@ -209,15 +107,27 @@ int	table_len(t_cmd *table)
 	return (len);
 }
 
+t_exec	init_exec()
+{
+	t_exec	exec;
+	
+	exec.built_in = 0;
+	exec.std_in = dup(STDIN_FILENO);
+	exec.std_out = dup(STDOUT_FILENO);
+	return (exec);
+}
+
 void	execute(t_cmd *table, t_env **dup_env)
 {
-	int	i;
-
+	int		i;
+	
 	i = 0;
+	open_herdoc(table);
 	if (table_len(table) == 1)
-		exec(*dup_env, table);
-	else
 	{
-		pipes(*dup_env, table);
+		dprintf(2, "exec single\n");
+		exec_single(*dup_env, table);
 	}
+	else
+		multi_cmd(*dup_env, table);
 }

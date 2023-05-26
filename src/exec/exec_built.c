@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:47:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/23 18:47:17 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 01:13:26 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,15 @@ int	is_builtin(char *cmd)
 
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env)
 {
-	int	in;
-	int	out;
-	int	dup_in;
 	int	dup_out;
 
-
-	in = dup(0);
-	out = dup(1);
-	dup_in = redir_in(table, NULL);
+	exec.built_in = 1;
+	redir_in(table, NULL);
 	dup_out = redir_out(table, NULL);
 	which_builtin(cmd, table, env);
-	dup2(in, 0);
-	dup2(out, 1);
-	close(dup_in);
-	close(dup_out);
-	close(in);
-	close(out);
+	dup2(exec.std_in, STDIN_FILENO);
+	dup2(exec.std_out, STDOUT_FILENO);
+	exec.built_in = 0;
 }
 
 void	which_builtin(char *cmd, t_cmd *table, t_env **env)

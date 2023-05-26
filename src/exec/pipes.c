@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/23 19:00:24 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/24 22:08:08 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	make_pipes(int **pipes)
 	}
 }
 
-void	pipes(t_env *env, t_cmd *table)
+void	multi_cmd(t_env *env, t_cmd *table)
 {
 	int	**pipes;
 	int	*f_pid;

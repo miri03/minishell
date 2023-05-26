@@ -6,13 +6,13 @@
 #    By: meharit <meharit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 04:04:08 by yismaail          #+#    #+#              #
-#    Updated: 2023/05/23 15:54:21 by meharit          ###   ########.fr        #
+#    Updated: 2023/05/25 20:01:32 by meharit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Werror -Wextra -Wall -fsanitize=address -g
+CFLAGS		=	-Werror -Wextra -Wall -fsanitize=address -g3
 RM			=	rm -rf
 SRCS		=	main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
 				src/tools/lst_env.c src/env/environment.c src/expand/expansion.c \
@@ -20,8 +20,9 @@ SRCS		=	main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_
 				src/lexer/checks.c src/parse/parsing.c src/parse/parsing2.c src/tools/lst_redir.c \
 				src/tools/lst_cmd.c \
 				src/built-ins/pwd.c src/built-ins/exit.c src/built-ins/env.c src/built-ins/unset.c \
-				src/exec/execution.c src/exec/exec_built.c  src/built-ins/cd.c src/built-ins/echo.c  \
-				src/built-ins/export.c  src/built-ins/exp_uti.c  src/exec/pipes.c src/exec/child_proc.c\
+				src/built-ins/cd.c src/built-ins/echo.c src/built-ins/export.c  src/built-ins/exp_uti.c  \
+				src/exec/pipes.c src/exec/child_proc.c src/exec/execution.c src/exec/exec_built.c \
+				src/exec/file_management.c \
 
 RED			= \e[0;31m				
 YELLOW		= \e[0;33m

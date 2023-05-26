@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/23 19:01:35 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/23 19:59:39 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes)
 	}     //if no infile or outfile
     if (built_in)
     {
-        
         which_builtin(cmd, table, &env);
         // dprintf(2, "stat = %d\n", g_exit_status);
         return;

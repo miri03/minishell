@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/23 18:13:00 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/26 01:24:08 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,17 @@ typedef struct s_redi
 	int				must_exp;
 	struct s_redi	*next;
 }					t_redi;
+
+typedef struct s_exec
+{
+	int	*herdoc_pipe;
+	char	**env;
+	int	built_in;
+	int	std_in;
+	int	std_out;
+}				t_exec;
+
+extern t_exec exec;
 
 typedef struct s_token
 {
@@ -182,15 +193,19 @@ int		cmd_len(char **table);
 char	*ft_my_strjoin(char const *s1, char const *s2);
 void	which_builtin(char *cmd, t_cmd *table, t_env **env);
 int		is_builtin(char *cmd);
-int		redir_in(t_cmd *table, char *cmd_path);
-int		redir_out(t_cmd *table, char *cmd_path);
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
-void    pipes(t_env *env, t_cmd *table);
+void	multi_cmd(t_env *env, t_cmd *table);
 int		table_len(t_cmd *table);
 char	*cmd_exist(t_cmd *table, t_env *env);
 char	**find_path(t_env *env);
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
 void	which_builtin(char *cmd, t_cmd *table, t_env **env);
+t_exec	init_exec();
+
+//*-------------------redir-----------------------*//
+void	redir_in(t_cmd *table, char *cmd_path);
+int		redir_out(t_cmd *table, char *cmd_path);
+void	open_herdoc(t_cmd *table);
 
 //*-------------------pipes------------------------*//
 void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);
