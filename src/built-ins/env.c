@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:22:25 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/26 18:34:08 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_env(t_env **dup_env, int fork)
 			
 		tmp = tmp->next;
 	}
-	g_exit_status = 0;
+	exec.g_exit_status = 0;
 	if (fork)
-		exit (g_exit_status);
+		exit (exec.g_exit_status);
 }

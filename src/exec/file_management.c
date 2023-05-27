@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/26 16:15:28 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,39 +30,46 @@ void	open_herdoc(t_cmd *table)
 {
 	t_redi	*tmp_in;
 	int		herdo;
+	int		h;
 	char	*line;
 
-	tmp_in = table->in;
-	herdo = n_herdoc(tmp_in);
-	while (tmp_in)
+	h = 0;
+	while (table)
 	{
-		if (tmp_in->type == heredoc)
+		tmp_in = table->in;
+		herdo = n_herdoc(tmp_in);
+		while (tmp_in)
 		{
-			exec.herdoc_pipe = malloc(sizeof(t_exec) * 2);
-			if (pipe(exec.herdoc_pipe) == -1)
-				perror("pipe\n");
-			printf("in = %d out = %d\n", exec.herdoc_pipe[0], exec.herdoc_pipe[1]);
-			while (1)
+			if (tmp_in->type == heredoc)
 			{
-				line = readline(">");
-				if (!line || !ft_strcmp(line, tmp_in->file))
-					break ;
-				if (herdo == 1)
+				exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
+				if (pipe(exec.herdoc_pipe[h]) == -1)
+					perror("pipe\n");
+				printf("in = %d out = %d\n", exec.herdoc_pipe[h][0], exec.herdoc_pipe[h][1]);
+				while (1)
 				{
-					write(exec.herdoc_pipe[1], line, ft_strlen(line));
-					write(exec.herdoc_pipe[1], "\n", 1);
+					line = readline(">");
+					if (!line || !ft_strcmp(line, tmp_in->file))
+						break ;
+					if (herdo == 1)
+					{
+						write(exec.herdoc_pipe[h][1], line, ft_strlen(line));
+						write(exec.herdoc_pipe[h][1], "\n", 1);
+					}
+					free (line);
 				}
-				free (line);
+				herdo--;
+				if (!herdo)
+					close(exec.herdoc_pipe[h][1]);
 			}
-			herdo--;
-			if (!herdo)
-				close(exec.herdoc_pipe[1]);
+			tmp_in = tmp_in->next; 
 		}
-		tmp_in = tmp_in->next;
+		table = table->next;
+		h++;
 	}
 }
 
-void	redir_in(t_cmd *table)
+void	redir_in(t_cmd *table, int i)
 {
 	int		fd;
 	t_redi	*r_in;
@@ -79,9 +86,9 @@ void	redir_in(t_cmd *table)
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd(r_in->file, 2);
 				perror(" ");
-				g_exit_status = 1;
+				exec.g_exit_status = 1;
 				if (exec.built_in == 0)
-					exit(g_exit_status);
+					exit(exec.g_exit_status);
 				return ;
 			}
 			dup2(fd, 0);
@@ -89,8 +96,8 @@ void	redir_in(t_cmd *table)
 		else
 		{
 			dprintf(2, "--------------->redir_herd\n");
-			dup2(exec.herdoc_pipe[0], STDIN_FILENO);
-			close(exec.herdoc_pipe[0]);
+			dup2(exec.herdoc_pipe[i][0], STDIN_FILENO);
+			close(exec.herdoc_pipe[i][0]);
 		}
 		r_in = r_in->next;
 	}
@@ -116,8 +123,8 @@ int	redir_out(t_cmd *table)
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd(out->file, 2);
 				perror(" ");
-				g_exit_status = 1;
-				exit(g_exit_status);
+				exec.g_exit_status = 1;
+				exit(exec.g_exit_status);
 			}
 			out = out->next;
 		}

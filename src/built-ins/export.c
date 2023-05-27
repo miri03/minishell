@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/26 18:35:09 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	export(t_env *dup_env, t_cmd *table) //??
 			}
 			dup_env = dup_env->next;
 		}
-		g_exit_status = 0;
+		exec.g_exit_status = 0;
 	}	
 }
 
@@ -134,7 +134,7 @@ void	error_mess_exp(char *cmd)
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
-	g_exit_status = 1;
+	exec.g_exit_status = 1;
 }
 
 void	add_to(char *key, char *value, t_env *dup_env, char *ident)
@@ -172,5 +172,5 @@ void	ft_export(t_env *dup_env, t_cmd *table, int fork)
 		i++;
 	}
 	if (fork)
-		exit (g_exit_status);
+		exit (exec.g_exit_status);
 }

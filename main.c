@@ -6,13 +6,11 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/26 15:48:54 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:54 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-t_exec	exec;
 
 void	minishell_mess()
 {
@@ -32,7 +30,7 @@ void	minishell_mess()
 void	check_args(int ac, char **av, t_env **dup_env, char **env)
 {
 	(void)av;
-	g_exit_status = 0;
+	exec.g_exit_status = 0;
 	if (ac != 1)
 	{
 		ft_putendl_fd("noo we don't do that here", 2);
@@ -90,7 +88,7 @@ int	main(int ac, char **av, char **env)
 		cmd = NULL;
 		line = readline(GREEN"minishell> "RESET);
 		if (!line)
-			exit(g_exit_status);
+			exit(exec.g_exit_status);
 		if (is_all_spaces(line))
 		{
 			free(line);
@@ -100,6 +98,7 @@ int	main(int ac, char **av, char **env)
 		if (token_line(line, &token))
 		{
 			ft_minishell(&dup_env, &token, &cmd);
+			exec.herdoc_pipe = malloc(sizeof(t_exec) * table_len(cmd));
 			get_input(cmd);
 			execute(cmd, &dup_env);
 			clear_cmds(&cmd);

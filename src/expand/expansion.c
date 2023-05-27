@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 01:54:37 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/18 07:24:57 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ char	*get_value_of_exp(t_env *env, char *key)
 	if (*key == '?')
 	{
 		free(key);
-		s = ft_itoa(g_exit_status);
-		g_exit_status = 0;
+		s = ft_itoa(exec.g_exit_status);
+		exec.g_exit_status = 0;
 		return (s);
 	}
 	while (env && ft_strcmp(env->key, key) != 0)

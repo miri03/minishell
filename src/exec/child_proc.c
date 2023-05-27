@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/26 22:08:09 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,78 +16,70 @@
 
 void    dup_it(int phase, int i)
 {
-    if (phase == 0)
+    if (phase == 0)  //first cmd
     {
         dup2(exec.pipes[0][1], 1);
-        
-        close(exec.pipes[1][0]);
-	    close(exec.pipes[1][1]);
-	    close(exec.pipes[0][0]);
     }
 
     if (i % 2 == 0)
     {
-        if (phase == 1)
+        if (phase == 1) // middle cmd
         {
             dup2(exec.pipes[0][1], 1); // i % 2 == 0
             dup2(exec.pipes[1][0], 0);
-
-            close(exec.pipes[0][0]);
-            close(exec.pipes[1][1]);
         }
-        if (phase == 2)
+        if (phase == 2) //last cmd
         {
             dup2(exec.pipes[1][0], 0);
-
-            close(exec.pipes[0][0]);
-            close(exec.pipes[1][1]);
-            close(exec.pipes[0][1]);
         }
     }
 
     else
     {
-        if (phase == 1)
+        if (phase == 1) //middle cmd
         {
             dup2(exec.pipes[1][1], 1); // i % 2 != 0
             dup2(exec.pipes[0][0], 0);
-
-            close(exec.pipes[0][1]);
-            close(exec.pipes[1][0]);
         }
         
-        if (phase == 2)
+        if (phase == 2) //last cmd
         {
             dup2(exec.pipes[0][0], 0);
-            
-            close(exec.pipes[1][0]);
-            close(exec.pipes[1][1]);
-            close(exec.pipes[0][1]);
         }
     }
+    close(exec.pipes[1][1]);
+    close(exec.pipes[0][0]);
+    close(exec.pipes[0][1]);
+    close(exec.pipes[1][0]);
 }
 
-void    execute_cmds(char *cmd, t_cmd *table, t_env *env, int phase, int i)
+void    execute_cmds(t_cmd *table, t_env *env, int phase, int i)
 {
     char    *cmd_path;
+    char    *cmd;
 
     cmd_path = cmd_exist(table, env);
     dup_it(phase, i);
-    redir_in(table);
+    redir_in(table, i);
     redir_out(table);
-    if (is_builtin(cmd))
-        which_builtin(cmd, table, &env, TRUE); // break; ??
-    if (!cmd_path)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		g_exit_status = 127;
-		exit (g_exit_status);
-	}
-    dprintf(2, "--------->execve\n");
-    execve(cmd_path, table->cmd, exec.env);
-    dprintf(2, "!!!!!exec prob!!!!\n");
+    if (table->cmd) // there is a commad
+    {
+        cmd = table->cmd[0];
+        if (is_builtin(cmd))
+            which_builtin(cmd, table, &env, TRUE); // break; ??
+        if (!cmd_path)
+        {
+            ft_putstr_fd("minishell: ", 2);
+            ft_putstr_fd(cmd, 2);
+            ft_putstr_fd(": command not found\n", 2);
+            exec.g_exit_status = 127;
+            exit (exec.g_exit_status);
+        }
+        dprintf(2, "--------->execve\n");
+        execve(cmd_path, table->cmd, exec.env);
+        dprintf(2, "!!!!!exec prob!!!!\n");
+    }
+    exit (exec.g_exit_status);
 }
 
 // void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes)
@@ -114,13 +106,13 @@ void    execute_cmds(char *cmd, t_cmd *table, t_env *env, int phase, int i)
 // 		ft_putstr_fd("minishell: ", 2);
 // 		ft_putstr_fd(cmd, 2);
 // 		ft_putstr_fd(": command not found\n", 2);
-// 		g_exit_status = 127;
-// 		exit (g_exit_status);
+// 		exec.g_exit_status = 127;
+// 		exit (exec.g_exit_status);
 // 	}     //if no infile or outfile
 //     if (built_in)
 //     {
 //         which_builtin(cmd, table, &env);
-//         // dprintf(2, "stat = %d\n", g_exit_status);
+//         // dprintf(2, "stat = %d\n", exec.g_exit_status);
 //         return;
 //     }
 // 	execve(cmd_path, table->cmd, find_path(env));
@@ -165,13 +157,13 @@ void    execute_cmds(char *cmd, t_cmd *table, t_env *env, int phase, int i)
 // 		ft_putstr_fd("minishell: ", 2);
 // 		ft_putstr_fd(cmd, 2);
 // 		ft_putstr_fd(": command not found\n", 2);
-// 		g_exit_status = 127;
-// 		exit (g_exit_status);
+// 		exec.g_exit_status = 127;
+// 		exit (exec.g_exit_status);
 // 	}     //if no infile or outfile
 //     if (built_in)
 //     {
 //         which_builtin(cmd, table, &env);
-//         dprintf(2, "stat = %d\n", g_exit_status);
+//         dprintf(2, "stat = %d\n", exec.g_exit_status);
 //         return;
 //     }
 // 	execve(cmd_path, table->cmd, find_path(env));
@@ -220,13 +212,13 @@ void    execute_cmds(char *cmd, t_cmd *table, t_env *env, int phase, int i)
 // 		ft_putstr_fd("minishell: ", 2);
 // 		ft_putstr_fd(cmd, 2);
 // 		ft_putstr_fd(": command not found\n", 2);
-// 		g_exit_status = 127;
-// 		exit (g_exit_status);
+// 		exec.g_exit_status = 127;
+// 		exit (exec.g_exit_status);
 // 	}     //if no infile or outfile
 //     if (built_in)
 //     {
 //         which_builtin(cmd, table, &env);
-//         dprintf(2, "stat = %d\n", g_exit_status);
+//         dprintf(2, "stat = %d\n", exec.g_exit_status);
 //         return;
 //     }
 //     // while(1);

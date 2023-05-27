@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 21:41:39 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/26 18:33:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	home(t_env **env)
 	else  		  //HOME unset
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-		g_exit_status = 1;
+		exec.g_exit_status = 1;
 	}
 }
 
@@ -112,7 +112,7 @@ void	ft_cd(t_cmd *cmd, t_env **env, int fork)
 	if (cmd_len(cmd->cmd) == 1)
 	{
 		home(env);
-		g_exit_status = 0;
+		exec.g_exit_status = 0;
 		return ;
 	}
 	r_value = chdir(cmd->cmd[1]);
@@ -121,15 +121,15 @@ void	ft_cd(t_cmd *cmd, t_env **env, int fork)
 		pwd = getcwd(NULL, 0);
 		upd_old_pwd(*env);
 		upd_pwd(*env, pwd);
-		g_exit_status = 0;
+		exec.g_exit_status = 0;
 	}
 	else if (r_value == -1) // path does not exist
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(cmd->cmd[1], 2);
 		perror(" ");
-		g_exit_status = 1;
+		exec.g_exit_status = 1;
 	}
 	if (fork)
-		exit (g_exit_status);
+		exit (exec.g_exit_status);
 }

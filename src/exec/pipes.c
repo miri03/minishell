@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/26 21:41:02 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,22 @@ void	wait_all(int *pid, int last) //recheck it
 	}
 	waitpid(pid[i], &status, 0);
 	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
+		exec.g_exit_status = WEXITSTATUS(status);
+}
+
+void	open_uno(int i)
+{
+	if (i % 2 == 0)
+	{
+		pipe(exec.pipes[1]);
+		dprintf(2, "[1][0] ->%d [1][1] ->%d\n", exec.pipes[1][0], exec.pipes[1][1]);
+	}
+	else
+	{
+		pipe(exec.pipes[0]);
+		dprintf(2, "[0][0] ->%d [0][1] ->%d\n", exec.pipes[0][0], exec.pipes[0][1]);
+	}
+		
 }
 
 void	multi_cmd(t_env *env, t_cmd *table)
@@ -63,27 +78,59 @@ void	multi_cmd(t_env *env, t_cmd *table)
 	make_pipes(exec.pipes);
 	while (table)
 	{
+		
 		f_pid[i] = fork();
 		if (f_pid[i] == 0)
 		{
 			if (i == 0)
 			{
 				dprintf(2, "cmd 1\n");
-				execute_cmds(table->cmd[0], table, env, 0, i);
+				execute_cmds(table, env, 0, i);
 			}
 				
 			else if (i == tbl_len - 1)
 			{
 				dprintf(2, "cmd last\n");
-				execute_cmds(table->cmd[0], table, env, 2, i);
+				execute_cmds(table, env, 2, i);
 			}
 				
 			else
 			{
 				dprintf(2, "cmd middle\n");
-				execute_cmds(table->cmd[0], table, env, 1, i);
+				execute_cmds(table, env, 1, i);
 			}
 				
+		}
+		else
+		{
+			if (i == 0)
+			{
+				close(exec.pipes[1][0]);
+				close(exec.pipes[1][1]);
+				close(exec.pipes[0][1]);
+			}
+			else if (i == tbl_len - 1)
+			{
+				close(exec.pipes[0][0]);
+				close(exec.pipes[1][0]);
+				close(exec.pipes[1][1]);
+				close(exec.pipes[0][1]);
+			}
+			else if (i % 2 == 0)
+			{
+				
+				close(exec.pipes[0][1]);
+				close(exec.pipes[1][0]);
+				close(exec.pipes[1][1]);
+			}
+			else //i % 2 != 0
+			{
+				close(exec.pipes[0][0]);
+				close(exec.pipes[1][1]);
+				//close(exec.pipes[0][1]);
+			}
+			open_uno(i);
+			// if (i % 2 != 0)
 		}
 		table = table->next;
 		i++;	

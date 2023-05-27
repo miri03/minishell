@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:42:54 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/26 18:35:30 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void    error_mess_uns(char *cmd)
     ft_putstr_fd("bash: unset: `", 2);
     ft_putstr_fd(cmd, 2);
     ft_putstr_fd("': not a valid identifier\n", 2);
-    g_exit_status = 1;
+    exec.g_exit_status = 1;
 }
 
 void    unset(t_env **dup_env, char *cmd, t_env *tmp)
@@ -103,7 +103,7 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd, int fork)
     t_env   *tmp;
 
     i = 1;
-    g_exit_status = 0;
+    exec.g_exit_status = 0;
     if (cmd_len(cmd->cmd) > 1)
     {
         while (cmd->cmd[i])
@@ -119,5 +119,5 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd, int fork)
         }
     }
     if (fork)
-		exit (g_exit_status);
+		exit (exec.g_exit_status);
 }

@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/26 21:26:40 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:40:44 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-int	g_exit_status;
+
 // char	**g_env;
 
 # define BLUE "\e[1;36m"
@@ -62,15 +62,16 @@ typedef struct s_redi
 
 typedef struct s_exec
 {
-	int		*herdoc_pipe;
+	int		**herdoc_pipe;
 	int		**pipes;
 	char	**env;
 	int		built_in;
 	int		std_in;
 	int		std_out;
+	int		g_exit_status;
 }				t_exec;
 
-extern t_exec exec;
+t_exec	exec;
 
 typedef struct s_token
 {
@@ -206,7 +207,7 @@ void	which_builtin(char *cmd, t_cmd *table, t_env **env, int fork);
 t_exec	init_exec();
 
 //*-------------------redir-----------------------*//
-void	redir_in(t_cmd *table);
+void	redir_in(t_cmd *table, int i);
 int		redir_out(t_cmd *table);
 void	open_herdoc(t_cmd *table);
 
@@ -214,7 +215,7 @@ void	open_herdoc(t_cmd *table);
 // void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);
 // void    cmds(char *cmd, t_cmd *table, t_env *env, int **pipes, int j);
 // void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int j);
-void    execute_cmds(char *cmd, t_cmd *table, t_env *env, int phase, int i);
+void    execute_cmds(t_cmd *table, t_env *env, int phase, int i);
 void 	wait_all(int *pid, int last);
 
 //*-------------------built-ins--------------------*//
