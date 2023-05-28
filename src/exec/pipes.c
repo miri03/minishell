@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/27 23:56:52 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ void	make_pipes(int **pipes)
 		i++;
 	}
 }
-
-//// cat << del | head -n 3 | cat | wc -l
 
 void	wait_all(int *pid, int last) //recheck it
 {
@@ -127,60 +125,12 @@ void	multi_cmd(t_env *env, t_cmd *table)
 			{
 				close(exec.pipes[0][0]);
 				close(exec.pipes[1][1]);
-				//close(exec.pipes[0][1]);
+				//close(exec.pipes[0][1]); ??
 			}
 			open_uno(i);
-			// if (i % 2 != 0)
 		}
 		table = table->next;
 		i++;	
 	}
 	wait_all(f_pid, i);
 }
-
-// void	multi_cmd(t_env *env, t_cmd *table)
-// {
-// 	int	**pipes;
-// 	int	*f_pid;
-// 	int	i;
-// 	int	j;
-// 	int	tbl_len;
-// 	int	buit_in;
-
-// 	j = 0;
-// 	i = 0;
-// 	tbl_len = table_len(table);
-// 	pipes = (int **)malloc(sizeof(int *) * 2);
-// 	f_pid = (int *)malloc(sizeof(int) * tbl_len); //if builtin ??
-// 	make_pipes(pipes);
-// 	while (table)
-// 	{
-// 		buit_in = 0;
-// 		if (!is_builtin(table->cmd[0]))
-// 		{
-// 			f_pid[i] = fork();
-// 			i++;
-// 		}
-// 		else
-// 			buit_in = 1;
-// 		if (j == 0 && (!f_pid[i] || buit_in))
-// 			first_cmd(table->cmd[0], table, env, pipes);
-// 		if (j < tbl_len - 1 && (!f_pid[i] || buit_in))
-// 			cmds(table->cmd[0], table, env, pipes, j);
-// 		if (j == tbl_len - 1 && (!f_pid[i] || buit_in))
-// 			last_cmd(table->cmd[0], table, env, pipes, tbl_len, j);
-// 		if (j == tbl_len - 1)
-// 		{
-// 			close(pipes[1][0]);
-// 			close(pipes[1][1]);
-// 			close(pipes[0][1]);
-// 			close(pipes[0][0]);
-// 		}	
-// 		j++;
-// 		table = table->next;
-// 	}
-// 	wait_all(f_pid, i, pipes);
-// }
-
-
-
