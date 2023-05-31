@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/27 23:54:56 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/30 15:50:38 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 void    dup_it(int phase, int i)
 {
     if (phase == 0)  //first cmd
-    {
         dup2(exec.pipes[0][1], 1);
-    }
 
     if (i % 2 == 0)
     {
@@ -27,9 +25,7 @@ void    dup_it(int phase, int i)
             dup2(exec.pipes[1][0], 0);
         }
         if (phase == 2) //last cmd
-        {
             dup2(exec.pipes[1][0], 0);
-        }
     }
 
     else
@@ -41,9 +37,7 @@ void    dup_it(int phase, int i)
         }
         
         if (phase == 2) //last cmd
-        {
             dup2(exec.pipes[0][0], 0);
-        }
     }
     close(exec.pipes[1][1]);
     close(exec.pipes[0][0]);
@@ -73,9 +67,11 @@ void    execute_cmds(t_cmd *table, t_env *env, int phase, int i)
             exec.g_exit_status = 127;
             exit (exec.g_exit_status);
         }
-        dprintf(2, "--------->execve\n");
-        execve(cmd_path, table->cmd, exec.env);
-        dprintf(2, "!!!!!exec prob!!!!\n");
+        if (execve(cmd_path, table->cmd, exec.env) == -1)
+        {
+            perror("");
+            exec.g_exit_status = 126;
+        }
     }
     exit (exec.g_exit_status);
 }

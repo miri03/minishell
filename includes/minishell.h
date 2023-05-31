@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/27 23:40:44 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/30 19:04:11 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,11 @@
 # include <limits.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <dirent.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
 
-
-// char	**g_env;
 
 # define BLUE "\e[1;36m"
 # define GREEN "\e[0;92m"
@@ -69,6 +68,7 @@ typedef struct s_exec
 	int		std_in;
 	int		std_out;
 	int		g_exit_status;
+	int		n_herdoc;
 }				t_exec;
 
 t_exec	exec;

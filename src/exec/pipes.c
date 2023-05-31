@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/27 23:56:52 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/30 16:34:54 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	make_pipes(int **pipes)
 		pipes[i] = malloc(sizeof(int) * 2);
 		if (pipe(pipes[i]) == -1)
 			perror("pipe");
-		dprintf(2, "in[%d][0] = %d out[%d][1] %d\n", i, pipes[i][0], i,
-				pipes[i][1]);
 		i++;
 	}
 }
@@ -51,16 +49,9 @@ void	wait_all(int *pid, int last) //recheck it
 void	open_uno(int i)
 {
 	if (i % 2 == 0)
-	{
 		pipe(exec.pipes[1]);
-		dprintf(2, "[1][0] ->%d [1][1] ->%d\n", exec.pipes[1][0], exec.pipes[1][1]);
-	}
 	else
-	{
 		pipe(exec.pipes[0]);
-		dprintf(2, "[0][0] ->%d [0][1] ->%d\n", exec.pipes[0][0], exec.pipes[0][1]);
-	}
-		
 }
 
 void	multi_cmd(t_env *env, t_cmd *table)
@@ -76,28 +67,17 @@ void	multi_cmd(t_env *env, t_cmd *table)
 	make_pipes(exec.pipes);
 	while (table)
 	{
-		
 		f_pid[i] = fork();
 		if (f_pid[i] == 0)
 		{
 			if (i == 0)
-			{
-				dprintf(2, "cmd 1\n");
 				execute_cmds(table, env, 0, i);
-			}
 				
 			else if (i == tbl_len - 1)
-			{
-				dprintf(2, "cmd last\n");
 				execute_cmds(table, env, 2, i);
-			}
 				
 			else
-			{
-				dprintf(2, "cmd middle\n");
 				execute_cmds(table, env, 1, i);
-			}
-				
 		}
 		else
 		{
@@ -125,8 +105,9 @@ void	multi_cmd(t_env *env, t_cmd *table)
 			{
 				close(exec.pipes[0][0]);
 				close(exec.pipes[1][1]);
-				//close(exec.pipes[0][1]); ??
 			}
+			if (exec.n_herdoc)
+				close(exec.herdoc_pipe[i][0]);
 			open_uno(i);
 		}
 		table = table->next;

@@ -66,4 +66,5 @@ void    get_input(t_cmd *command)
 		i++;
 		cmd = cmd->next;
 	}
+	printf("\n");
 }

@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/30 21:13:57 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,33 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 	char	*cmd;
 	char	*test;
 	int		i;
+	DIR		*ptr_dir;
 
 	i = 0;
 	if (!table->cmd)
 		return (NULL);
-	if (access(table->cmd[0], F_OK) == 0) //does exist
-		return (table->cmd[0]);
+	ptr_dir = opendir(table->cmd[0]);
+	if (ptr_dir)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(table->cmd[0], 2);
+		ft_putstr_fd(": is a directory\n", 2);
+		exec.g_exit_status = 126;
+		exit (exec.g_exit_status);
+	}
+	if (table->cmd[0][0] == '/' || (table->cmd[0][0] == '.' && table->cmd[0][1] == '/'))
+	{
+		if (access(table->cmd[0], F_OK) == 0) //does exist
+			return (table->cmd[0]);	
+		else
+		{
+			ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(table->cmd[0], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		exec.g_exit_status = 127;
+		exit (exec.g_exit_status);
+		}
+	}
 	cmd = ft_my_strjoin("/", table->cmd[0]);
 	path = find_path(env);
 	if (path)
@@ -47,7 +68,7 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 			i++;
 		}
 	}
-	return (NULL); //
+	return (NULL);
 }
 
 void	exec_single(t_env *env, t_cmd *table)
@@ -55,14 +76,13 @@ void	exec_single(t_env *env, t_cmd *table)
 	char	*cmd_path;
 	int		f_pid;
 	int		status;
-	// int		**herdoc_p;
 
 	if (table->cmd && is_builtin(table->cmd[0]))
 		exec_builtin(table->cmd[0], table, &env);
 	else
 	{
 		f_pid = fork();
-		if (!f_pid)
+		if (!f_pid) // child
 		{
 			cmd_path = cmd_exist(table, env);
 			redir_in(table, 0);
@@ -75,16 +95,21 @@ void	exec_single(t_env *env, t_cmd *table)
 				exec.g_exit_status = 127;
 				exit(exec.g_exit_status);
 			}
-			execve(cmd_path, table->cmd, exec.env);
+			if (execve(cmd_path, table->cmd, exec.env) == -1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(cmd_path, 2);
+				perror(" ");
+				exec.g_exit_status = 126;
+				exit (exec.g_exit_status);
+			}
 			if (!table->cmd)
 				exit(0);
-			ft_putstr_fd("problem exec\n", 2);
 		}
-		else
+		else //parent
 		{
-			// herdoc_p = exec.herdoc_pipe;
-			// close(herdoc_p[0][1]);
-			// close(herdoc_p[0][0]);
+			if (exec.n_herdoc)
+				close(exec.herdoc_pipe[0][0]);
 			waitpid(f_pid, &status, 0);
 			exec.g_exit_status = WEXITSTATUS(status);
 		}
@@ -123,13 +148,7 @@ void	execute(t_cmd *table, t_env **dup_env)
 		return;
 	open_herdoc(table);
 	if (table_len(table) == 1)
-	{
-		dprintf(2, "exec single\n");
 		exec_single(*dup_env, table);
-	}
 	else
-	{
-		dprintf(2, "exec multi\n");
 		multi_cmd(*dup_env, table);
-	}
 }

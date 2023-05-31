@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/28 00:08:27 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/30 15:44:46 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ int	n_herdoc(t_redi *in)
 			n++;
 		in = in->next;
 	}
+	exec.n_herdoc = n;
 	return (n);
 }
 
 //close herdoc pipes
+
+// close herdoc single cmd
 
 // check redir_in()
 
@@ -38,28 +41,35 @@ int	n_herdoc(t_redi *in)
 
 // bash script
 
+// echo mok > bak | cat bak | rm bak
+
 void	open_herdoc(t_cmd *table)
 {
 	t_redi	*tmp_in;
 	int		herdo;
 	int		h;
+	int		i;
 	char	*line;
 
 	h = 0;
+	i = 0;
 	while (table)
 	{
 		tmp_in = table->in;
 		herdo = n_herdoc(tmp_in);
+		if (herdo)
+		{
+			exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
+			if (pipe(exec.herdoc_pipe[h]) == -1)
+				perror("pipe\n");
+		}
 		while (tmp_in)
 		{
 			if (tmp_in->type == heredoc)
 			{
-				exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
-				if (pipe(exec.herdoc_pipe[h]) == -1)
-					perror("pipe\n");
-				printf("in = %d out = %d\n", exec.herdoc_pipe[h][0], exec.herdoc_pipe[h][1]);
 				while (1)
 				{
+					
 					line = readline(">");
 					if (!line || !ft_strcmp(line, tmp_in->file))
 						break ;
@@ -91,7 +101,6 @@ void	redir_in(t_cmd *table, int i)
 	{
 		if (r_in->type == in)
 		{
-			dprintf(2, "--------------->redir_in\n");
 			fd = open(r_in->file, O_RDONLY);
 			if (fd == -1)
 			{
@@ -107,7 +116,6 @@ void	redir_in(t_cmd *table, int i)
 		}
 		else
 		{
-			dprintf(2, "--------------->redir_herd\n");
 			dup2(exec.herdoc_pipe[i][0], STDIN_FILENO);
 			close(exec.herdoc_pipe[i][0]);
 		}
