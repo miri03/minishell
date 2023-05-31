@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/27 23:40:54 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/31 11:22:50 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,21 @@ void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 		ft_lstclear_t(token);
 }
 
+void	sig_int_handler(int s)
+{
+	(void)s;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	set_signals(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sig_int_handler);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*line;
@@ -81,7 +96,7 @@ int	main(int ac, char **av, char **env)
 	check_args(ac, av, &dup_env, env);
 	exec = init_exec();
 	exec.env = env;
-	
+	set_signals();
 	while (1)
 	{
 		token = NULL;

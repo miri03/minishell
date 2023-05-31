@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/30 19:04:11 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/31 11:24:19 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,10 @@ void	set_oper(t_token *token, t_redi **redir, int type);
 void	set_cmd(t_cmd *cmd);
 void	init_args(t_token *token, t_cmd *cmd);
 void	fill_cmd(t_cmd *cmd, t_token *token, int *i);
+
+//*---------signals--------*//
+void	set_signals(void);
+void	sig_int_handler(int s);
 
 //*-----meharit-------execution--------------------*//
 
