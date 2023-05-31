@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 07:20:45 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/23 13:02:17 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/31 17:41:30 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	here_doc_exp(t_token *token)
 		else if (ft_strlen(token->content) == 2 && token->type == OPERATOR
 			&& ft_strcmp(token->content, "<<") == 0)
 		{
-			if (token->next && token->next->type == SPACE)
+			if (token->next && token->next->type == SPACEE)
 			{
 				if (token->next->next && token->next->next->type != PIPE
 					&& token->next->next->type != OPERATOR)
@@ -67,10 +67,10 @@ void	here_doc_exp(t_token *token)
 int	join_str(t_token **token, t_token *tmp)
 {
 	if ((*token)->type == PIPE || (*token)->type == OPERATOR
-		|| (*token)->type == SPACE)
+		|| (*token)->type == SPACEE)
 		return (0);
 	if (!tmp || tmp->type == PIPE || tmp->type == OPERATOR
-		|| tmp->type == SPACE)
+		|| tmp->type == SPACEE)
 		return (0);
 	else
 	{

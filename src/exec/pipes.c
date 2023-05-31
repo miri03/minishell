@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/30 16:34:54 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/31 22:09:56 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,16 @@ void	wait_all(int *pid, int last) //recheck it
 	close(exec.pipes[1][1]);
 	close(exec.pipes[0][1]);
 	close(exec.pipes[0][0]);
-	while (i < last - 1)
-	{
-		waitpid(pid[i], NULL, 0);
-		i++;
-	}
-	waitpid(pid[i], &status, 0);
+
+	waitpid(pid[last - 1], &status, 0);
 	if (WIFEXITED(status))
 		exec.g_exit_status = WEXITSTATUS(status);
+
+	while (i < last - 1)
+	{
+		waitpid(-1, NULL, 0);
+		i++;
+	}
 }
 
 void	open_uno(int i)

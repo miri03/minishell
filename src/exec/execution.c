@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/30 21:13:57 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/31 22:57:53 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,23 +87,26 @@ void	exec_single(t_env *env, t_cmd *table)
 			cmd_path = cmd_exist(table, env);
 			redir_in(table, 0);
 			redir_out(table);
-			if (!cmd_path && table->cmd)
+			if (table->cmd)
 			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(table->cmd[0], 2);
-				ft_putstr_fd(": command not found\n", 2);
-				exec.g_exit_status = 127;
-				exit(exec.g_exit_status);
+				if (!cmd_path && table->cmd)
+				{
+					ft_putstr_fd("minishell: ", 2);
+					ft_putstr_fd(table->cmd[0], 2);
+					ft_putstr_fd(": command not found\n", 2);
+					exec.g_exit_status = 127;
+					exit(exec.g_exit_status);
+				}
+				if (execve(cmd_path, table->cmd, exec.env) == -1)
+				{
+					ft_putstr_fd("minishell: ", 2);
+					ft_putstr_fd(cmd_path, 2);
+					perror(" ");
+					exec.g_exit_status = 126;
+					exit (exec.g_exit_status);
+				}
 			}
-			if (execve(cmd_path, table->cmd, exec.env) == -1)
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(cmd_path, 2);
-				perror(" ");
-				exec.g_exit_status = 126;
-				exit (exec.g_exit_status);
-			}
-			if (!table->cmd)
+			else
 				exit(0);
 		}
 		else //parent
@@ -147,6 +150,7 @@ void	execute(t_cmd *table, t_env **dup_env)
 	if (!table)
 		return;
 	open_herdoc(table);
+	system("leaks minishell");
 	if (table_len(table) == 1)
 		exec_single(*dup_env, table);
 	else

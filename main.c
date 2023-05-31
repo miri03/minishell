@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/31 11:22:50 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/31 22:24:05 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	remove_spaces(t_token **token, t_token *tok)
 	tmp = NULL;
 	while (tok)
 	{
-		if (tok->type == SPACE)
+		if (tok->type == SPACEE)
 		{
 			ft_remove(tmp, &tok, token);
 		}
@@ -68,20 +68,20 @@ void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 		ft_lstclear_t(token);
 }
 
-void	sig_int_handler(int s)
-{
-	(void)s;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
+// void	sig_int_handler(int s)
+// {
+// 	(void)s;
+// 	write(1, "\n", 1);
+// 	rl_replace_line("", 0);
+// 	rl_on_new_line();
+// 	rl_redisplay();
+// }
 
-void	set_signals(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, sig_int_handler);
-}
+// void	set_signals(void)
+// {
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGINT, sig_int_handler);
+// }
 
 int	main(int ac, char **av, char **env)
 {
@@ -96,7 +96,7 @@ int	main(int ac, char **av, char **env)
 	check_args(ac, av, &dup_env, env);
 	exec = init_exec();
 	exec.env = env;
-	set_signals();
+	// set_signals();
 	while (1)
 	{
 		token = NULL;
@@ -113,9 +113,10 @@ int	main(int ac, char **av, char **env)
 		if (token_line(line, &token))
 		{
 			ft_minishell(&dup_env, &token, &cmd);
-			exec.herdoc_pipe = malloc(sizeof(t_exec) * table_len(cmd));
+			exec.herdoc_pipe = malloc(sizeof(t_exec) * table_len(cmd));  //
 			get_input(cmd);
 			execute(cmd, &dup_env);
+			free(exec.herdoc_pipe);
 			clear_cmds(&cmd);
 		}
 		free(line);

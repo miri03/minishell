@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_line.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 02:25:44 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/18 07:28:21 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/05/31 17:41:30 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	type_token(char *content)
 	if (*content == '~' && ft_strlen(content) == 1)
 		return (HYPHEN);
 	if (*content == ' ')
-		return (SPACE);
+		return (SPACEE);
 	else
 		return (WORD);
 }

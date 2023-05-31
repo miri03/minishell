@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/30 15:44:46 by meharit          ###   ########.fr       */
+/*   Updated: 2023/05/31 22:49:41 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,13 @@ void	open_herdoc(t_cmd *table)
 			{
 				while (1)
 				{
-					
 					line = readline(">");
 					if (!line || !ft_strcmp(line, tmp_in->file))
+					{
+						free (line);
 						break ;
+					}
+						
 					if (herdo == 1)
 					{
 						write(exec.herdoc_pipe[h][1], line, ft_strlen(line));
@@ -82,12 +85,16 @@ void	open_herdoc(t_cmd *table)
 				}
 				herdo--;
 				if (!herdo)
+				{
 					close(exec.herdoc_pipe[h][1]);
+					// free(exec.herdoc_pipe[h][1]);
+				}
+					
 			}
 			tmp_in = tmp_in->next; 
 		}
 		table = table->next;
-		h++;
+		h++;	
 	}
 }
 
@@ -118,6 +125,7 @@ void	redir_in(t_cmd *table, int i)
 		{
 			dup2(exec.herdoc_pipe[i][0], STDIN_FILENO);
 			close(exec.herdoc_pipe[i][0]);
+			free(exec.herdoc_pipe[i]);
 		}
 		r_in = r_in->next;
 	}
