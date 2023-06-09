@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/31 22:57:53 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/09 20:38:59 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ t_exec	init_exec()
 {
 	t_exec	exec;
 	
-	exec.built_in = 0;
 	exec.std_in = dup(STDIN_FILENO);
 	exec.std_out = dup(STDOUT_FILENO);
 	return (exec);
@@ -150,7 +149,6 @@ void	execute(t_cmd *table, t_env **dup_env)
 	if (!table)
 		return;
 	open_herdoc(table);
-	system("leaks minishell");
 	if (table_len(table) == 1)
 		exec_single(*dup_env, table);
 	else

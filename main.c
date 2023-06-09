@@ -6,26 +6,11 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/31 22:24:05 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/09 22:15:48 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-void	minishell_mess()
-{
-	printf(RED"\n ███▄ ▄███▓ ██▓ ███▄    █  ██▓  ██████  ██░ ██ ▓█████  ██▓     ██▓    \n");
-	printf("▓██▒▀█▀ ██▒▓██▒ ██ ▀█   █ ▓██▒▒██    ▒ ▓██░ ██▒▓█   ▀ ▓██▒    ▓██▒    \n");
-	printf("▓██    ▓██░▒██▒▓██  ▀█ ██▒▒██▒░ ▓██▄   ▒██▀▀██░▒███   ▒██░    ▒██░    \n");
-	printf("▒██    ▒██ ░██░▓██▒  ▐▌██▒░██░  ▒   ██▒░▓█ ░██ ▒▓█  ▄ ▒██░    ▒██░    \n");
-	printf("▒██▒   ░██▒░██░▒██░   ▓██░░██░▒██████▒▒░▓█▒░██▓░▒████▒░██████▒░██████▒\n");
-	printf("░ ▒░   ░  ░░▓  ░ ▒░   ▒ ▒ ░▓  ▒ ▒▓▒ ▒ ░ ▒ ░░▒░▒░░ ▒░ ░░ ▒░▓  ░░ ▒░▓  ░\n");
-	printf("░  ░      ░ ▒ ░░ ░░   ░ ▒░ ▒ ░░ ░▒  ░ ░ ▒ ░▒░ ░ ░ ░  ░░ ░ ▒  ░░ ░ ▒  ░\n");
-	printf("░      ░    ▒ ░   ░   ░ ░  ▒ ░░  ░  ░   ░  ░░ ░   ░     ░ ░     ░ ░   \n");
-	printf("       ░    ░           ░  ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░\n"RESET);
-	printf(BLUE"\nby: meharit && yismaail\n"RESET);
-	printf("\n\n");
-}
 
 void	check_args(int ac, char **av, t_env **dup_env, char **env)
 {
@@ -68,20 +53,20 @@ void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 		ft_lstclear_t(token);
 }
 
-// void	sig_int_handler(int s)
-// {
-// 	(void)s;
-// 	write(1, "\n", 1);
-// 	rl_replace_line("", 0);
-// 	rl_on_new_line();
-// 	rl_redisplay();
-// }
+void	sig_int_handler(int s)
+{
+	(void)s;
+	write(1, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
 
-// void	set_signals(void)
-// {
-// 	signal(SIGQUIT, SIG_IGN);
-// 	signal(SIGINT, sig_int_handler);
-// }
+void	set_signals(void)
+{
+	signal(SIGQUIT, SIG_IGN);          //ctr-\ //
+	signal(SIGINT, sig_int_handler);   //ctr-c //
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -89,16 +74,22 @@ int	main(int ac, char **av, char **env)
 	t_token	*token;
 	t_env	*dup_env;
 	t_cmd	*cmd;
+	int		i;
 
 	dup_env = NULL;
 	// minishell_mess();
 	
 	check_args(ac, av, &dup_env, env);
+	
+	// int struct
 	exec = init_exec();
 	exec.env = env;
-	// set_signals();
+	///////
+	
+	set_signals();
 	while (1)
 	{
+		i = 0;
 		token = NULL;
 		cmd = NULL;
 		line = readline(GREEN"minishell> "RESET);
@@ -116,9 +107,19 @@ int	main(int ac, char **av, char **env)
 			exec.herdoc_pipe = malloc(sizeof(t_exec) * table_len(cmd));  //
 			get_input(cmd);
 			execute(cmd, &dup_env);
+			// dprintf(2, "i = %d herdoc_per_pipe --> %d\n", i, exec.herdoc_per_pipe);
+			// while (i < exec.herdoc_per_pipe)
+			// {
+			// 	printf("%d = exec.herdoc_per_pipe = %d\n", i, exec.herdoc_per_pipe);
+			// 	free(exec.herdoc_pipe[i]);
+			// 	i++;
+			// }
 			free(exec.herdoc_pipe);
 			clear_cmds(&cmd);
 		}
 		free(line);
 	}
 }
+
+//<< m cat | ls | <<m
+//ls | << m cat | cat

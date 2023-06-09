@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/31 22:09:56 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/09 20:38:40 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,12 @@ void	multi_cmd(t_env *env, t_cmd *table)
 	i = 0;
 	tbl_len = table_len(table);
 	exec.pipes = (int **)malloc(sizeof(int *) * 2);
-	f_pid = (int *)malloc(sizeof(int) * tbl_len);
 	make_pipes(exec.pipes);
+	f_pid = (int *)malloc(sizeof(int) * tbl_len);
 	while (table)
 	{
 		f_pid[i] = fork();
-		if (f_pid[i] == 0)
+		if (f_pid[i] == 0) // child proc
 		{
 			if (i == 0)
 				execute_cmds(table, env, 0, i);
@@ -81,6 +81,7 @@ void	multi_cmd(t_env *env, t_cmd *table)
 			else
 				execute_cmds(table, env, 1, i);
 		}
+		// back to parent
 		else
 		{
 			if (i == 0)
@@ -108,12 +109,16 @@ void	multi_cmd(t_env *env, t_cmd *table)
 				close(exec.pipes[0][0]);
 				close(exec.pipes[1][1]);
 			}
-			if (exec.n_herdoc)
-				close(exec.herdoc_pipe[i][0]);
+			// if (exec.n_herdoc)
+			// 	close(exec.herdoc_pipe[i][0]);
 			open_uno(i);
 		}
 		table = table->next;
 		i++;	
 	}
 	wait_all(f_pid, i);
+	free(exec.pipes[0]);
+	free(exec.pipes[1]);
+	free (exec.pipes);
+	free (f_pid);
 }

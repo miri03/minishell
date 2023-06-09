@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/31 22:49:41 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/10 00:04:45 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ int	n_herdoc(t_redi *in)
 	return (n);
 }
 
+// leaks herdoc pipe
+
 //close herdoc pipes
 
 // close herdoc single cmd
@@ -35,13 +37,14 @@ int	n_herdoc(t_redi *in)
 
 // dup in and out fd
 
-// leaks hihi
-
 // check exit status and cmd not found in multiple pipes
 
-// bash script
 
-// echo mok > bak | cat bak | rm bak
+
+// void	sig_exit(int id)
+// {
+// 	kill(id, SIGKILL);
+// }
 
 void	open_herdoc(t_cmd *table)
 {
@@ -50,6 +53,8 @@ void	open_herdoc(t_cmd *table)
 	int		h;
 	int		i;
 	char	*line;
+	int		p_id;
+	int		status;
 
 	h = 0;
 	i = 0;
@@ -67,29 +72,40 @@ void	open_herdoc(t_cmd *table)
 		{
 			if (tmp_in->type == heredoc)
 			{
-				while (1)
+				p_id = fork();
+				if (!p_id)
 				{
-					line = readline(">");
-					if (!line || !ft_strcmp(line, tmp_in->file))
+					// signal(SIGINT, sig_exit(p_id));
+					while (1)
 					{
+						line = readline(">");
+						if (!line || !ft_strcmp(line, tmp_in->file))
+						{
+							free (line);
+							break ;
+						}
+							
+						if (herdo == 1)
+						{
+							write(exec.herdoc_pipe[h][1], line, ft_strlen(line));
+							write(exec.herdoc_pipe[h][1], "\n", 1);
+						}
 						free (line);
-						break ;
 					}
-						
-					if (herdo == 1)
+					herdo--;
+					if (!herdo)
 					{
-						write(exec.herdoc_pipe[h][1], line, ft_strlen(line));
-						write(exec.herdoc_pipe[h][1], "\n", 1);
+						close(exec.herdoc_pipe[h][1]);
+						// free(exec.herdoc_pipe[h][1]);
 					}
-					free (line);
+					exit (exec.g_exit_status);
 				}
-				herdo--;
-				if (!herdo)
+				else
 				{
-					close(exec.herdoc_pipe[h][1]);
-					// free(exec.herdoc_pipe[h][1]);
+					waitpid(p_id, &status, 0);
+					if (WIFEXITED(status))
+					exec.g_exit_status = WEXITSTATUS(status);
 				}
-					
 			}
 			tmp_in = tmp_in->next; 
 		}
@@ -97,6 +113,8 @@ void	open_herdoc(t_cmd *table)
 		h++;	
 	}
 }
+
+// << m cat <<g cat
 
 void	redir_in(t_cmd *table, int i)
 {
@@ -125,7 +143,7 @@ void	redir_in(t_cmd *table, int i)
 		{
 			dup2(exec.herdoc_pipe[i][0], STDIN_FILENO);
 			close(exec.herdoc_pipe[i][0]);
-			free(exec.herdoc_pipe[i]);
+			// free(exec.herdoc_pipe[i]); // heap-use-after-free
 		}
 		r_in = r_in->next;
 	}

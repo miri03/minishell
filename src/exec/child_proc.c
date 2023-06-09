@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/30 15:50:38 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/09 20:40:57 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ void    execute_cmds(t_cmd *table, t_env *env, int phase, int i)
 {
     char    *cmd_path;
     char    *cmd;
-
+    
+    (void)phase;
+    
     cmd_path = cmd_exist(table, env);
     dup_it(phase, i);
     redir_in(table, i);

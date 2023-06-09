@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/31 17:41:30 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/09 20:39:13 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_redi
 	struct s_redi	*next;
 }					t_redi;
 
+///////<---global struct--->///////
 typedef struct s_exec
 {
 	int		**herdoc_pipe;
@@ -69,6 +70,7 @@ typedef struct s_exec
 	int		std_out;
 	int		g_exit_status;
 	int		n_herdoc;
+	int		herdoc_per_pipe;
 }				t_exec;
 
 t_exec	exec;
@@ -96,6 +98,7 @@ typedef struct s_exp
 	struct s_exp	*next;
 }					t_exp;
 
+///////<--command table-->///////
 typedef struct s_cmd
 {
 	char			**cmd;
@@ -232,5 +235,7 @@ void	ft_echo(t_cmd *cmd, int fork);
 void	ft_export(t_env *dup_env, t_cmd *table, int fork);
 void	unset_var(t_env *env, int index, t_env **head);
 void	env_i(t_env **dup_env);
+
+void	minishell_mess();
 
 #endif

@@ -6,15 +6,19 @@
 #    By: meharit <meharit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 04:04:08 by yismaail          #+#    #+#              #
-#    Updated: 2023/05/31 17:39:37 by meharit          ###   ########.fr        #
+#    Updated: 2023/06/09 21:11:41 by meharit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	cc
-CFLAGS		=	-Werror -Wextra -Wall  -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib -I/goinfre/meharit/homebrew/opt/readline/include #-fsanitize=address -g3
+
+# CFLAGS		=	-Werror -Wextra -Wall -fsanitize=address -g3
+
+CFLAGS		=	-Werror -Wextra -Wall  -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib -I/goinfre/meharit/homebrew/opt/readline/include -fsanitize=address -g3
+
 RM			=	rm -rf
-SRCS		=	main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
+SRCS		=	minishell_mess.c main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
 				src/tools/lst_env.c src/env/environment.c src/expand/expansion.c \
 				src/expand/expansion2.c src/expand/expansion3.c  \
 				src/lexer/checks.c src/parse/parsing.c src/parse/parsing2.c src/tools/lst_redir.c \
