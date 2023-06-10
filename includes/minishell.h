@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/09 20:39:13 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/10 18:26:17 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ void	fill_cmd(t_cmd *cmd, t_token *token, int *i);
 //*---------signals--------*//
 void	set_signals(void);
 void	sig_int_handler(int s);
+void	set_default();
 
 //*-----meharit-------execution--------------------*//
 
@@ -216,7 +217,7 @@ t_exec	init_exec();
 //*-------------------redir-----------------------*//
 void	redir_in(t_cmd *table, int i);
 int		redir_out(t_cmd *table);
-void	open_herdoc(t_cmd *table);
+int		open_herdoc(t_cmd *table);
 
 //*-------------------pipes------------------------*//
 // void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);

@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/09 20:38:40 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/10 18:23:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	multi_cmd(t_env *env, t_cmd *table)
 		f_pid[i] = fork();
 		if (f_pid[i] == 0) // child proc
 		{
+			set_default();
 			if (i == 0)
 				execute_cmds(table, env, 0, i);
 				

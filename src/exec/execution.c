@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/09 20:38:59 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/10 18:25:51 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	exec_single(t_env *env, t_cmd *table)
 		f_pid = fork();
 		if (!f_pid) // child
 		{
+			set_default();
 			cmd_path = cmd_exist(table, env);
 			redir_in(table, 0);
 			redir_out(table);
@@ -148,7 +149,8 @@ void	execute(t_cmd *table, t_env **dup_env)
 	i = 0;
 	if (!table)
 		return;
-	open_herdoc(table);
+	if (open_herdoc(table))
+		return ;
 	if (table_len(table) == 1)
 		exec_single(*dup_env, table);
 	else

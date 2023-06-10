@@ -6,7 +6,7 @@
 #    By: meharit <meharit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 04:04:08 by yismaail          #+#    #+#              #
-#    Updated: 2023/06/09 21:11:41 by meharit          ###   ########.fr        #
+#    Updated: 2023/06/10 18:30:20 by meharit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC			=	cc
 
 # CFLAGS		=	-Werror -Wextra -Wall -fsanitize=address -g3
 
-CFLAGS		=	-Werror -Wextra -Wall  -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib -I/goinfre/meharit/homebrew/opt/readline/include -fsanitize=address -g3
+CFLAGS		=	-Werror -Wextra -Wall  -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib -I/goinfre/meharit/homebrew/opt/readline/include #-fsanitize=address -g3
 
 RM			=	rm -rf
 SRCS		=	minishell_mess.c main.c check_tokens.c  src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \

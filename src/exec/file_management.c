@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/10 00:04:45 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/10 18:31:19 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	n_herdoc(t_redi *in)
 // 	kill(id, SIGKILL);
 // }
 
-void	open_herdoc(t_cmd *table)
+int	open_herdoc(t_cmd *table)
 {
 	t_redi	*tmp_in;
 	int		herdo;
@@ -75,7 +75,7 @@ void	open_herdoc(t_cmd *table)
 				p_id = fork();
 				if (!p_id)
 				{
-					// signal(SIGINT, sig_exit(p_id));
+					set_default();
 					while (1)
 					{
 						line = readline(">");
@@ -103,8 +103,11 @@ void	open_herdoc(t_cmd *table)
 				else
 				{
 					waitpid(p_id, &status, 0);
-					if (WIFEXITED(status))
-					exec.g_exit_status = WEXITSTATUS(status);
+					if (WIFSIGNALED(status))
+					{
+						exec.g_exit_status = WTERMSIG(status) + 128;
+						return(1);
+					}
 				}
 			}
 			tmp_in = tmp_in->next; 
@@ -112,7 +115,26 @@ void	open_herdoc(t_cmd *table)
 		table = table->next;
 		h++;	
 	}
+	return (0);
 }
+
+// <--herdoc readme--> //
+
+// aloceted as much of nodes I have for herdoc pipes
+// check each node of the command table 
+	// put the number of herdocs in each redir_in in the variable herdo
+	// if there is at least one herdoc open one pipe to fill it whith the content of the last one
+	// loop around redir_in
+		// check if I have a herdoc
+		// fork to set signals to default
+		// open herdocs
+		// but only put the content of the last of in the pipe
+		// close the write end of the pipe
+		// exit from the child process
+		// meanwhile in the parent wait for the child and stop executing if I got a signal
+		// keep looping around the redir_in until the last in that node
+	// keep looping around the nodes until the last
+	// add up to the index of herdoc pipes
 
 // << m cat <<g cat
 

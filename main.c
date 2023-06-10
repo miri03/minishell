@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/09 22:15:48 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/10 18:33:32 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ void	set_signals(void)
 	signal(SIGINT, sig_int_handler);   //ctr-c //
 }
 
+void set_default(void)
+{
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*line;
@@ -94,7 +100,11 @@ int	main(int ac, char **av, char **env)
 		cmd = NULL;
 		line = readline(GREEN"minishell> "RESET);
 		if (!line)
+		{
+			ft_putstr_fd("exit\n", 2);
 			exit(exec.g_exit_status);
+		}
+			
 		if (is_all_spaces(line))
 		{
 			free(line);
