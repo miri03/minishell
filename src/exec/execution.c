@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/11 17:55:20 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/11 22:21:09 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,13 @@ void	exec_single(t_env *env, t_cmd *table)
 				close(exec.herdoc_pipe[0][0]);
 				close(exec.herdoc_pipe[0][1]);
 				free (exec.herdoc_pipe[0]);
-			}
-				
+			}	
 			waitpid(f_pid, &status, 0);
+			if (WIFSIGNALED(status))
+			{
+				exec.g_exit_status = WTERMSIG(status) + 128;
+				return;
+			}
 			exec.g_exit_status = WEXITSTATUS(status);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/11 16:19:14 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/11 22:22:55 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ void	wait_all(int *pid, int last) //recheck it
 	waitpid(pid[last - 1], &status, 0);
 	if (WIFEXITED(status))
 		exec.g_exit_status = WEXITSTATUS(status);
-
+	if (WIFSIGNALED(status))
+	{
+		exec.g_exit_status = WTERMSIG(status) + 128;
+		return;
+	}
 	while (i < last - 1)
 	{
 		waitpid(-1, NULL, 0);

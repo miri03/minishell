@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/11 22:47:35 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,13 @@ int	valid_ident(char *ident)
 	int	i;
 
 	i = 1;
-	if (!ft_isalpha(ident[0]))
-	{
-		if (ident[0] != '\\')
-			return (0);
-	}
+	if (ident[0] != '_' && !ft_isalpha(ident[0]))
+		return (0);
 	while (ident[i] != '=' && ident[i])
 	{
 		if (ident[i] != '+' && ident[i] != '=')
 		{
-			if (!ft_isalpha(ident[i]) && !ft_isdigit(ident[i]))
+			if (ident[i] != '_' && !ft_isalpha(ident[i]) && !ft_isdigit(ident[i]))
 				return (0);
 		}
 		if (ident[i] == '+' && ident[i+1] != '=')
@@ -91,9 +88,10 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 {
 	if (*append)
 	{
+		printf("append\n");
 		while (ft_strcmp(env->key, key))
 			env = env->next;
-		env->value = ft_strjoin(env->value, value);
+		env->value = ft_my_strjoin(env->value, value);
 		free(value);
 		free(key);
 	}
@@ -120,8 +118,9 @@ void	export(t_env *dup_env, t_cmd *table) //??
 			{
 				printf("declare -x ");
 				printf("%s",dup_env->key);
-				if (dup_env->value)
-					printf("=\"%s\"\n", dup_env->value);
+				if (ft_strcmp(dup_env->value, ""))
+					printf("=\"%s\"", dup_env->value);
+				printf("\n");
 			}
 			dup_env = dup_env->next;
 		}
@@ -139,7 +138,6 @@ void	error_mess_exp(char *cmd)
 
 void	add_to(char *key, char *value, t_env *dup_env, char *ident)
 {
-
 	if (env_valid(ident))
 		ft_lstadd_back_env(&dup_env, ft_lstnew_env(key, value, 1));
 	else
@@ -164,8 +162,12 @@ void	ft_export(t_env *dup_env, t_cmd *table, int fork)
 			value = get_value(table->cmd[i]);
 			if (!does_exist(key, dup_env))
 				add_to(key, value, dup_env, table->cmd[i]);
-			else	
-				append_change(dup_env, &append, key, value);
+			else
+			{
+				if (value[0])	
+					append_change(dup_env, &append, key, value);
+			}
+			
 		}
 		else
 			error_mess_exp(table->cmd[i]);

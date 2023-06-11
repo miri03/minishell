@@ -6,23 +6,37 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:42:54 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 00:12:12 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	new_head(t_env **head_ptr)
-{
-    t_env   *second_node;
+// void	new_head(t_env **head_ptr)
+// {
+//     t_env   *second_node;
 
+//     if (*head_ptr == NULL || (*head_ptr)->next == NULL)
+//         return;
+//     second_node = (*head_ptr)->next;
+//     (*head_ptr)->next = second_node->next;
+//     free ((*head_ptr)->key);
+//     free ((*head_ptr)->value);
+//     *head_ptr = second_node;
+// }
+
+void make_second_node_head(t_env **head_ptr)
+{
+    t_env *second_node;
+
+    // printf("first = %p sec = %p\n",(*head_ptr),  (*head_ptr)->next);
     if (*head_ptr == NULL || (*head_ptr)->next == NULL)
         return;
     second_node = (*head_ptr)->next;
     (*head_ptr)->next = second_node->next;
-    free ((*head_ptr)->key);
-    free ((*head_ptr)->value);
     *head_ptr = second_node;
+    // printf("after = %p \n",(*head_ptr));
+    // ft_env(head_ptr, 0);
 }
 
 void    unset_var(t_env *env, int index, t_env **head)
@@ -33,11 +47,16 @@ void    unset_var(t_env *env, int index, t_env **head)
 
     i = 0;
 	if (index == 0)
-		new_head(head);
+    {
+        printf("first = %p sec = %p\n",(*head),  (*head)->next);
+        make_second_node_head(head);
+        printf("after = %p \n",(*head));
+    }
     while (env)
     {
         if (i == index - 1)
         {
+            printf("yes\n");
             new = (env->next)->next;
             tmp = env->next;
             free (tmp->key);
@@ -89,6 +108,7 @@ void    unset(t_env **dup_env, char *cmd, t_env *tmp)
         if (ft_strcmp(tmp->key, cmd) == 0)
 		{
             unset_var(*dup_env, index, dup_env);
+            printf("dup_env = %p\n", (*dup_env));
 			break ;
 		}
 		index++;
@@ -117,6 +137,7 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd, int fork)
 			}
             i++;
         }
+        printf("unset = %p fork = %d\n", (*dup_env), fork);
     }
     if (fork)
 		exit (exec.g_exit_status);
