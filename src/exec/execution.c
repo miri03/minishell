@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/10 18:25:51 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/11 17:55:20 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,19 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 		exit (exec.g_exit_status);
 		}
 	}
-	cmd = ft_my_strjoin("/", table->cmd[0]);
-	path = find_path(env);
-	if (path)
+	if (table->cmd[0][0])
 	{
-		while (path[i])
+		cmd = ft_my_strjoin("/", table->cmd[0]);
+		path = find_path(env);
+		if (path)
 		{
-			test = ft_strjoin(path[i], cmd);
-			if (access(test, X_OK) == 0)
-				return (test);
-			i++;
+			while (path[i])
+			{
+				test = ft_strjoin(path[i], cmd);
+				if (access(test, F_OK) == 0)
+					return (test);
+				i++;
+			}
 		}
 	}
 	return (NULL);
@@ -90,8 +93,9 @@ void	exec_single(t_env *env, t_cmd *table)
 			redir_out(table);
 			if (table->cmd)
 			{
-				if (!cmd_path && table->cmd)
+				if (!cmd_path || !table->cmd[0][0]) //table->cmd
 				{
+					dprintf(2, "yes\n");
 					ft_putstr_fd("minishell: ", 2);
 					ft_putstr_fd(table->cmd[0], 2);
 					ft_putstr_fd(": command not found\n", 2);
@@ -100,6 +104,7 @@ void	exec_single(t_env *env, t_cmd *table)
 				}
 				if (execve(cmd_path, table->cmd, exec.env) == -1)
 				{
+					dprintf(2, "here %s \n", cmd_path);
 					ft_putstr_fd("minishell: ", 2);
 					ft_putstr_fd(cmd_path, 2);
 					perror(" ");
@@ -113,7 +118,12 @@ void	exec_single(t_env *env, t_cmd *table)
 		else //parent
 		{
 			if (exec.n_herdoc)
+			{
 				close(exec.herdoc_pipe[0][0]);
+				close(exec.herdoc_pipe[0][1]);
+				free (exec.herdoc_pipe[0]);
+			}
+				
 			waitpid(f_pid, &status, 0);
 			exec.g_exit_status = WEXITSTATUS(status);
 		}
@@ -137,8 +147,7 @@ t_exec	init_exec()
 {
 	t_exec	exec;
 	
-	exec.std_in = dup(STDIN_FILENO);
-	exec.std_out = dup(STDOUT_FILENO);
+	exec.g_exit_status = 0;
 	return (exec);
 }
 

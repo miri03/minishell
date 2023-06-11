@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/10 18:33:32 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/11 16:26:49 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,6 @@ int	main(int ac, char **av, char **env)
 			exec.herdoc_pipe = malloc(sizeof(t_exec) * table_len(cmd));  //
 			get_input(cmd);
 			execute(cmd, &dup_env);
-			// dprintf(2, "i = %d herdoc_per_pipe --> %d\n", i, exec.herdoc_per_pipe);
-			// while (i < exec.herdoc_per_pipe)
-			// {
-			// 	printf("%d = exec.herdoc_per_pipe = %d\n", i, exec.herdoc_per_pipe);
-			// 	free(exec.herdoc_pipe[i]);
-			// 	i++;
-			// }
 			free(exec.herdoc_pipe);
 			clear_cmds(&cmd);
 		}

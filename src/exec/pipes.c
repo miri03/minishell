@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/10 18:23:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/11 16:19:14 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	multi_cmd(t_env *env, t_cmd *table)
 		// back to parent
 		else
 		{
+			
 			if (i == 0)
 			{
 				close(exec.pipes[1][0]);
@@ -100,18 +101,21 @@ void	multi_cmd(t_env *env, t_cmd *table)
 			}
 			else if (i % 2 == 0)
 			{
-				
+				dprintf(2, "=> %i\n", exec.pipes[1][1]);
 				close(exec.pipes[0][1]);
 				close(exec.pipes[1][0]);
-				close(exec.pipes[1][1]);
 			}
 			else //i % 2 != 0
 			{
 				close(exec.pipes[0][0]);
 				close(exec.pipes[1][1]);
 			}
-			// if (exec.n_herdoc)
-			// 	close(exec.herdoc_pipe[i][0]);
+			if (n_herdoc(table->in))
+			{
+				close(exec.herdoc_pipe[i][0]);
+				close(exec.herdoc_pipe[i][1]);
+				free(exec.herdoc_pipe[i]);
+			}	
 			open_uno(i);
 		}
 		table = table->next;

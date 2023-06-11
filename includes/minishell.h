@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/10 18:26:17 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/11 13:51:32 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,6 +225,7 @@ int		open_herdoc(t_cmd *table);
 // void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int j);
 void    execute_cmds(t_cmd *table, t_env *env, int phase, int i);
 void 	wait_all(int *pid, int last);
+int		n_herdoc(t_redi *in);
 
 //*-------------------built-ins--------------------*//
 void	ft_env(t_env **dup_env, int fork);

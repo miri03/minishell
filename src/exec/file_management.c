@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/10 18:31:19 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/11 17:56:47 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,13 @@ int	n_herdoc(t_redi *in)
 	return (n);
 }
 
-// leaks herdoc pipe
+// export _*
 
-//close herdoc pipes
+// leaks head of export
 
-// close herdoc single cmd
+// rm current directory & pwd
 
-// check redir_in()
-
-// dup in and out fd
-
-// check exit status and cmd not found in multiple pipes
-
-
-
-// void	sig_exit(int id)
-// {
-// 	kill(id, SIGKILL);
-// }
+// oldpwd no env
 
 int	open_herdoc(t_cmd *table)
 {
@@ -67,6 +56,7 @@ int	open_herdoc(t_cmd *table)
 			exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
 			if (pipe(exec.herdoc_pipe[h]) == -1)
 				perror("pipe\n");
+			dprintf(2, "herdoc[%d][0] = %d herdoc[%d][1] = %d\n", h, exec.herdoc_pipe[h][0], h, exec.herdoc_pipe[h][1]);
 		}
 		while (tmp_in)
 		{
@@ -84,7 +74,7 @@ int	open_herdoc(t_cmd *table)
 							free (line);
 							break ;
 						}
-							
+						
 						if (herdo == 1)
 						{
 							write(exec.herdoc_pipe[h][1], line, ft_strlen(line));
@@ -92,19 +82,21 @@ int	open_herdoc(t_cmd *table)
 						}
 						free (line);
 					}
-					herdo--;
+					
+					
 					if (!herdo)
 					{
 						close(exec.herdoc_pipe[h][1]);
-						// free(exec.herdoc_pipe[h][1]);
 					}
 					exit (exec.g_exit_status);
 				}
 				else
 				{
+					herdo--;
 					waitpid(p_id, &status, 0);
 					if (WIFSIGNALED(status))
 					{
+						free(exec.herdoc_pipe[h]);
 						exec.g_exit_status = WTERMSIG(status) + 128;
 						return(1);
 					}
@@ -165,7 +157,7 @@ void	redir_in(t_cmd *table, int i)
 		{
 			dup2(exec.herdoc_pipe[i][0], STDIN_FILENO);
 			close(exec.herdoc_pipe[i][0]);
-			// free(exec.herdoc_pipe[i]); // heap-use-after-free
+			close(exec.herdoc_pipe[i][1]);
 		}
 		r_in = r_in->next;
 	}
