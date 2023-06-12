@@ -6,17 +6,19 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 18:33:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 15:57:18 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	ft_pwd(int fork)
+void	ft_pwd(t_env *env, int fork)
 {
 	char	*ptr;
 
 	ptr = getcwd(NULL, 0);
+	if (!ptr)
+		ptr = get_pwd(env);
 	printf("%s\n", ptr);
 	free(ptr);
 	exec.g_exit_status = 0;

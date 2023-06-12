@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:47:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/11 16:26:37 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 12:53:22 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	which_builtin(char *cmd, t_cmd *table, t_env **env, int fork)
 	}
 	if (!ft_strcmp(cmd , "pwd"))
 	{
-		ft_pwd(fork);
+		ft_pwd(*env, fork);
 		return ;
 	}
 	if (!ft_strcmp(cmd , "unset"))

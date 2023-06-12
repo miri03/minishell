@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/11 13:51:32 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 17:36:10 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ t_exec	init_exec();
 //*-------------------redir-----------------------*//
 void	redir_in(t_cmd *table, int i);
 int		redir_out(t_cmd *table);
-int		open_herdoc(t_cmd *table);
+int		open_herdoc(t_cmd *table, t_env *env);
 
 //*-------------------pipes------------------------*//
 // void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);
@@ -231,12 +231,13 @@ int		n_herdoc(t_redi *in);
 void	ft_env(t_env **dup_env, int fork);
 void	ft_unset(t_env **dup_env, t_cmd *cmd, int fork);
 void	ft_exit(t_cmd *cmd);
-void	ft_pwd(int fork);
+void	ft_pwd(t_env *env, int fork);
 void	ft_cd(t_cmd *cmd, t_env **env, int fork);
 void	ft_echo(t_cmd *cmd, int fork);
 void	ft_export(t_env *dup_env, t_cmd *table, int fork);
 void	unset_var(t_env *env, int index, t_env **head);
 void	env_i(t_env **dup_env);
+char	*get_pwd(t_env *env);
 
 void	minishell_mess();
 

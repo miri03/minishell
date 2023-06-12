@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 01:07:31 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 17:35:47 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,19 @@ char	**find_path(t_env *env)
 	return (NULL);
 }
 
+void	directory_error(char *dir)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(dir, 2);
+	ft_putstr_fd(": is a directory\n", 2);
+	exec.g_exit_status = 126;
+	exit (exec.g_exit_status);
+}
+
 char	*cmd_exist(t_cmd *table, t_env *env)
 {
+	//!ft_strcmp(&table->cmd[0][ft_strlen(table->cmd[0]) - 1], "\\") && 
+	
 	char	**path;
 	char	*cmd;
 	char	*test;
@@ -35,13 +46,14 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 	if (!table->cmd)
 		return (NULL);
 	ptr_dir = opendir(table->cmd[0]);
-	if (ptr_dir)
+	if (!ft_strcmp(&table->cmd[0][ft_strlen(table->cmd[0]) - 1], "\\") && ptr_dir)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(table->cmd[0], 2);
-		ft_putstr_fd(": is a directory\n", 2);
-		exec.g_exit_status = 126;
-		exit (exec.g_exit_status);
+		directory_error(table->cmd[0]);
+		// ft_putstr_fd("minishell: ", 2);
+		// ft_putstr_fd(table->cmd[0], 2);
+		// ft_putstr_fd(": is a directory\n", 2);
+		// exec.g_exit_status = 126;
+		// exit (exec.g_exit_status);
 	}
 	if (table->cmd[0][0] == '/' || (table->cmd[0][0] == '.' && table->cmd[0][1] == '/'))
 	{
@@ -94,7 +106,9 @@ void	exec_single(t_env **env, t_cmd *table)
 			if (table->cmd)
 			{
 				if (!cmd_path || !table->cmd[0][0]) //table->cmd
-				{
+				{ 
+					if (opendir(table->cmd[0]))
+						directory_error(table->cmd[0]);
 					dprintf(2, "yes\n");
 					ft_putstr_fd("minishell: ", 2);
 					ft_putstr_fd(table->cmd[0], 2);
@@ -161,7 +175,7 @@ void	execute(t_cmd *table, t_env **dup_env)
 	i = 0;
 	if (!table)
 		return;
-	if (open_herdoc(table))
+	if (open_herdoc(table, *dup_env))
 		return ;
 	if (table_len(table) == 1)
 		exec_single(dup_env, table);

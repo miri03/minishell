@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 01:12:43 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 17:38:06 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,11 @@ int	n_herdoc(t_redi *in)
 	return (n);
 }
 
-// rm current directory & pwd
+// recheck no env
 
-// oldpwd no env
+// exec command file (unset Path)
 
-// herdoc expand
-
-// env | grep ... (if cmd is a directory)
-
-// exec command file or direc (cmd_exist)
-
-int	open_herdoc(t_cmd *table)
+int	open_herdoc(t_cmd *table, t_env *env)
 {
 	t_redi	*tmp_in;
 	int		herdo;
@@ -58,7 +52,6 @@ int	open_herdoc(t_cmd *table)
 			exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
 			if (pipe(exec.herdoc_pipe[h]) == -1)
 				perror("pipe\n");
-			dprintf(2, "herdoc[%d][0] = %d herdoc[%d][1] = %d\n", h, exec.herdoc_pipe[h][0], h, exec.herdoc_pipe[h][1]);
 		}
 		while (tmp_in)
 		{
@@ -79,13 +72,13 @@ int	open_herdoc(t_cmd *table)
 						
 						if (herdo == 1)
 						{
+							if (tmp_in->must_exp)
+								expand_var(env, &line);
 							write(exec.herdoc_pipe[h][1], line, ft_strlen(line));
 							write(exec.herdoc_pipe[h][1], "\n", 1);
 						}
 						free (line);
 					}
-					
-					
 					if (!herdo)
 					{
 						close(exec.herdoc_pipe[h][1]);

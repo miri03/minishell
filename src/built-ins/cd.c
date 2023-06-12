@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 21:41:39 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 15:33:08 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	upd_old_pwd(t_env *env)
 		{
 			free(tmp->value);
 			tmp->value = get_pwd(env);
+			return ;
 		}
 		tmp = tmp->next;
 	}
@@ -119,6 +120,7 @@ void	ft_cd(t_cmd *cmd, t_env **env, int fork)
 	if (r_value == 0) //path does exist
 	{
 		pwd = getcwd(NULL, 0);
+		// printf("pwd=> %s \n", pwd);
 		upd_old_pwd(*env);
 		upd_pwd(*env, pwd);
 		exec.g_exit_status = 0;

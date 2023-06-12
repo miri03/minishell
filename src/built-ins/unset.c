@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:42:54 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 00:21:40 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 16:36:16 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void    unset_var(t_env *env, int index, t_env **head)
     {
         if (i == index - 1)
         {
-            printf("yes\n");
             new = (env->next)->next;
             tmp = env->next;
             free (tmp->key);
