@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/11 22:21:09 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 01:07:31 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 		else
 		{
 			ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(table->cmd[0], 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
-		exec.g_exit_status = 127;
-		exit (exec.g_exit_status);
+			ft_putstr_fd(table->cmd[0], 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
+			exec.g_exit_status = 127;
+			exit (exec.g_exit_status);
 		}
 	}
 	if (table->cmd[0][0])
@@ -74,21 +74,21 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 	return (NULL);
 }
 
-void	exec_single(t_env *env, t_cmd *table)
+void	exec_single(t_env **env, t_cmd *table)
 {
 	char	*cmd_path;
 	int		f_pid;
 	int		status;
 
 	if (table->cmd && is_builtin(table->cmd[0]))
-		exec_builtin(table->cmd[0], table, &env);
+		exec_builtin(table->cmd[0], table, env);
 	else
 	{
 		f_pid = fork();
 		if (!f_pid) // child
 		{
 			set_default();
-			cmd_path = cmd_exist(table, env);
+			cmd_path = cmd_exist(table, *env);
 			redir_in(table, 0);
 			redir_out(table);
 			if (table->cmd)
@@ -104,7 +104,6 @@ void	exec_single(t_env *env, t_cmd *table)
 				}
 				if (execve(cmd_path, table->cmd, exec.env) == -1)
 				{
-					dprintf(2, "here %s \n", cmd_path);
 					ft_putstr_fd("minishell: ", 2);
 					ft_putstr_fd(cmd_path, 2);
 					perror(" ");
@@ -165,7 +164,7 @@ void	execute(t_cmd *table, t_env **dup_env)
 	if (open_herdoc(table))
 		return ;
 	if (table_len(table) == 1)
-		exec_single(*dup_env, table);
+		exec_single(dup_env, table);
 	else
 		multi_cmd(*dup_env, table);
 }

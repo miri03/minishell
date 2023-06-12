@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:22:25 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/11 23:30:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 00:22:30 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	ft_env(t_env **dup_env, int fork)
 		//add shell level
 	}
 	tmp = *dup_env;
-	printf("tmp = %p\n", tmp);
 	while (tmp)
 	{
 		if (tmp->valid)

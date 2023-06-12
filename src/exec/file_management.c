@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/11 22:47:55 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 01:12:43 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ int	n_herdoc(t_redi *in)
 	return (n);
 }
 
-// leaks head of unset
-
 // rm current directory & pwd
 
 // oldpwd no env
 
 // herdoc expand
 
-// env | grep ...
+// env | grep ... (if cmd is a directory)
+
+// exec command file or direc (cmd_exist)
 
 int	open_herdoc(t_cmd *table)
 {

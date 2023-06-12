@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:50:24 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/09 16:13:18 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 00:59:25 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	ft_exit(t_cmd *cmd)
 		}
 		else if (cmd_len(cmd->cmd) == 2)
 		{
-			printf("here\n");
 			exec.g_exit_status = my_ft_atoi(cmd->cmd[1]);
 			exit (my_ft_atoi(cmd->cmd[1]));
 		}
