@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/11 22:22:55 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 21:36:05 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	make_pipes(int **pipes)
 
 void	wait_all(int *pid, int last) //recheck it
 {
-	int	i;
-	int	status;
+	int i;
+	int status;
 
 	i = 0;
 	close(exec.pipes[1][0]);
@@ -43,7 +43,7 @@ void	wait_all(int *pid, int last) //recheck it
 	if (WIFSIGNALED(status))
 	{
 		exec.g_exit_status = WTERMSIG(status) + 128;
-		return;
+		return ;
 	}
 	while (i < last - 1)
 	{
@@ -65,7 +65,7 @@ void	multi_cmd(t_env *env, t_cmd *table)
 	int	i;
 	int	tbl_len;
 	int	*f_pid;
-	
+
 	i = 0;
 	tbl_len = table_len(table);
 	exec.pipes = (int **)malloc(sizeof(int *) * 2);
@@ -79,17 +79,14 @@ void	multi_cmd(t_env *env, t_cmd *table)
 			set_default();
 			if (i == 0)
 				execute_cmds(table, env, 0, i);
-				
 			else if (i == tbl_len - 1)
 				execute_cmds(table, env, 2, i);
-				
 			else
 				execute_cmds(table, env, 1, i);
 		}
 		// back to parent
 		else
 		{
-			
 			if (i == 0)
 			{
 				close(exec.pipes[1][0]);
@@ -119,15 +116,15 @@ void	multi_cmd(t_env *env, t_cmd *table)
 				close(exec.herdoc_pipe[i][0]);
 				close(exec.herdoc_pipe[i][1]);
 				free(exec.herdoc_pipe[i]);
-			}	
+			}
 			open_uno(i);
 		}
 		table = table->next;
-		i++;	
+		i++;
 	}
 	wait_all(f_pid, i);
 	free(exec.pipes[0]);
 	free(exec.pipes[1]);
-	free (exec.pipes);
-	free (f_pid);
+	free(exec.pipes);
+	free(f_pid);
 }

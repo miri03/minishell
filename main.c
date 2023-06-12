@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/12 00:21:52 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 23:55:48 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,17 +81,11 @@ int	main(int ac, char **av, char **env)
 	t_env	*dup_env;
 	t_cmd	*cmd;
 	int		i;
-
+	
 	dup_env = NULL;
-	// minishell_mess();
-	
+	minishell_mess();
 	check_args(ac, av, &dup_env, env);
-	
-	// int struct
-	exec = init_exec();
-	exec.env = env;
-	///////
-	
+	exec.g_exit_status = 0;
 	set_signals();
 	while (1)
 	{

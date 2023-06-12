@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/12 17:36:10 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 21:35:48 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,21 +208,27 @@ int		is_builtin(char *cmd);
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
 void	multi_cmd(t_env *env, t_cmd *table);
 int		table_len(t_cmd *table);
-char	*cmd_exist(t_cmd *table, t_env *env);
-char	**find_path(t_env *env);
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env);
 void	which_builtin(char *cmd, t_cmd *table, t_env **env, int fork);
-t_exec	init_exec();
+void	exec_single(t_env **env, t_cmd *table);
+void	directory_error(char *dir);
+void	error_cmd_not_found(char *cmd);
+void    execve_error(char *cmd_path);
+
+//*-------------------cmd_exist-----------------------*//
+char	**find_path(t_env *env);
+void	directory_error(char *dir);
+char	*directory_executable(t_cmd *table);
 
 //*-------------------redir-----------------------*//
 void	redir_in(t_cmd *table, int i);
 int		redir_out(t_cmd *table);
 int		open_herdoc(t_cmd *table, t_env *env);
+char	*cmd_path(char **path, char *cmd);
+char	*cmd_exist(t_cmd *table, t_env *env);
+
 
 //*-------------------pipes------------------------*//
-// void    first_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes);
-// void    cmds(char *cmd, t_cmd *table, t_env *env, int **pipes, int j);
-// void    last_cmd(char *cmd, t_cmd *table, t_env *env, int **pipes, int len, int j);
 void    execute_cmds(t_cmd *table, t_env *env, int phase, int i);
 void 	wait_all(int *pid, int last);
 int		n_herdoc(t_redi *in);
@@ -233,11 +239,20 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd, int fork);
 void	ft_exit(t_cmd *cmd);
 void	ft_pwd(t_env *env, int fork);
 void	ft_cd(t_cmd *cmd, t_env **env, int fork);
+char	*get_pwd(t_env *env);
+char	*get_home(t_env *env);
 void	ft_echo(t_cmd *cmd, int fork);
 void	ft_export(t_env *dup_env, t_cmd *table, int fork);
 void	unset_var(t_env *env, int index, t_env **head);
 void	env_i(t_env **dup_env);
 char	*get_pwd(t_env *env);
+int		my_ft_atoi(const char *str);
+void	error_mess_exp(char *cmd);
+int		does_exist(char *key, t_env *dup_env);
+int		valid_ident(char *ident);
+int		env_valid(char *ident);
+void	add_to(char *key, char *value, t_env *dup_env, char *ident);
+void	error_mess_uns(char *cmd);
 
 void	minishell_mess();
 

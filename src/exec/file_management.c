@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 17:38:06 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 00:45:35 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,15 @@ int	n_herdoc(t_redi *in)
 
 // recheck no env
 
-// exec command file (unset Path)
+void	make_herdoc_pipe(int herdo)
+{
+if (herdo)
+		{
+			exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
+			if (pipe(exec.herdoc_pipe[h]) == -1)
+				perror("pipe\n");
+		}	
+}
 
 int	open_herdoc(t_cmd *table, t_env *env)
 {
@@ -47,12 +55,13 @@ int	open_herdoc(t_cmd *table, t_env *env)
 	{
 		tmp_in = table->in;
 		herdo = n_herdoc(tmp_in);
-		if (herdo)
-		{
-			exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
-			if (pipe(exec.herdoc_pipe[h]) == -1)
-				perror("pipe\n");
-		}
+		make_herdoc_pipe(herdo);
+		// if (herdo)
+		// {
+		// 	exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
+		// 	if (pipe(exec.herdoc_pipe[h]) == -1)
+		// 		perror("pipe\n");
+		// }
 		while (tmp_in)
 		{
 			if (tmp_in->type == heredoc)
@@ -66,24 +75,22 @@ int	open_herdoc(t_cmd *table, t_env *env)
 						line = readline(">");
 						if (!line || !ft_strcmp(line, tmp_in->file))
 						{
-							free (line);
+							free(line);
 							break ;
 						}
-						
 						if (herdo == 1)
 						{
 							if (tmp_in->must_exp)
 								expand_var(env, &line);
-							write(exec.herdoc_pipe[h][1], line, ft_strlen(line));
+							write(exec.herdoc_pipe[h][1], line,
+									ft_strlen(line));
 							write(exec.herdoc_pipe[h][1], "\n", 1);
 						}
-						free (line);
+						free(line);
 					}
 					if (!herdo)
-					{
 						close(exec.herdoc_pipe[h][1]);
-					}
-					exit (exec.g_exit_status);
+					exit(exec.g_exit_status);
 				}
 				else
 				{
@@ -93,14 +100,14 @@ int	open_herdoc(t_cmd *table, t_env *env)
 					{
 						free(exec.herdoc_pipe[h]);
 						exec.g_exit_status = WTERMSIG(status) + 128;
-						return(1);
+						return (1);
 					}
 				}
 			}
-			tmp_in = tmp_in->next; 
+			tmp_in = tmp_in->next;
 		}
 		table = table->next;
-		h++;	
+		h++;
 	}
 	return (0);
 }
@@ -108,20 +115,20 @@ int	open_herdoc(t_cmd *table, t_env *env)
 // <--herdoc readme--> //
 
 // aloceted as much of nodes I have for herdoc pipes
-// check each node of the command table 
-	// put the number of herdocs in each redir_in in the variable herdo
-	// if there is at least one herdoc open one pipe to fill it whith the content of the last one
-	// loop around redir_in
-		// check if I have a herdoc
-		// fork to set signals to default
-		// open herdocs
-		// but only put the content of the last of in the pipe
-		// close the write end of the pipe
-		// exit from the child process
-		// meanwhile in the parent wait for the child and stop executing if I got a signal
-		// keep looping around the redir_in until the last in that node
-	// keep looping around the nodes until the last
-	// add up to the index of herdoc pipes
+// check each node of the command table
+// put the number of herdocs in each redir_in in the variable herdo
+// if there is at least one herdoc open one pipe to fill it whith the content of the last one
+// loop around redir_in
+// check if I have a herdoc
+// fork to set signals to default
+// open herdocs
+// but only put the content of the last of in the pipe
+// close the write end of the pipe
+// exit from the child process
+// meanwhile in the parent wait for the child and stop executing if I got a signal
+// keep looping around the redir_in until the last in that node
+// keep looping around the nodes until the last
+// add up to the index of herdoc pipes
 
 // << m cat <<g cat
 

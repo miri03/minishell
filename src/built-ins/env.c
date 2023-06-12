@@ -6,23 +6,27 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:22:25 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 13:28:22 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 20:12:44 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	env_i(t_env **dup_env)   // export when no env 
+void	env_i(t_env **dup_env)// export when no env 
 {
-	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("PWD"), getcwd(NULL, 0), 1));
-	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("SHLVL"), ft_strdup("1"), 1));
-	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("OLDPWD"), NULL, 1));
-	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("_"), NULL, 1));
+	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("PWD"),
+			getcwd(NULL, 0), 1));
+	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("SHLVL"),
+			ft_strdup("1"), 1));
+	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("OLDPWD"),
+			NULL, 1));
+	ft_lstadd_back_env(dup_env, ft_lstnew_env(ft_strdup("_"),
+			NULL, 1));
 }
 
 void	ft_env(t_env **dup_env, int fork)
 {
-	t_env *tmp;
+	t_env	*tmp;
 
 	tmp = *dup_env;
 	while (tmp)
@@ -33,12 +37,10 @@ void	ft_env(t_env **dup_env, int fork)
 			{
 				free(tmp->value);
 				tmp->value = ft_strdup("/usr/bin/env");
-			}
-				
+			}	
 			if (tmp->value)
-				printf("%s=%s\n", tmp->key,tmp->value);
-		}
-			
+				printf("%s=%s\n", tmp->key, tmp->value);
+		}	
 		tmp = tmp->next;
 	}
 	exec.g_exit_status = 0;

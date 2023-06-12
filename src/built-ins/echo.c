@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 23:26:44 by meharit           #+#    #+#             */
-/*   Updated: 2023/05/27 23:40:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/12 20:11:06 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	check_if_option(char *str, int *opt)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	if (!str)
@@ -43,7 +43,7 @@ void	ft_echo(t_cmd *cmd, int fork)
 		i++;
 	while (cmd->cmd[i])
 	{
-		printf("%s",cmd->cmd[i]);
+		printf("%s", cmd->cmd[i]);
 		if (i < cmd_len(cmd->cmd) - 1)
 			printf(" ");
 		i++;
