@@ -6,7 +6,7 @@
 #    By: meharit <meharit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 04:04:08 by yismaail          #+#    #+#              #
-#    Updated: 2023/06/13 17:46:35 by meharit          ###   ########.fr        #
+#    Updated: 2023/06/13 22:11:02 by meharit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS		=	minishell_mess.c my_libft.c main.c signals.c check_tokens.c  src/lexer/t
 				src/built-ins/pwd.c src/built-ins/exit.c src/built-ins/env.c src/built-ins/unset.c \
 				src/built-ins/cd.c src/built-ins/cd_uti.c src/built-ins/echo.c src/built-ins/export.c  src/built-ins/exp_uti.c  \
 				src/exec/pipes.c src/exec/pipes_uti.c src/exec/exec_single.c src/exec/cmd_exist.c src/exec/child_proc.c src/exec/execution.c src/exec/exec_built.c \
-				src/exec/file_management.c src/exec/herdoc.c \
+				src/exec/file_management.c src/exec/herdoc.c src/exec/herdoc_uti.c \
 
 RED			= \e[0;31m				
 YELLOW		= \e[0;33m
