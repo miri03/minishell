@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:53:20 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	parent_multi(int i, int tbl_len, t_redi *in)
 		close(g_exec.pipes[0][1]);
 		close(g_exec.pipes[1][0]);
 	}
-	else // i % 2 != 0
+	else
 	{
 		close(g_exec.pipes[0][0]);
 		close(g_exec.pipes[1][1]);
@@ -74,9 +74,8 @@ void	multi_cmd(t_env *env, t_cmd *table)
 	while (table)
 	{
 		f_pid[i] = fork();
-		if (f_pid[i] == 0) // child proc
+		if (f_pid[i] == 0)
 			child_multi(env, table, i, tbl_len);
-		// back to parent
 		else
 			parent_multi(i, tbl_len, table->in);
 		table = table->next;

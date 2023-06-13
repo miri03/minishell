@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 20:51:26 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:48:25 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	single_child_proc(t_env **env, t_cmd *table)
 	redir_out(table);
 	if (table->cmd)
 	{
-		if (!cmd_path || !table->cmd[0][0]) //table->cmd
+		if (!cmd_path || !table->cmd[0][0])
 		{
 			if (opendir(table->cmd[0]))
 				directory_error(table->cmd[0]);

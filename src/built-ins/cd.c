@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 21:41:39 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:49:02 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	home(t_env **env)
 		upd_old_pwd(*env);
 		upd_pwd(*env, get_home(*env));
 	}
-	else //HOME unset
+	else
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		g_exec.g_exit_status = 1;
@@ -75,9 +75,9 @@ void	ft_cd(t_cmd *cmd, t_env **env, int fork)
 		return ;
 	}
 	r_value = chdir(cmd->cmd[1]);
-	if (r_value == 0) //path does exist
+	if (r_value == 0)
 		upd_env_pwd(*env);
-	else if (r_value == -1) // path does not exist
+	else if (r_value == -1)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(cmd->cmd[1], 2);

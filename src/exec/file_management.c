@@ -6,13 +6,11 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 22:09:01 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:48:32 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// recheck no env
 
 int	open_herdoc(t_cmd *table, t_env *env)
 {

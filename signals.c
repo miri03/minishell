@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:45:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:48:15 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:51:42 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	sig_int_handler(int s)
 
 void	set_signals(void)
 {
-	signal(SIGQUIT, SIG_IGN);//ctr-\ //
-	signal(SIGINT, sig_int_handler);//ctr-c //
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sig_int_handler);
 }
 
 void	set_default(void)

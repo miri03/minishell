@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:47:26 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,26 @@ void	close_pipes_child(void)
 
 void	dup_it(int phase, int i)
 {
-	if (phase == 0) //first cmd
+	if (phase == 0)
 		dup2(g_exec.pipes[0][1], 1);
 	if (i % 2 == 0)
 	{
-		if (phase == 1) // middle cmd
+		if (phase == 1)
 		{
 			dup2(g_exec.pipes[0][1], 1);
 			dup2(g_exec.pipes[1][0], 0);
 		}
-		if (phase == 2) //last cmd
+		if (phase == 2)
 			dup2(g_exec.pipes[1][0], 0);
 	}
 	else
 	{
-		if (phase == 1) //middle cmd
+		if (phase == 1)
 		{
-			dup2(g_exec.pipes[1][1], 1); // i % 2 != 0
+			dup2(g_exec.pipes[1][1], 1);
 			dup2(g_exec.pipes[0][0], 0);
 		}
-		if (phase == 2) //last cmd
+		if (phase == 2)
 			dup2(g_exec.pipes[0][0], 0);
 	}
 	close_pipes_child();
@@ -65,7 +65,7 @@ void	execute_cmds(t_cmd *table, t_env *env, int phase, int i)
 	dup_it(phase, i);
 	redir_in(table, i);
 	redir_out(table);
-	if (table->cmd) // there is a commad
+	if (table->cmd)
 	{
 		cmd = table->cmd[0];
 		if (is_builtin(cmd))

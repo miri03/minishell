@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:49:18 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*get_value(char *ident)
 		i++;
 	if (!ident[i])
 		return (ft_strdup(""));
-	return (ft_substr(ident, i + 1, ft_strlen(ident))); //skip =
+	return (ft_substr(ident, i + 1, ft_strlen(ident)));
 }
 
 void	append_change(t_env *env, int *append, char *key, char *value)

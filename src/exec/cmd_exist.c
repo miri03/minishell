@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 21:03:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:48:14 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*directory_executable(t_cmd *table)
 	if (table->cmd[0][0] == '/' || (table->cmd[0][0] == '.'
 			&& table->cmd[0][1] == '/'))
 	{
-		if (access(table->cmd[0], F_OK) == 0) //does exist
+		if (access(table->cmd[0], F_OK) == 0)
 			return (table->cmd[0]);
 		else
 		{

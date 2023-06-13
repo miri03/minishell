@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/13 17:48:03 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:51:27 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void	main_loop(t_token *token, t_env *dup_env, t_cmd *cmd)
 		if (token_line(line, &token))
 		{
 			ft_minishell(&dup_env, &token, &cmd);
-			get_input(cmd);
 			execute(cmd, &dup_env);
 			clear_cmds(&cmd);
 		}
@@ -96,6 +95,3 @@ int	main(int ac, char **av, char **env)
 	cmd = NULL;
 	main_loop(token, dup_env, cmd);
 }
-
-//<< m cat | ls | <<m
-//ls | << m cat | cat

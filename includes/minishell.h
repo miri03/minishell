@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/13 22:09:49 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 22:52:36 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_exec
 	int				herdoc_per_pipe;
 }					t_exec;
 
-t_exec	g_exec;
+t_exec				g_exec;
 
 typedef struct s_token
 {
@@ -235,13 +235,13 @@ char				*cmd_exist(t_cmd *table, t_env *env);
 int					parent_herdoc(int p_id, int h);
 int					is_herdoc(int herdo, int h, t_redi *tmp_in, t_env *env);
 void				herdoc_child(int herdo, t_redi *tmp_in, t_env *env, int h);
-int					herdoc_redir_in(t_redi *tmp_in, int h, t_env *env, int *herdo);
+int					herdoc_redir_in(t_redi *tmp_in, int h, t_env *env,
+						int *herdo);
 void				herdoc(int herdo, t_redi *tmp_in, t_env *env, int h);
 int					n_herdoc(t_redi *in);
 void				make_herdoc_pipe(int herdo, int h);
 void				herdoc(int herdo, t_redi *tmp_in, t_env *env, int h);
 int					n_herdoc(t_redi *in);
-
 
 //*-------------------pipes------------------------*//
 void				execute_cmds(t_cmd *table, t_env *env, int phase, int i);
