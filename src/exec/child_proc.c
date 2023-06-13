@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 13:52:42 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 16:20:25 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	dup_it(int phase, int i)
 		if (phase == 2) //last cmd
 			dup2(exec.pipes[0][0], 0);
 	}
+	close_pipes_child();
 }
 
 void	error_cmd_not_found(char *cmd)

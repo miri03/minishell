@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 20:26:39 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*get_value(char *ident)
 		i++;
 	if (!ident[i])
 		return (ft_strdup(""));
-	return (ft_substr(ident, i + 1, ft_strlen(ident)));//skip =
+	return (ft_substr(ident, i + 1, ft_strlen(ident))); //skip =
 }
 
 void	append_change(t_env *env, int *append, char *key, char *value)
@@ -55,7 +55,7 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 		{
 			while (ft_strcmp(env->key, key))
 				env = env->next;
-			free (key);
+			free(key);
 			free(env->value);
 			env->value = value;
 			env->valid = 1;
@@ -82,7 +82,7 @@ void	export(t_env *dup_env, t_cmd *table)
 			dup_env = dup_env->next;
 		}
 		exec.g_exit_status = 0;
-	}	
+	}
 }
 
 void	ft_export(t_env *dup_env, t_cmd *table, int fork)
@@ -111,5 +111,5 @@ void	ft_export(t_env *dup_env, t_cmd *table, int fork)
 		i++;
 	}
 	if (fork)
-		exit (exec.g_exit_status);
+		exit(exec.g_exit_status);
 }

@@ -6,51 +6,11 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 21:36:05 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:05:46 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-void	make_pipes(int **pipes)
-{
-	int	i;
-
-	i = 0;
-	while (i < 2)
-	{
-		pipes[i] = malloc(sizeof(int) * 2);
-		if (pipe(pipes[i]) == -1)
-			perror("pipe");
-		i++;
-	}
-}
-
-void	wait_all(int *pid, int last) //recheck it
-{
-	int i;
-	int status;
-
-	i = 0;
-	close(exec.pipes[1][0]);
-	close(exec.pipes[1][1]);
-	close(exec.pipes[0][1]);
-	close(exec.pipes[0][0]);
-
-	waitpid(pid[last - 1], &status, 0);
-	if (WIFEXITED(status))
-		exec.g_exit_status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status))
-	{
-		exec.g_exit_status = WTERMSIG(status) + 128;
-		return ;
-	}
-	while (i < last - 1)
-	{
-		waitpid(-1, NULL, 0);
-		i++;
-	}
-}
 
 void	open_uno(int i)
 {
@@ -58,6 +18,46 @@ void	open_uno(int i)
 		pipe(exec.pipes[1]);
 	else
 		pipe(exec.pipes[0]);
+}
+
+void	parent_multi(int i, int tbl_len, t_redi *in)
+{
+	if (i == 0)
+	{
+		close(exec.pipes[1][0]);
+		close(exec.pipes[1][1]);
+		close(exec.pipes[0][1]);
+	}
+	else if (i == tbl_len - 1)
+	{
+		close(exec.pipes[0][0]);
+		close(exec.pipes[1][0]);
+		close(exec.pipes[1][1]);
+		close(exec.pipes[0][1]);
+	}
+	else if (i % 2 == 0)
+	{
+		close(exec.pipes[0][1]);
+		close(exec.pipes[1][0]);
+	}
+	else // i % 2 != 0
+	{
+		close(exec.pipes[0][0]);
+		close(exec.pipes[1][1]);
+	}
+	close_herdoc(in, i);
+	open_uno(i);
+}
+
+void	child_multi(t_env *env, t_cmd *table, int i, int tbl_len)
+{
+	set_default();
+	if (i == 0)
+		execute_cmds(table, env, 0, i);
+	else if (i == tbl_len - 1)
+		execute_cmds(table, env, 2, i);
+	else
+		execute_cmds(table, env, 1, i);
 }
 
 void	multi_cmd(t_env *env, t_cmd *table)
@@ -75,50 +75,10 @@ void	multi_cmd(t_env *env, t_cmd *table)
 	{
 		f_pid[i] = fork();
 		if (f_pid[i] == 0) // child proc
-		{
-			set_default();
-			if (i == 0)
-				execute_cmds(table, env, 0, i);
-			else if (i == tbl_len - 1)
-				execute_cmds(table, env, 2, i);
-			else
-				execute_cmds(table, env, 1, i);
-		}
+			child_multi(env, table, i, tbl_len);
 		// back to parent
 		else
-		{
-			if (i == 0)
-			{
-				close(exec.pipes[1][0]);
-				close(exec.pipes[1][1]);
-				close(exec.pipes[0][1]);
-			}
-			else if (i == tbl_len - 1)
-			{
-				close(exec.pipes[0][0]);
-				close(exec.pipes[1][0]);
-				close(exec.pipes[1][1]);
-				close(exec.pipes[0][1]);
-			}
-			else if (i % 2 == 0)
-			{
-				dprintf(2, "=> %i\n", exec.pipes[1][1]);
-				close(exec.pipes[0][1]);
-				close(exec.pipes[1][0]);
-			}
-			else //i % 2 != 0
-			{
-				close(exec.pipes[0][0]);
-				close(exec.pipes[1][1]);
-			}
-			if (n_herdoc(table->in))
-			{
-				close(exec.herdoc_pipe[i][0]);
-				close(exec.herdoc_pipe[i][1]);
-				free(exec.herdoc_pipe[i]);
-			}
-			open_uno(i);
-		}
+			parent_multi(i, tbl_len, table->in);
 		table = table->next;
 		i++;
 	}

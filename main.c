@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/12 23:55:48 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:09:07 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ void	sig_int_handler(int s)
 
 void	set_signals(void)
 {
-	signal(SIGQUIT, SIG_IGN);          //ctr-\ //
-	signal(SIGINT, sig_int_handler);   //ctr-c //
+	signal(SIGQUIT, SIG_IGN);        //ctr-\ //
+	signal(SIGINT, sig_int_handler); //ctr-c //
 }
 
-void set_default(void)
+void	set_default(void)
 {
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
@@ -80,7 +80,7 @@ int	main(int ac, char **av, char **env)
 	t_token	*token;
 	t_env	*dup_env;
 	t_cmd	*cmd;
-	
+
 	dup_env = NULL;
 	minishell_mess();
 	check_args(ac, av, &dup_env, env);
@@ -90,13 +90,12 @@ int	main(int ac, char **av, char **env)
 	{
 		token = NULL;
 		cmd = NULL;
-		line = readline(GREEN"minishell> "RESET);
+		line = readline(GREEN "minishell> " RESET);
 		if (!line)
 		{
 			ft_putstr_fd("exit\n", 2);
 			exit(exec.g_exit_status);
 		}
-			
 		if (is_all_spaces(line))
 		{
 			free(line);
@@ -106,7 +105,7 @@ int	main(int ac, char **av, char **env)
 		if (token_line(line, &token))
 		{
 			ft_minishell(&dup_env, &token, &cmd);
-			exec.herdoc_pipe = malloc(sizeof(t_exec) * table_len(cmd));  //
+			exec.herdoc_pipe = malloc(sizeof(t_exec) * table_len(cmd)); //
 			get_input(cmd);
 			execute(cmd, &dup_env);
 			free(exec.herdoc_pipe);
