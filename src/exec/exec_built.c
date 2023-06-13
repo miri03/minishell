@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 17:47:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:20:21 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,17 @@ int	is_builtin(char *cmd)
 
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env)
 {
-	exec.std_in = dup(STDIN_FILENO);
-	exec.std_out = dup(STDOUT_FILENO);
-	exec.built_in = 1;
+	g_exec.std_in = dup(STDIN_FILENO);
+	g_exec.std_out = dup(STDOUT_FILENO);
+	g_exec.built_in = 1;
 	redir_in(table, 0);
 	redir_out(table);
 	which_builtin(cmd, table, env, FALSE);
-	dup2(exec.std_in, STDIN_FILENO);
-	dup2(exec.std_out, STDOUT_FILENO);
-	close(exec.std_in);
-	close(exec.std_out);
-	exec.built_in = 0;
+	dup2(g_exec.std_in, STDIN_FILENO);
+	dup2(g_exec.std_out, STDOUT_FILENO);
+	close(g_exec.std_in);
+	close(g_exec.std_out);
+	g_exec.built_in = 0;
 }
 
 void	exit_env_pwd(char *cmd, t_cmd *table, t_env **env, int fork)

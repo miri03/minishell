@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/13 17:08:25 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:53:22 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_exec
 	int				herdoc_per_pipe;
 }					t_exec;
 
-t_exec	exec;
+t_exec	g_exec;
 
 typedef struct s_token
 {
@@ -197,6 +197,7 @@ void				fill_cmd(t_cmd *cmd, t_token *token, int *i);
 void				set_signals(void);
 void				sig_int_handler(int s);
 void				set_default(void);
+void				to_exit(void);
 
 //*-----meharit-------execution--------------------*//
 
@@ -231,10 +232,10 @@ int					redir_out(t_cmd *table);
 int					open_herdoc(t_cmd *table, t_env *env);
 char				*cmd_path(char **path, char *cmd);
 char				*cmd_exist(t_cmd *table, t_env *env);
-int					make_herdoc_pipe(int h, t_redi *in);
-int					n_herdoc(t_redi *in);
-int					is_herdoc(int herdo, int h, t_redi *tmp_in, t_env *env);
-void				is_herdoc_redir(int i);
+// int					make_herdoc_pipe(int h, t_redi *in);
+// int					n_herdoc(t_redi *in);
+// int					is_herdoc(int herdo, int h, t_redi *tmp_in, t_env *env);
+// void				is_herdoc_redir(int i);
 
 //*-------------------pipes------------------------*//
 void				execute_cmds(t_cmd *table, t_env *env, int phase, int i);
@@ -263,6 +264,6 @@ void				add_to(char *key, char *value, t_env *dup_env, char *ident);
 void				error_mess_uns(char *cmd);
 
 void				minishell_mess(void);
-void	rl_replace_line(const char *str, int state);
+void				rl_replace_line(const char *str, int state);
 
 #endif

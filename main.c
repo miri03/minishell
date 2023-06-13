@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/13 17:09:07 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:48:03 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	check_args(int ac, char **av, t_env **dup_env, char **env)
 {
 	(void)av;
-	exec.g_exit_status = 0;
+	g_exec.g_exit_status = 0;
 	if (ac != 1)
 	{
 		ft_putendl_fd("noo we don't do that here", 2);
@@ -53,49 +53,17 @@ void	ft_minishell(t_env **env, t_token **token, t_cmd **cmd)
 		ft_lstclear_t(token);
 }
 
-void	sig_int_handler(int s)
-{
-	(void)s;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
-
-void	set_signals(void)
-{
-	signal(SIGQUIT, SIG_IGN);        //ctr-\ //
-	signal(SIGINT, sig_int_handler); //ctr-c //
-}
-
-void	set_default(void)
-{
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGINT, SIG_DFL);
-}
-
-int	main(int ac, char **av, char **env)
+void	main_loop(t_token *token, t_env *dup_env, t_cmd *cmd)
 {
 	char	*line;
-	t_token	*token;
-	t_env	*dup_env;
-	t_cmd	*cmd;
 
-	dup_env = NULL;
-	minishell_mess();
-	check_args(ac, av, &dup_env, env);
-	exec.g_exit_status = 0;
-	set_signals();
 	while (1)
 	{
 		token = NULL;
 		cmd = NULL;
 		line = readline(GREEN "minishell> " RESET);
 		if (!line)
-		{
-			ft_putstr_fd("exit\n", 2);
-			exit(exec.g_exit_status);
-		}
+			to_exit();
 		if (is_all_spaces(line))
 		{
 			free(line);
@@ -105,14 +73,28 @@ int	main(int ac, char **av, char **env)
 		if (token_line(line, &token))
 		{
 			ft_minishell(&dup_env, &token, &cmd);
-			exec.herdoc_pipe = malloc(sizeof(t_exec) * table_len(cmd)); //
 			get_input(cmd);
 			execute(cmd, &dup_env);
-			free(exec.herdoc_pipe);
 			clear_cmds(&cmd);
 		}
 		free(line);
 	}
+}
+
+int	main(int ac, char **av, char **env)
+{
+	t_token	*token;
+	t_env	*dup_env;
+	t_cmd	*cmd;
+
+	dup_env = NULL;
+	minishell_mess();
+	check_args(ac, av, &dup_env, env);
+	g_exec.g_exit_status = 0;
+	set_signals();
+	token = NULL;
+	cmd = NULL;
+	main_loop(token, dup_env, cmd);
 }
 
 //<< m cat | ls | <<m

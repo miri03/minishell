@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	export(t_env *dup_env, t_cmd *table)
 			}
 			dup_env = dup_env->next;
 		}
-		exec.g_exit_status = 0;
+		g_exec.g_exit_status = 0;
 	}
 }
 
@@ -111,5 +111,5 @@ void	ft_export(t_env *dup_env, t_cmd *table, int fork)
 		i++;
 	}
 	if (fork)
-		exit(exec.g_exit_status);
+		exit(g_exec.g_exit_status);
 }

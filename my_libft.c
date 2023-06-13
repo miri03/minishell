@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 19:56:28 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void	error_mess_exit(char *str)
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
-	exec.g_exit_status = 255;
-	exit(exec.g_exit_status);
+	g_exec.g_exit_status = 255;
+	exit(g_exec.g_exit_status);
 }
 
 int	my_ft_atoi(const char *str)

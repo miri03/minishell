@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/21 16:45:07 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:05:46 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,35 @@
 void	open_uno(int i)
 {
 	if (i % 2 == 0)
-		pipe(exec.pipes[1]);
+		pipe(g_exec.pipes[1]);
 	else
-		pipe(exec.pipes[0]);
+		pipe(g_exec.pipes[0]);
 }
 
 void	parent_multi(int i, int tbl_len, t_redi *in)
 {
 	if (i == 0)
 	{
-		close(exec.pipes[1][0]);
-		close(exec.pipes[1][1]);
-		close(exec.pipes[0][1]);
+		close(g_exec.pipes[1][0]);
+		close(g_exec.pipes[1][1]);
+		close(g_exec.pipes[0][1]);
 	}
 	else if (i == tbl_len - 1)
 	{
-		close(exec.pipes[0][0]);
-		close(exec.pipes[1][0]);
-		close(exec.pipes[1][1]);
-		close(exec.pipes[0][1]);
+		close(g_exec.pipes[0][0]);
+		close(g_exec.pipes[1][0]);
+		close(g_exec.pipes[1][1]);
+		close(g_exec.pipes[0][1]);
 	}
 	else if (i % 2 == 0)
 	{
-		close(exec.pipes[0][1]);
-		close(exec.pipes[1][0]);
+		close(g_exec.pipes[0][1]);
+		close(g_exec.pipes[1][0]);
 	}
 	else // i % 2 != 0
 	{
-		close(exec.pipes[0][0]);
-		close(exec.pipes[1][1]);
+		close(g_exec.pipes[0][0]);
+		close(g_exec.pipes[1][1]);
 	}
 	close_herdoc(in, i);
 	open_uno(i);
@@ -68,8 +68,8 @@ void	multi_cmd(t_env *env, t_cmd *table)
 
 	i = 0;
 	tbl_len = table_len(table);
-	exec.pipes = (int **)malloc(sizeof(int *) * 2);
-	make_pipes(exec.pipes);
+	g_exec.pipes = (int **)malloc(sizeof(int *) * 2);
+	make_pipes(g_exec.pipes);
 	f_pid = (int *)malloc(sizeof(int) * tbl_len);
 	while (table)
 	{
@@ -83,8 +83,8 @@ void	multi_cmd(t_env *env, t_cmd *table)
 		i++;
 	}
 	wait_all(f_pid, i);
-	free(exec.pipes[0]);
-	free(exec.pipes[1]);
-	free(exec.pipes);
+	free(g_exec.pipes[0]);
+	free(g_exec.pipes[1]);
+	free(g_exec.pipes);
 	free(f_pid);
 }

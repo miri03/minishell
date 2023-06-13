@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 23:26:44 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	ft_echo(t_cmd *cmd, int fork)
 	}
 	if (!opt)
 		printf("\n");
-	exec.g_exit_status = 0;
+	g_exec.g_exit_status = 0;
 	if (fork)
-		exit (exec.g_exit_status);
+		exit(g_exec.g_exit_status);
 }

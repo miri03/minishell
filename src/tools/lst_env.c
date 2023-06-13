@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 00:24:02 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ int	ft_putendl_fd_2(char *s, char *str, int fd)
 		write(fd, "\'", 1);
 	}
 	write (fd, "\n", 1);
-	exec.g_exit_status = 258;
+	g_exec.g_exit_status = 258;
 	return (0);
 }

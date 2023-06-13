@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 19:33:18 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:23:04 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,7 @@ void	error_mess_exp(char *cmd)
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
-	exec.g_exit_status = 1;
-}
-
-void	error_mess_uns(char *cmd)
-{
-	ft_putstr_fd("minishell: unset: `", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	exec.g_exit_status = 1;
+	g_exec.g_exit_status = 1;
 }
 
 int	does_exist(char *key, t_env *dup_env)

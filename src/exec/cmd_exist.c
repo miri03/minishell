@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 21:03:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:20:22 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	directory_error(char *dir)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(dir, 2);
 	ft_putstr_fd(": is a directory\n", 2);
-	exec.g_exit_status = 126;
-	exit(exec.g_exit_status);
+	g_exec.g_exit_status = 126;
+	exit(g_exec.g_exit_status);
 }
 
 char	*directory_executable(t_cmd *table)
@@ -50,8 +50,8 @@ char	*directory_executable(t_cmd *table)
 			ft_putstr_fd("minishell: ", 2);
 			ft_putstr_fd(table->cmd[0], 2);
 			ft_putstr_fd(": No such file or directory\n", 2);
-			exec.g_exit_status = 127;
-			exit(exec.g_exit_status);
+			g_exec.g_exit_status = 127;
+			exit(g_exec.g_exit_status);
 		}
 	}
 	return (NULL);

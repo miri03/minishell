@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 21:41:39 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	home(t_env **env)
 	else //HOME unset
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-		exec.g_exit_status = 1;
+		g_exec.g_exit_status = 1;
 	}
 }
 
@@ -61,7 +61,7 @@ void	upd_env_pwd(t_env *env)
 	pwd = getcwd(NULL, 0);
 	upd_old_pwd(env);
 	upd_pwd(env, pwd);
-	exec.g_exit_status = 0;
+	g_exec.g_exit_status = 0;
 }
 
 void	ft_cd(t_cmd *cmd, t_env **env, int fork)
@@ -71,7 +71,7 @@ void	ft_cd(t_cmd *cmd, t_env **env, int fork)
 	if (cmd_len(cmd->cmd) == 1)
 	{
 		home(env);
-		exec.g_exit_status = 0;
+		g_exec.g_exit_status = 0;
 		return ;
 	}
 	r_value = chdir(cmd->cmd[1]);
@@ -82,8 +82,8 @@ void	ft_cd(t_cmd *cmd, t_env **env, int fork)
 		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(cmd->cmd[1], 2);
 		perror(" ");
-		exec.g_exit_status = 1;
+		g_exec.g_exit_status = 1;
 	}
 	if (fork)
-		exit(exec.g_exit_status);
+		exit(g_exec.g_exit_status);
 }

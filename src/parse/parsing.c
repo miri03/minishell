@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 08:10:31 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:24:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	set_oper(t_token *token, t_redi **redir, int type)
 {
 	if (token)
 		ft_lstadd_back_redi(redir,
-							ft_lstnew_redi(ft_strdup(token->content), type));
+			ft_lstnew_redi(ft_strdup(token->content), type));
 	if (token && type == heredoc && token->type == SINGLE_EXP)
 		ft_lstlast_redi(*redir)->must_exp = 1;
 }
@@ -31,7 +31,7 @@ int	check_redir(t_token *token)
 		if (ft_strchr_2(token->content, ' ') && token->content[len] != ' ')
 		{
 			ft_putendl_fd_2("error in redirection", NULL, 2);
-			exec.g_exit_status = 1;
+			g_exec.g_exit_status = 1;
 			return (1);
 		}
 	}

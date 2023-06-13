@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:50:24 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ void	ft_exit(t_cmd *cmd)
 		if (cmd_len(cmd->cmd) > 2)
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-			exec.g_exit_status = 1;
+			g_exec.g_exit_status = 1;
 			return ;
 		}
 		else if (cmd_len(cmd->cmd) == 2)
 		{
-			exec.g_exit_status = my_ft_atoi(cmd->cmd[1]);
+			g_exec.g_exit_status = my_ft_atoi(cmd->cmd[1]);
 			exit(my_ft_atoi(cmd->cmd[1]));
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:42:54 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:15:33 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd, int fork)
 	t_env	*tmp;
 
 	i = 1;
-	exec.g_exit_status = 0;
+	g_exec.g_exit_status = 0;
 	if (cmd_len(cmd->cmd) > 1)
 	{
 		while (cmd->cmd[i])
@@ -111,5 +111,5 @@ void	ft_unset(t_env **dup_env, t_cmd *cmd, int fork)
 		}
 	}
 	if (fork)
-		exit(exec.g_exit_status);
+		exit(g_exec.g_exit_status);
 }

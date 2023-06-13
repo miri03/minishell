@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 20:51:26 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:05:29 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,19 @@ int	single_parent_proc(int f_pid)
 {
 	int	status;
 
-	if (exec.n_herdoc)
+	if (g_exec.n_herdoc)
 	{
-		close(exec.herdoc_pipe[0][0]);
-		close(exec.herdoc_pipe[0][1]);
-		free(exec.herdoc_pipe[0]);
+		close(g_exec.herdoc_pipe[0][0]);
+		close(g_exec.herdoc_pipe[0][1]);
+		free(g_exec.herdoc_pipe[0]);
 	}
 	waitpid(f_pid, &status, 0);
 	if (WIFSIGNALED(status))
 	{
-		exec.g_exit_status = WTERMSIG(status) + 128;
+		g_exec.g_exit_status = WTERMSIG(status) + 128;
 		return (1);
 	}
-	exec.g_exit_status = WEXITSTATUS(status);
+	g_exec.g_exit_status = WEXITSTATUS(status);
 	return (0);
 }
 
@@ -61,7 +61,7 @@ void	single_child_proc(t_env **env, t_cmd *table)
 				directory_error(table->cmd[0]);
 			error_cmd_not_found(table->cmd[0]);
 		}
-		if (execve(cmd_path, table->cmd, exec.env) == -1)
+		if (execve(cmd_path, table->cmd, g_exec.env) == -1)
 			execve_error(cmd_path);
 	}
 	else
@@ -73,8 +73,8 @@ void	execve_error(char *cmd_path)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_path, 2);
 	perror(" ");
-	exec.g_exit_status = 126;
-	exit(exec.g_exit_status);
+	g_exec.g_exit_status = 126;
+	exit(g_exec.g_exit_status);
 }
 
 void	exec_single(t_env **env, t_cmd *table)

@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 05:02:22 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 21:03:59 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:35:25 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	execute(t_cmd *table, t_env **dup_env)
 {
+	g_exec.herdoc_pipe = malloc(sizeof(t_exec) * table_len(table));
 	if (!table)
 		return ;
 	if (open_herdoc(table, *dup_env))
@@ -22,4 +23,5 @@ void	execute(t_cmd *table, t_env **dup_env)
 		exec_single(dup_env, table);
 	else
 		multi_cmd(*dup_env, table);
+	free(g_exec.herdoc_pipe);
 }

@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 16:20:25 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,35 @@
 
 void	close_pipes_child(void)
 {
-	close(exec.pipes[1][1]);
-	close(exec.pipes[0][0]);
-	close(exec.pipes[0][1]);
-	close(exec.pipes[1][0]);
+	close(g_exec.pipes[1][1]);
+	close(g_exec.pipes[0][0]);
+	close(g_exec.pipes[0][1]);
+	close(g_exec.pipes[1][0]);
 }
 
 void	dup_it(int phase, int i)
 {
 	if (phase == 0) //first cmd
-		dup2(exec.pipes[0][1], 1);
+		dup2(g_exec.pipes[0][1], 1);
 	if (i % 2 == 0)
 	{
 		if (phase == 1) // middle cmd
 		{
-			dup2(exec.pipes[0][1], 1);
-			dup2(exec.pipes[1][0], 0);
+			dup2(g_exec.pipes[0][1], 1);
+			dup2(g_exec.pipes[1][0], 0);
 		}
 		if (phase == 2) //last cmd
-			dup2(exec.pipes[1][0], 0);
+			dup2(g_exec.pipes[1][0], 0);
 	}
 	else
 	{
 		if (phase == 1) //middle cmd
 		{
-			dup2(exec.pipes[1][1], 1); // i % 2 != 0
-			dup2(exec.pipes[0][0], 0);
+			dup2(g_exec.pipes[1][1], 1); // i % 2 != 0
+			dup2(g_exec.pipes[0][0], 0);
 		}
 		if (phase == 2) //last cmd
-			dup2(exec.pipes[0][0], 0);
+			dup2(g_exec.pipes[0][0], 0);
 	}
 	close_pipes_child();
 }
@@ -52,8 +52,8 @@ void	error_cmd_not_found(char *cmd)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(": command not found\n", 2);
-	exec.g_exit_status = 127;
-	exit(exec.g_exit_status);
+	g_exec.g_exit_status = 127;
+	exit(g_exec.g_exit_status);
 }
 
 void	execute_cmds(t_cmd *table, t_env *env, int phase, int i)
@@ -72,11 +72,11 @@ void	execute_cmds(t_cmd *table, t_env *env, int phase, int i)
 			which_builtin(cmd, table, &env, TRUE);
 		if (!cmd_path)
 			error_cmd_not_found(cmd);
-		if (execve(cmd_path, table->cmd, exec.env) == -1)
+		if (execve(cmd_path, table->cmd, g_exec.env) == -1)
 		{
 			perror("");
-			exec.g_exit_status = 126;
+			g_exec.g_exit_status = 126;
 		}
 	}
-	exit(exec.g_exit_status);
+	exit(g_exec.g_exit_status);
 }
