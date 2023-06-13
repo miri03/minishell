@@ -23,13 +23,11 @@ int	is_builtin(char *cmd)
 
 void	exec_builtin(char *cmd, t_cmd *table, t_env **env)
 {
-	int	dup_out;
-
 	exec.std_in = dup(STDIN_FILENO);
 	exec.std_out = dup(STDOUT_FILENO);
 	exec.built_in = 1;
 	redir_in(table, 0);
-	dup_out = redir_out(table);
+	redir_out(table);
 	which_builtin(cmd, table, env, FALSE);
 	dup2(exec.std_in, STDIN_FILENO);
 	dup2(exec.std_out, STDOUT_FILENO);

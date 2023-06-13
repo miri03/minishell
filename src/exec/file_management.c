@@ -29,7 +29,7 @@ int	n_herdoc(t_redi *in)
 
 // recheck no env
 
-void	make_herdoc_pipe(int herdo)
+void	make_herdoc_pipe(int herdo, int h)
 {
 if (herdo)
 		{
@@ -44,24 +44,16 @@ int	open_herdoc(t_cmd *table, t_env *env)
 	t_redi	*tmp_in;
 	int		herdo;
 	int		h;
-	int		i;
 	char	*line;
 	int		p_id;
 	int		status;
 
 	h = 0;
-	i = 0;
 	while (table)
 	{
 		tmp_in = table->in;
 		herdo = n_herdoc(tmp_in);
-		make_herdoc_pipe(herdo);
-		// if (herdo)
-		// {
-		// 	exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
-		// 	if (pipe(exec.herdoc_pipe[h]) == -1)
-		// 		perror("pipe\n");
-		// }
+		make_herdoc_pipe(herdo, h);
 		while (tmp_in)
 		{
 			if (tmp_in->type == heredoc)

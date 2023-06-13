@@ -14,9 +14,6 @@
 
 void	execute(t_cmd *table, t_env **dup_env)
 {
-	int	i;
-
-	i = 0;
 	if (!table)
 		return ;
 	if (open_herdoc(table, *dup_env))

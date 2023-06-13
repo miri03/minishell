@@ -80,7 +80,6 @@ int	main(int ac, char **av, char **env)
 	t_token	*token;
 	t_env	*dup_env;
 	t_cmd	*cmd;
-	int		i;
 	
 	dup_env = NULL;
 	minishell_mess();
@@ -89,7 +88,6 @@ int	main(int ac, char **av, char **env)
 	set_signals();
 	while (1)
 	{
-		i = 0;
 		token = NULL;
 		cmd = NULL;
 		line = readline(GREEN"minishell> "RESET);

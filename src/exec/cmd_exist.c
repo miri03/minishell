@@ -77,10 +77,8 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 {
 	char	**path;
 	char	*cmd;
-	int		i;
 	char	*retrn;
 
-	i = 0;
 	if (!table->cmd)
 		return (NULL);
 	retrn = directory_executable(table);

@@ -13,7 +13,7 @@
 NAME		=	minishell
 CC			=	cc
 
-# CFLAGS		=	-Werror -Wextra -Wall -fsanitize=address -g3
+#CFLAGS		=	 -Werror -Wextra -Wall -lreadline -L/opt/homebrew/opt/readline/lib -I/opt/homebrew/opt/readline/include #-fsanitize=address -g3
 
 CFLAGS		=	 -Werror -Wextra -Wall -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib -I/goinfre/meharit/homebrew/opt/readline/include #-fsanitize=address -g3
 
