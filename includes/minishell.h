@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/13 22:52:36 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 00:22:04 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,8 @@ int					valid_ident(char *ident);
 int					env_valid(char *ident);
 void				add_to(char *key, char *value, t_env *dup_env, char *ident);
 void				error_mess_uns(char *cmd);
+
+int					my_strchr(char *str, char c);
 
 void				minishell_mess(void);
 void				rl_replace_line(const char *str, int state);

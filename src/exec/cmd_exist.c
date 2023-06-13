@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 21:03:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 22:48:14 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 00:30:51 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	directory_error(char *dir)
 	ft_putstr_fd(dir, 2);
 	ft_putstr_fd(": is a directory\n", 2);
 	g_exec.g_exit_status = 126;
+	closedir((DIR *)dir);
 	exit(g_exec.g_exit_status);
 }
 
@@ -37,8 +38,7 @@ char	*directory_executable(t_cmd *table)
 	DIR	*ptr_dir;
 
 	ptr_dir = opendir(table->cmd[0]);
-	if (!ft_strcmp(&table->cmd[0][ft_strlen(table->cmd[0]) - 1], "\\")
-		&& ptr_dir)
+	if (ptr_dir)
 		directory_error(table->cmd[0]);
 	if (table->cmd[0][0] == '/' || (table->cmd[0][0] == '.'
 			&& table->cmd[0][1] == '/'))
@@ -69,6 +69,14 @@ char	*cmd_path(char **path, char *cmd)
 		if (access(test, F_OK) == 0)
 			return (test);
 		i++;
+	}
+	if (my_strchr(cmd, '/'))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd + 1, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+		g_exec.g_exit_status = 127;
+		exit(g_exec.g_exit_status);
 	}
 	return (NULL);
 }

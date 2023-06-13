@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 19:56:28 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 00:28:26 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,20 @@ int	my_ft_atoi(const char *str)
 	if ((!str[i] && i == 1) || (str[i] && !ft_isdigit(str[i])))
 		error_mess_exit((char *)str);
 	return (((int)result * sign));
+}
+
+int	my_strchr(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == c)
+		i++;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
