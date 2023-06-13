@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 21:26:57 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 13:52:42 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	dup_it(int phase, int i)
 		{
 			dup2(exec.pipes[0][1], 1);
 			dup2(exec.pipes[1][0], 0);
-			dprintf(2, "pipe[1][0]%d\n", exec.pipes[1][0]);
 		}
 		if (phase == 2) //last cmd
 			dup2(exec.pipes[1][0], 0);
@@ -41,7 +40,6 @@ void	dup_it(int phase, int i)
 		{
 			dup2(exec.pipes[1][1], 1); // i % 2 != 0
 			dup2(exec.pipes[0][0], 0);
-			dprintf(2, "pipe[0][0]%d\n", exec.pipes[0][0]);
 		}
 		if (phase == 2) //last cmd
 			dup2(exec.pipes[0][0], 0);

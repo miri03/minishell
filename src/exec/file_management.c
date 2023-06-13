@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 00:45:35 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/13 14:01:03 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,50 @@ int	n_herdoc(t_redi *in)
 
 void	make_herdoc_pipe(int herdo, int h)
 {
-if (herdo)
+	if (herdo)
+	{
+		exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
+		if (pipe(exec.herdoc_pipe[h]) == -1)
+			perror("pipe\n");
+	}
+}
+
+void	herdoc(int herdo, t_redi *tmp_in, t_env *env, int h)
+{
+	char	*line;
+
+	while (1)
+	{
+		line = readline(">");
+		if (!line || !ft_strcmp(line, tmp_in->file))
 		{
-			exec.herdoc_pipe[h] = malloc(sizeof(t_exec) * 2);
-			if (pipe(exec.herdoc_pipe[h]) == -1)
-				perror("pipe\n");
-		}	
+			free(line);
+			break ;
+		}
+		if (herdo == 1)
+		{
+			if (tmp_in->must_exp)
+				expand_var(env, &line);
+			write(exec.herdoc_pipe[h][1], line,
+					ft_strlen(line));
+			write(exec.herdoc_pipe[h][1], "\n", 1);
+		}
+		free(line);
+	}
+}
+
+int	parent_herdoc(int p_id, int h)
+{
+	int	status;
+	
+	waitpid(p_id, &status, 0);
+	if (WIFSIGNALED(status))
+	{
+		free(exec.herdoc_pipe[h]);
+		exec.g_exit_status = WTERMSIG(status) + 128;
+		return (1);
+	}
+	return (0);
 }
 
 int	open_herdoc(t_cmd *table, t_env *env)
@@ -44,9 +82,7 @@ int	open_herdoc(t_cmd *table, t_env *env)
 	t_redi	*tmp_in;
 	int		herdo;
 	int		h;
-	char	*line;
 	int		p_id;
-	int		status;
 
 	h = 0;
 	while (table)
@@ -62,24 +98,7 @@ int	open_herdoc(t_cmd *table, t_env *env)
 				if (!p_id)
 				{
 					set_default();
-					while (1)
-					{
-						line = readline(">");
-						if (!line || !ft_strcmp(line, tmp_in->file))
-						{
-							free(line);
-							break ;
-						}
-						if (herdo == 1)
-						{
-							if (tmp_in->must_exp)
-								expand_var(env, &line);
-							write(exec.herdoc_pipe[h][1], line,
-									ft_strlen(line));
-							write(exec.herdoc_pipe[h][1], "\n", 1);
-						}
-						free(line);
-					}
+					herdoc(herdo, tmp_in, env, h);
 					if (!herdo)
 						close(exec.herdoc_pipe[h][1]);
 					exit(exec.g_exit_status);
@@ -87,13 +106,8 @@ int	open_herdoc(t_cmd *table, t_env *env)
 				else
 				{
 					herdo--;
-					waitpid(p_id, &status, 0);
-					if (WIFSIGNALED(status))
-					{
-						free(exec.herdoc_pipe[h]);
-						exec.g_exit_status = WTERMSIG(status) + 128;
+					if (parent_herdoc(p_id, h))
 						return (1);
-					}
 				}
 			}
 			tmp_in = tmp_in->next;
@@ -124,6 +138,13 @@ int	open_herdoc(t_cmd *table, t_env *env)
 
 // << m cat <<g cat
 
+void	is_herdoc(int i)
+{
+	dup2(exec.herdoc_pipe[i][0], STDIN_FILENO);
+	close(exec.herdoc_pipe[i][0]);
+	close(exec.herdoc_pipe[i][1]);
+}
+
 void	redir_in(t_cmd *table, int i)
 {
 	int		fd;
@@ -148,11 +169,7 @@ void	redir_in(t_cmd *table, int i)
 			dup2(fd, 0);
 		}
 		else
-		{
-			dup2(exec.herdoc_pipe[i][0], STDIN_FILENO);
-			close(exec.herdoc_pipe[i][0]);
-			close(exec.herdoc_pipe[i][1]);
-		}
+			is_herdoc(i);
 		r_in = r_in->next;
 	}
 }
