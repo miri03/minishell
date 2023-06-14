@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 21:41:39 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 22:49:02 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 01:16:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	upd_old_pwd(t_env *env)
 	{
 		if (ft_strcmp("OLDPWD", tmp->key) == 0)
 		{
-			free(tmp->value);
+			free(tmp->value); //double free??
 			tmp->value = get_pwd(env);
 			return ;
 		}
@@ -33,7 +33,7 @@ void	upd_pwd(t_env *env, char *pwd)
 {
 	while (env)
 	{
-		if (ft_strcmp(env->key, "PWD") == 0)
+		if (!ft_strcmp(env->key, "PWD"))
 			env->value = pwd;
 		env = env->next;
 	}
@@ -71,7 +71,6 @@ void	ft_cd(t_cmd *cmd, t_env **env, int fork)
 	if (cmd_len(cmd->cmd) == 1)
 	{
 		home(env);
-		g_exec.g_exit_status = 0;
 		return ;
 	}
 	r_value = chdir(cmd->cmd[1]);

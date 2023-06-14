@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 20:04:04 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/12 20:10:34 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 01:07:05 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ char	*get_home(t_env *env)
 	while (env)
 	{
 		if (ft_strcmp(env->key, "HOME") == 0)
-			return (env->value);
+		{
+			if (env->value)
+				return (env->value);
+		}
+			
 		env = env->next;
 	}
 	return (NULL);

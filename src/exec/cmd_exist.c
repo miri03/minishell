@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 21:03:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/14 00:30:51 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 00:48:43 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	directory_error(char *dir)
 	ft_putstr_fd(dir, 2);
 	ft_putstr_fd(": is a directory\n", 2);
 	g_exec.g_exit_status = 126;
-	closedir((DIR *)dir);
 	exit(g_exec.g_exit_status);
 }
 

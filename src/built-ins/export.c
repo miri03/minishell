@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 22:49:18 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 00:54:19 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 	{
 		if (*append)
 		{
-			printf("append\n");
 			while (ft_strcmp(env->key, key))
 				env = env->next;
 			env->value = ft_my_strjoin(env->value, value);
