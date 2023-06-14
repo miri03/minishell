@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/14 17:48:19 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 17:52:32 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct s_exec
 	int				std_out;
 	int				g_exit_status;
 	int				n_herdoc;
-	int				herdoc_per_pipe;
 }					t_exec;
 
 t_exec				g_exec;
