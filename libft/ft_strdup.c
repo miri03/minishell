@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 09:26:52 by yismaail          #+#    #+#             */
-/*   Updated: 2022/10/25 03:58:13 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/06/14 14:55:31 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strdup(const char *s1)
 
 	str = (char *)malloc(ft_strlen(s1) + 1);
 	if (!str)
-		return (0);
+		return (NULL);
 	ft_memcpy(str, s1, ft_strlen(s1) + 1);
 	return (str);
 }

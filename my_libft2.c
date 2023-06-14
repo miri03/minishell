@@ -1,40 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_uti.c                                           :+:      :+:    :+:   */
+/*   my_libft2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 20:04:04 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/14 15:03:45 by meharit          ###   ########.fr       */
+/*   Created: 2023/06/14 17:39:11 by meharit           #+#    #+#             */
+/*   Updated: 2023/06/14 17:46:02 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "includes/minishell.h"
 
-char	*get_pwd(t_env *env)
+char	*my_ft_strdup(const char *s1)
 {
-	while (env)
-	{
-		if (ft_strcmp("PWD", env->key) == 0)
-			return (my_ft_strdup(env->value));
-		env = env->next;
-	}
-	return (NULL);
-}
+	int		i;
+	char	*ptr;
 
-char	*get_home(t_env *env)
-{
-	while (env)
+	i = 0;
+	ptr = NULL;
+	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (ptr == NULL)
+		return (NULL);
+	while (s1[i] != '\0')
 	{
-		if (ft_strcmp(env->key, "HOME") == 0)
-		{
-			if (env->value)
-				return (my_ft_strdup(env->value));
-			else
-				return (NULL);
-		}
-		env = env->next;
+		ptr[i] = s1[i];
+		i++;
 	}
-	return (NULL);
+	ptr[i] = '\0';
+	return (ptr);
 }

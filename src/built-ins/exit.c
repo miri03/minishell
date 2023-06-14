@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 20:50:24 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 17:16:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 17:49:38 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,20 @@ int	cmd_len(char **table)
 
 void	ft_exit(t_cmd *cmd)
 {
+	int	i;
+
+	i = 0;
 	ft_putstr_fd("exit\n", 2);
 	if (cmd->cmd[1])
 	{
 		if (cmd_len(cmd->cmd) > 2)
 		{
+			while (cmd->cmd[1][i])
+			{
+				if (!ft_isdigit(cmd->cmd[1][i]))
+					error_mess_exit(cmd->cmd[1]);
+				i++;
+			}
 			ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 			g_exec.g_exit_status = 1;
 			return ;
@@ -53,5 +62,5 @@ void	ft_exit(t_cmd *cmd)
 			exit(my_ft_atoi(cmd->cmd[1]));
 		}
 	}
-	exit(0);
+	exit(g_exec.g_exit_status);
 }

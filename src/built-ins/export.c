@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/14 00:54:19 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 15:55:38 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ char	*get_key(char *ident, int *append)
 		ident++;
 	while (ident[i] && ident[i] != '=' && ident[i] != '+')
 		i++;
-	if (ident[i] == '+')
+	if (ident[i] == '=')
+		(*append) = 2;
+	else if (ident[i] == '+')
 		(*append) = 1;
 	return (ft_substr(ident, 0, i));
 }
@@ -40,13 +42,13 @@ char	*get_value(char *ident)
 
 void	append_change(t_env *env, int *append, char *key, char *value)
 {
-	if (value[0])
+	if (*append == 2 || value[0])
 	{
-		if (*append)
+		if (*append == 1)
 		{
 			while (ft_strcmp(env->key, key))
 				env = env->next;
-			env->value = ft_my_strjoin(env->value, value);
+			env->value = ft_my_strjoin2(env->value, value);
 			free(value);
 			free(key);
 		}

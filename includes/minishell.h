@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/14 00:22:04 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 17:48:19 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,8 @@ void				check_tokens(t_token *token);
 void				get_input(t_cmd *command);
 void				execute(t_cmd *cmd, t_env **dup_env);
 int					cmd_len(char **table);
-char				*ft_my_strjoin(char const *s1, char const *s2);
+char				*ft_my_strjoin(char *s1, char const *s2);
+char				*ft_my_strjoin2(char *s1, char const *s2);
 int					is_builtin(char *cmd);
 void				exec_builtin(char *cmd, t_cmd *table, t_env **env);
 void				multi_cmd(t_env *env, t_cmd *table);
@@ -252,6 +253,7 @@ int					n_herdoc(t_redi *in);
 void				ft_env(t_env **dup_env, int fork);
 void				ft_unset(t_env **dup_env, t_cmd *cmd, int fork);
 void				ft_exit(t_cmd *cmd);
+void				error_mess_exit(char *str);
 void				ft_pwd(t_env *env, int fork);
 void				ft_cd(t_cmd *cmd, t_env **env, int fork);
 char				*get_pwd(t_env *env);
@@ -270,6 +272,7 @@ void				add_to(char *key, char *value, t_env *dup_env, char *ident);
 void				error_mess_uns(char *cmd);
 
 int					my_strchr(char *str, char c);
+char				*my_ft_strdup(const char *s1);
 
 void				minishell_mess(void);
 void				rl_replace_line(const char *str, int state);

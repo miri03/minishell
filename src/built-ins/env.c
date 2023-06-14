@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:22:25 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 22:49:08 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/14 15:18:10 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ void	ft_env(t_env **dup_env, int fork)
 				free(tmp->value);
 				tmp->value = ft_strdup("/usr/bin/env");
 			}
+			printf("%s=", tmp->key);
 			if (tmp->value)
-				printf("%s=%s\n", tmp->key, tmp->value);
+				printf("%s", tmp->value);
+			printf("\n");
 		}
 		tmp = tmp->next;
 	}
