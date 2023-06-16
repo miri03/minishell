@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 21:03:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/14 00:48:43 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/16 19:01:36 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,15 @@ char	*cmd_path(char **path, char *cmd)
 	int		i;
 
 	i = 0;
+	test = NULL;
 	while (path[i])
 	{
-		test = ft_strjoin(path[i], cmd);
+		test = ft_my_strjoin(path[i], cmd);
 		if (access(test, F_OK) == 0)
 			return (free(cmd), free_path(path), test);
 		i++;
 		free(test);
 	}
-	free(test);
 	if (my_strchr(cmd, '/'))
 	{
 		ft_putstr_fd("minishell: ", 2);

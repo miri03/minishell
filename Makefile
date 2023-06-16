@@ -6,14 +6,14 @@
 #    By: meharit <meharit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 04:04:08 by yismaail          #+#    #+#              #
-#    Updated: 2023/06/16 16:56:31 by meharit          ###   ########.fr        #
+#    Updated: 2023/06/16 18:54:45 by meharit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	cc
 
-CFLAGS		=	 -Werror -Wextra -Wall -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib # -fsanitize=adress
+CFLAGS		=	 -Werror -Wextra -Wall -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib -fsanitize=address -g3
 RM			=	rm -rf
 SRCS		=	minishell_mess.c my_libft.c my_libft2.c main.c signals.c src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
 				src/tools/lst_env.c src/envir/environment.c src/expand/expansion.c \
