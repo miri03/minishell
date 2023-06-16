@@ -38,7 +38,6 @@ void	upd_pwd(t_env *env, char *pwd)
 	{
 		if (!ft_strcmp(env->key, "PWD"))
 		{
-			// system("leaks minishell");
 			printf("OLD PWD=> %p %p\n", env->key, env->value);
 			free(env->value);
 			env->value = my_ft_strdup(pwd);

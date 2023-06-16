@@ -56,6 +56,18 @@ char	*directory_executable(t_cmd *table)
 	return (NULL);
 }
 
+void	free_path(char **path)
+{
+	int	i;
+
+	i = 0;
+	while (path && path[i])
+	{
+		free (path[i++]);
+	}
+	free (path);
+}
+
 char	*cmd_path(char **path, char *cmd)
 {
 	char	*test;
@@ -66,17 +78,23 @@ char	*cmd_path(char **path, char *cmd)
 	{
 		test = ft_strjoin(path[i], cmd);
 		if (access(test, F_OK) == 0)
-			return (test);
+			return (free(cmd), free_path(path), test);
 		i++;
+		free(test);
 	}
+	free(test);
 	if (my_strchr(cmd, '/'))
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd + 1, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
 		g_exec.g_exit_status = 127;
+		free_path(path);
+		free(cmd);
 		exit(g_exec.g_exit_status);
 	}
+	free_path(path);
+	free(cmd);
 	return (NULL);
 }
 
