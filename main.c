@@ -6,11 +6,26 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/16 12:10:52 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/16 23:25:57 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
+
+void	check_tokens(t_token *token)
+{
+	t_token	*tmp;
+
+	tmp = token;
+	printf("--------CHECK_TOKENS-----------\n");
+	while (tmp)
+	{
+		printf("content = %s\n", tmp->content);
+		printf("type    = %d\n", tmp->type);
+		tmp = tmp->next;
+	}
+	printf("----------------------------\n");
+}
 
 void    get_input(t_cmd *command)
 {
@@ -142,7 +157,7 @@ int	main(int ac, char **av, char **env)
 	t_cmd	*cmd;
 
 	dup_env = NULL;
-	minishell_mess();
+	// minishell_mess();
 	check_args(ac, av, &dup_env, env);
 	g_exec.g_exit_status = 0;
 	set_signals();
