@@ -6,7 +6,7 @@
 #    By: meharit <meharit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 04:04:08 by yismaail          #+#    #+#              #
-#    Updated: 2023/06/14 17:53:28 by meharit          ###   ########.fr        #
+#    Updated: 2023/06/16 01:23:11 by meharit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ $(NAME)		: $(SRCS)
 			@printf "$(YELLOW)\rMinishell loading ...⏳\n$(RESET)"
 			@make -C libft
 			@$(CC) $(CFLAGS) $(SRCS) libft/libft.a -o $(NAME) -lreadline 
-			@printf "$(GREEN)\rMinishell Ready \n$(RESET)"    #### why /r ??
+			@printf "$(GREEN)\rMinishell Ready \n$(RESET)"
 			
 clean		:
 			@printf "$(RED)\rCleaning ... 🗑️\n"

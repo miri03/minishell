@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/14 17:52:32 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/16 02:17:29 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_exec
 	int				std_out;
 	int				g_exit_status;
 	int				n_herdoc;
+	int				f_out;
 }					t_exec;
 
 t_exec				g_exec;
@@ -242,6 +243,7 @@ int					n_herdoc(t_redi *in);
 void				make_herdoc_pipe(int herdo, int h);
 void				herdoc(int herdo, t_redi *tmp_in, t_env *env, int h);
 int					n_herdoc(t_redi *in);
+void				error_open_out(char *file);
 
 //*-------------------pipes------------------------*//
 void				execute_cmds(t_cmd *table, t_env *env, int phase, int i);

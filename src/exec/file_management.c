@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/13 22:48:32 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/16 02:32:31 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,36 @@ void	is_herdoc_redir(int i)
 	close(g_exec.herdoc_pipe[i][1]);
 }
 
+void	open_out_files(t_cmd *table)
+{
+	t_redi	*r_out;
+	int		fd;
+
+	r_out = table->out;
+	if (!g_exec.f_out)
+	{
+		while (r_out)
+		{
+			if (r_out->type == out)
+			{
+				fd = open(r_out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				if (fd == -1)
+					error_open_out(r_out->file);
+				r_out = r_out->next;
+			}
+		}
+	}
+}
+
+// void	error_open_in(t_cmd *table, t_redi *r_in)
+// {
+// 	ft_putstr_fd("minishell: ", 2);
+// 	ft_putstr_fd(r_in->file, 2);
+// 	perror(" ");
+// 	g_exec.g_exit_status = 1;
+// 	open_out_files(table);
+// }
+
 void	redir_in(t_cmd *table, int i)
 {
 	int		fd;
@@ -53,13 +83,16 @@ void	redir_in(t_cmd *table, int i)
 	{
 		if (r_in->type == in)
 		{
+			printf("here\n");
 			fd = open(r_in->file, O_RDONLY);
 			if (fd == -1)
 			{
+				// error_open_in(table, r_in);
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd(r_in->file, 2);
 				perror(" ");
 				g_exec.g_exit_status = 1;
+				// open_out_files(table);
 				if (g_exec.built_in == 0)
 					exit(g_exec.g_exit_status);
 				return ;
@@ -72,7 +105,7 @@ void	redir_in(t_cmd *table, int i)
 	}
 }
 
-void	error_open(char *file)
+void	error_open_out(char *file)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(file, 2);
@@ -92,12 +125,12 @@ int	redir_out(t_cmd *table)
 	{
 		while (out)
 		{
-			if (out->type == 3)
+			if (out->type == append)
 				fd = open(out->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			else
 				fd = open(out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd == -1)
-				error_open(out->file);
+				error_open_out(out->file);
 			out = out->next;
 		}
 		dup2(fd, 1);

@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/14 15:55:38 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/16 01:17:42 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 			while (ft_strcmp(env->key, key))
 				env = env->next;
 			env->value = ft_my_strjoin2(env->value, value);
+			env->valid = 1;
 			free(value);
 			free(key);
 		}
@@ -61,6 +62,11 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 			env->value = value;
 			env->valid = 1;
 		}
+	}
+	else
+	{
+		free(key);
+		free(value);
 	}
 }
 
