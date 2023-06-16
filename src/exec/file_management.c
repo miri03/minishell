@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/16 02:32:31 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/16 12:34:17 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,6 @@ void	open_out_files(t_cmd *table)
 	}
 }
 
-// void	error_open_in(t_cmd *table, t_redi *r_in)
-// {
-// 	ft_putstr_fd("minishell: ", 2);
-// 	ft_putstr_fd(r_in->file, 2);
-// 	perror(" ");
-// 	g_exec.g_exit_status = 1;
-// 	open_out_files(table);
-// }
-
 void	redir_in(t_cmd *table, int i)
 {
 	int		fd;
@@ -87,12 +78,10 @@ void	redir_in(t_cmd *table, int i)
 			fd = open(r_in->file, O_RDONLY);
 			if (fd == -1)
 			{
-				// error_open_in(table, r_in);
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd(r_in->file, 2);
 				perror(" ");
 				g_exec.g_exit_status = 1;
-				// open_out_files(table);
 				if (g_exec.built_in == 0)
 					exit(g_exec.g_exit_status);
 				return ;
@@ -104,6 +93,9 @@ void	redir_in(t_cmd *table, int i)
 		r_in = r_in->next;
 	}
 }
+
+// t > e > s < o must create outfiles (o in file)
+// t < e < s > o create nothing		  (o out file)
 
 void	error_open_out(char *file)
 {

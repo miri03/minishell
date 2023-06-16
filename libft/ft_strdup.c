@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 09:26:52 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/14 14:55:31 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/16 13:02:54 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_strdup(const char *s1)
 {
 	char	*str;
-
+	
 	str = (char *)malloc(ft_strlen(s1) + 1);
 	if (!str)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 07:20:45 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/12 17:36:55 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/16 16:54:55 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,7 @@ void	check_exp(t_token *tok, t_env *env)
 {
 	(void)env;
 	if (tok->type == HYPHEN)
-	{
 		hyphen_exp(tok, env);
-		printf("%s\n", tok->content);
-	}
 	else if ((tok->type == DOUBLE || tok->type == WORD)
 		&& ft_strlen(tok->content) > 1)
 	{
