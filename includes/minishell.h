@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/16 02:17:29 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/17 18:58:23 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ typedef struct s_exec
 	int				std_out;
 	int				g_exit_status;
 	int				n_herdoc;
-	int				f_out;
 }					t_exec;
 
 t_exec				g_exec;

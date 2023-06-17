@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 17:45:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/17 04:51:03 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/06/17 21:35:16 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	sig_int_handler(int s)
 {
 	(void)s;
 	write(1, "\n", 1);
-	// rl_replace_line("", 0);
+	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
 }

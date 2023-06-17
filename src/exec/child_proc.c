@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:32:33 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/14 00:16:59 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/17 18:59:46 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	execute_cmds(t_cmd *table, t_env *env, int phase, int i)
 	dup_it(phase, i);
 	redir_in(table, i);
 	redir_out(table);
-	if (table->cmd)
+	if (table->cmd && !table->err)
 	{
 		cmd = table->cmd[0];
 		if (is_builtin(cmd))
@@ -78,5 +78,7 @@ void	execute_cmds(t_cmd *table, t_env *env, int phase, int i)
 			g_exec.g_exit_status = 126;
 		}
 	}
+	if (table->err)
+		exit(g_exec.g_exit_status);
 	exit(g_exec.g_exit_status);
 }

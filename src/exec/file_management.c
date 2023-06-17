@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/16 12:34:17 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/17 21:34:08 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,27 +43,6 @@ void	is_herdoc_redir(int i)
 	close(g_exec.herdoc_pipe[i][1]);
 }
 
-void	open_out_files(t_cmd *table)
-{
-	t_redi	*r_out;
-	int		fd;
-
-	r_out = table->out;
-	if (!g_exec.f_out)
-	{
-		while (r_out)
-		{
-			if (r_out->type == out)
-			{
-				fd = open(r_out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				if (fd == -1)
-					error_open_out(r_out->file);
-				r_out = r_out->next;
-			}
-		}
-	}
-}
-
 void	redir_in(t_cmd *table, int i)
 {
 	int		fd;
@@ -74,7 +53,6 @@ void	redir_in(t_cmd *table, int i)
 	{
 		if (r_in->type == in)
 		{
-			printf("here\n");
 			fd = open(r_in->file, O_RDONLY);
 			if (fd == -1)
 			{

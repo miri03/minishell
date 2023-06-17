@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 20:51:26 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/16 12:32:23 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/17 15:55:49 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	single_child_proc(t_env **env, t_cmd *table)
 	cmd_path = cmd_exist(table, *env);
 	redir_in(table, 0);
 	redir_out(table);
-	if (table->cmd)
+	if (table->cmd && !table->err)
 	{
 		if (!cmd_path || !table->cmd[0][0])
 		{
@@ -64,6 +64,8 @@ void	single_child_proc(t_env **env, t_cmd *table)
 		if (execve(cmd_path, table->cmd, g_exec.env) == -1)
 			execve_error(cmd_path);
 	}
+	if (table->err)
+		exit(g_exec.g_exit_status);
 	else
 		exit(0);
 }
