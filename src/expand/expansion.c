@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 01:54:37 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/13 17:20:11 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/17 11:18:43 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*get_value_of_exp(t_env *env, char *key)
 		return (ft_strdup(env->value));
 	}
 	free(key);
-	return (ft_strdup(""));
+	return (NULL);
 }
 
 void	hyphen_exp(t_token *tok, t_env *env)
