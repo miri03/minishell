@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 21:03:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/16 19:01:36 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/18 13:21:24 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,7 @@ void	free_path(char **path)
 
 	i = 0;
 	while (path && path[i])
-	{
 		free (path[i++]);
-	}
 	free (path);
 }
 
@@ -106,6 +104,8 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 
 	if (!table->cmd)
 		return (NULL);
+	if (!table->cmd[0][0])
+		exit (0);
 	retrn = directory_executable(table);
 	if (retrn)
 		return (retrn);

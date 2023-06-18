@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+         #
+#    By: meharit <meharit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 04:04:08 by yismaail          #+#    #+#              #
-#    Updated: 2023/06/18 08:41:25 by yismaail         ###   ########.fr        #
+#    Updated: 2023/06/18 13:03:55 by meharit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	cc
 
-CFLAGS		=	 -Werror -Wextra -Wall -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib #-fsanitize=address -g3
+CFLAGS		=	 -Werror -Wextra -Wall -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib -fsanitize=address -g3
 RM			=	rm -rf
 SRCS		=	minishell_mess.c my_libft.c my_libft2.c main.c signals.c src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
 				src/tools/lst_env.c src/envir/environment.c src/expand/expansion.c \

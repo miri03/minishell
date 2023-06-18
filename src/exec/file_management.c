@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/25 18:15:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/17 21:34:08 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/18 14:33:06 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,6 @@ void	redir_in(t_cmd *table, int i)
 		r_in = r_in->next;
 	}
 }
-
-// t > e > s < o must create outfiles (o in file)
-// t < e < s > o create nothing		  (o out file)
 
 void	error_open_out(char *file)
 {
