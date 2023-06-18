@@ -6,41 +6,59 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 23:26:44 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/16 23:04:30 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/18 19:29:00 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	check_if_option(char *str, int *opt)
+int	check_if_option(char *str, int *opt)
 {
 	int	i;
 
 	i = 1;
 	if (!str)
-		return ;
-	if (str[0] == '-')
+		return (0);
+	if (str[0] == '-' && str[i] == 'n')
 	{
 		while (str[i])
 		{
 			if (str[i] != 'n')
-				return ;
+				return (0);
 			i++;
 		}
 		*opt = 1;
+		return (1);
 	}
+	return (0);
+}
+
+int	n_option(t_cmd *cmd, int *opt)
+{
+	int	c;
+
+	c = 1;
+	while (cmd->cmd[c])
+	{
+		if (check_if_option(cmd->cmd[c], opt))
+			c++;
+		else
+			break ;
+	}
+	return (c);
 }
 
 void	ft_echo(t_cmd *cmd, int fork)
 {
 	int	opt;
 	int	i;
+	int	c;
 
 	opt = 0;
 	i = 1;
-	check_if_option(cmd->cmd[1], &opt);
+	c = n_option(cmd, &opt);
 	if (opt)
-		i++;
+		i += (c - 1);
 	while (cmd->cmd[i])
 	{
 		printf("%s", cmd->cmd[i]);

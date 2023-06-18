@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 21:41:39 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/16 17:31:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/18 15:55:17 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,8 @@ void	upd_old_pwd(t_env *env)
 	{
 		if (ft_strcmp("OLDPWD", tmp->key) == 0)
 		{
-			printf("OLD_PWD => %p %p\n", tmp->key, tmp->value);
 			free(tmp->value);
 			tmp->value = get_pwd(env);
-			printf("NEW OLD_PWD => %p %p\n", tmp->key, tmp->value);
-			printf("tmp-> %p\n", tmp);
 			return ;
 		}
 		tmp = tmp->next;
@@ -38,10 +35,8 @@ void	upd_pwd(t_env *env, char *pwd)
 	{
 		if (!ft_strcmp(env->key, "PWD"))
 		{
-			printf("OLD PWD=> %p %p\n", env->key, env->value);
 			free(env->value);
 			env->value = my_ft_strdup(pwd);
-			printf("NEW PWD=> %p %p\n", env->key, env->value);
 			return ;
 		}
 		env = env->next;
@@ -78,7 +73,6 @@ void	upd_env_pwd(t_env *env)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	printf("pwd = %s\n", pwd);
 	upd_old_pwd(env);
 	upd_pwd(env, pwd);
 	free (pwd);
