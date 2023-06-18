@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/17 18:58:23 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/18 09:02:12 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef struct s_cmd
 	char			**cmd;
 	int				pipe;
 	int				err;
+	int				type;
 	t_redi			*in;
 	t_redi			*out;
 	struct s_cmd	*next;
@@ -191,7 +192,7 @@ void				set_oper(t_token *token, t_redi **redir, int type);
 void				set_cmd(t_cmd *cmd);
 void				init_args(t_token *token, t_cmd *cmd);
 void				fill_cmd(t_cmd *cmd, t_token *token, int *i);
-
+void				check_cmd(t_cmd **cmd);
 //*---------signals--------*//
 void				set_signals(void);
 void				sig_int_handler(int s);

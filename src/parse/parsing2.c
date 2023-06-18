@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 07:26:52 by yismaail          #+#    #+#             */
-/*   Updated: 2023/05/31 17:41:30 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/18 07:57:27 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void	fill_cmd(t_cmd *cmd, t_token *token, int *i)
 		return ;
 	if ((token->type == WORD || token->type == HYPHEN || token->type == SINGLE
 			|| token->type == DOUBLE) && cmd->cmd)
+	{
 		cmd->cmd[(*i)++] = ft_strdup(token->content);
+		cmd->type = token->type;
+	}
 	else if (*(token->content) == '|')
 	{
 		if (token->next && token->next->content)
