@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/18 09:02:12 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/06/20 01:03:58 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,6 +226,8 @@ void				make_pipes(int **pipes);
 char				**find_path(t_env *env);
 void				directory_error(char *dir);
 char				*directory_executable(t_cmd *table);
+void				free_cmd_path(char **path, char *cmd);
+void				free_path(char **path);
 
 //*-------------------redir-----------------------*//
 void				redir_in(t_cmd *table, int i);
@@ -271,6 +273,7 @@ int					valid_ident(char *ident);
 int					env_valid(char *ident);
 void				add_to(char *key, char *value, t_env *dup_env, char *ident);
 void				error_mess_uns(char *cmd);
+void				free_export(char *key, char *value);
 
 int					my_strchr(char *str, char c);
 char				*my_ft_strdup(const char *s1);

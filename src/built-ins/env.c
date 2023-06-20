@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 21:22:25 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/14 15:18:10 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/20 01:00:43 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,10 @@ void	error_mess_uns(char *cmd)
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
 	g_exec.g_exit_status = 1;
+}
+
+void	free_export(char *key, char *value)
+{
+	free(key);
+	free(value);
 }

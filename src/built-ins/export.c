@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 22:18:29 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/16 01:17:42 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/20 00:59:46 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,7 @@ void	append_change(t_env *env, int *append, char *key, char *value)
 		}
 	}
 	else
-	{
-		free(key);
-		free(value);
-	}
+		free_export(key, value);
 }
 
 void	export(t_env *dup_env, t_cmd *table)

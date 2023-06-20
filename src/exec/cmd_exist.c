@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 21:03:35 by meharit           #+#    #+#             */
-/*   Updated: 2023/06/18 13:21:24 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/20 01:03:20 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,6 @@ char	*directory_executable(t_cmd *table)
 	return (NULL);
 }
 
-void	free_path(char **path)
-{
-	int	i;
-
-	i = 0;
-	while (path && path[i])
-		free (path[i++]);
-	free (path);
-}
-
 char	*cmd_path(char **path, char *cmd)
 {
 	char	*test;
@@ -91,8 +81,7 @@ char	*cmd_path(char **path, char *cmd)
 		free(cmd);
 		exit(g_exec.g_exit_status);
 	}
-	free_path(path);
-	free(cmd);
+	free_cmd_path(path, cmd);
 	return (NULL);
 }
 
@@ -105,7 +94,7 @@ char	*cmd_exist(t_cmd *table, t_env *env)
 	if (!table->cmd)
 		return (NULL);
 	if (!table->cmd[0][0])
-		exit (0);
+		exit(0);
 	retrn = directory_executable(table);
 	if (retrn)
 		return (retrn);
