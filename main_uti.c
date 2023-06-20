@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   main_uti.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/15 09:26:52 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/20 14:04:12 by meharit          ###   ########.fr       */
+/*   Created: 2023/06/20 16:37:18 by meharit           #+#    #+#             */
+/*   Updated: 2023/06/20 16:37:38 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "includes/minishell.h"
 
-char	*ft_strdup(const char *s1)
+void	check_args(int ac, char **av, t_env **dup_env, char **env)
 {
-	char	*str;
-
-	if (!s1)
-		return (NULL);
-	str = (char *)malloc(ft_strlen(s1) + 1);
-	if (!str)
-		return (NULL);
-	ft_memcpy(str, s1, ft_strlen(s1) + 1);
-	return (str);
+	(void)av;
+	g_exec.g_exit_status = 0;
+	if (ac != 1)
+	{
+		ft_putendl_fd("noo we don't do that here", 2);
+		exit(1);
+	}
+	parse_env(env, dup_env);
 }

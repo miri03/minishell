@@ -3,19 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+         #
+#    By: meharit <meharit@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/06 04:04:08 by yismaail          #+#    #+#              #
-#    Updated: 2023/06/20 13:42:06 by yismaail         ###   ########.fr        #
+#    Updated: 2023/06/20 16:38:33 by meharit          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		=	minishell
 CC			=	cc
 
-CFLAGS		=	 -Werror -Wextra -Wall -lreadline #-fsanitize=address -g3 #-L/goinfre/meharit/homebrew/opt/readline/lib 
+CFLAGS		=	-Werror -Wextra -Wall -lreadline -L/goinfre/meharit/homebrew/opt/readline/lib 
 RM			=	rm -rf
-SRCS		=	minishell_mess.c my_libft.c my_libft2.c main.c signals.c src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
+SRCS		=	minishell_mess.c my_libft.c my_libft2.c main.c main_uti.c signals.c src/lexer/tokenizer_line.c src/tools/lst_addback_m.c \
 				src/tools/lst_env.c src/envir/environment.c src/expand/expansion.c \
 				src/expand/expansion2.c src/expand/expansion3.c  \
 				src/lexer/checks.c src/parse/parsing.c src/parse/parsing2.c src/tools/lst_redir.c \

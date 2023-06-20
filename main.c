@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
+/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/20 13:47:26 by yismaail         ###   ########.fr       */
+/*   Updated: 2023/06/20 16:38:50 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-void	check_args(int ac, char **av, t_env **dup_env, char **env)
-{
-	(void)av;
-	g_exec.g_exit_status = 0;
-	if (ac != 1)
-	{
-		ft_putendl_fd("noo we don't do that here", 2);
-		exit(1);
-	}
-	parse_env(env, dup_env);
-}
 
 void	remove_spaces(t_token **token, t_token *tok)
 {
@@ -48,8 +36,8 @@ void	check_cmd(t_cmd **cmd)
 	char	**substr;
 	int		i;
 
-	if (cmd && (*cmd)->cmd
-		&& (*cmd)->type == WORD && ft_strchr_2((*cmd)->cmd[0], ' '))
+	if (cmd && (*cmd)->cmd && (*cmd)->type == WORD
+		&& ft_strchr_2((*cmd)->cmd[0], ' '))
 	{
 		substr = ft_split((*cmd)->cmd[0], ' ');
 		ft_free((*cmd)->cmd);

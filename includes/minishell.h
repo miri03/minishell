@@ -6,7 +6,7 @@
 /*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 23:03:54 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/20 01:03:58 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/20 16:38:09 by meharit          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,6 +193,9 @@ void				set_cmd(t_cmd *cmd);
 void				init_args(t_token *token, t_cmd *cmd);
 void				fill_cmd(t_cmd *cmd, t_token *token, int *i);
 void				check_cmd(t_cmd **cmd);
+
+void				check_args(int ac, char **av, t_env **dup_env, char **env);
+
 //*---------signals--------*//
 void				set_signals(void);
 void				sig_int_handler(int s);
