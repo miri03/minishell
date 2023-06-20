@@ -6,7 +6,7 @@
 #    By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/31 08:34:51 by yismaail          #+#    #+#              #
-#    Updated: 2023/04/07 00:17:49 by yismaail         ###   ########.fr        #
+#    Updated: 2023/06/20 13:39:59 by yismaail         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ SRCS	=	ft_atoi.c \
 
 OBJS 	= 	${SRCS:.c=.o}					
 CC		=	cc
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror 
 NAME	=	libft.a
 
 YELLOW		= \e[0;33m

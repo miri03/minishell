@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: meharit <meharit@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yismaail <yismaail@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 17:19:51 by yismaail          #+#    #+#             */
-/*   Updated: 2023/06/19 22:36:01 by meharit          ###   ########.fr       */
+/*   Updated: 2023/06/20 13:47:26 by yismaail         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	check_cmd(t_cmd **cmd)
 	char	**substr;
 	int		i;
 
-	if ((*cmd)->type == WORD && ft_strchr_2((*cmd)->cmd[0], ' '))
+	if (cmd && (*cmd)->cmd
+		&& (*cmd)->type == WORD && ft_strchr_2((*cmd)->cmd[0], ' '))
 	{
 		substr = ft_split((*cmd)->cmd[0], ' ');
 		ft_free((*cmd)->cmd);
